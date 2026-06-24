@@ -72,9 +72,22 @@ const categoriesConfig = {
         teams: ['Yamaha IMS', 'Alex Barros Honda', 'Colombia Moto', 'Argentina GP', 'Chile Speed', 'Latin Conex', 'LS2 Squad', 'Mobil1 LATAM', 'Pirelli America', 'Gomez Racing', 'Andes Talents']
     },
     moto4_asia: {
-        name: "Moto4™ Asia Cup",
-        paisesPermitidos: ["🇯🇵", "🇮🇩", "🇲🇾", "🇦🇺"],
-        teams: ['Honda Asia Talent', 'Astra Honda Indo', 'Yamaha Thai Youth', 'KTM Australia', 'Malaysian Sprinta', 'Japan Rising', 'Oceania Squad', 'Idemitsu Asia', 'Shell Advance', 'Melbourne Base', 'Tokyo Project']
+        nam    moto4_asia: {
+        name: "Idemitsu Moto4 Asia Cup",
+        paisesPermitidos: ["🇯🇵", "🇮🇩", "🇲🇾", "🇹🇭", "🇦🇺", "🇵🇭", "🇶🇦", "🇮🇳", "🇳🇿"],
+        teams: [
+            "Astra Honda Racing",
+            "Honda Racing Thailand",
+            "Idemitsu Racing Japan",
+            "SIC Racing Team",
+            "BRP Racing Australia",
+            "Yamaha Racing ASEAN",
+            "FIM Oceania Junior",
+            "Honda Team Asia Junior",
+            "Philippines Racing Team",
+            "TVS Racing India",
+            "QMMF Racing"
+        ]
     },
     moto4_british: {
         name: "Moto4™ British Cup",
