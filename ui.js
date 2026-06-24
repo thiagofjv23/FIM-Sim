@@ -8,7 +8,7 @@ function switchTab(tabId) {
     });
 
     document.getElementById(`tab-${tabId}`).classList.add('active');
-    // Mapeia qual botão de aba disparou o evento para adicionar classe ativa
+    
     const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.innerText.toLowerCase().includes(tabId.substring(0,3)));
     if (activeBtn) activeBtn.classList.add('active');
     
@@ -25,7 +25,7 @@ function logEvent(text, type) {
     consoleEl.scrollTop = consoleEl.scrollHeight;
 }
 
-// COMPONENTES DINÂMICOS DE ALTERNÂNCIA DE CATEGORIA (BOTÕES DE FILTRO)
+// COMPONENTES DINÂMICOS DE ALTERNÂNCIA DE CATEGORIA
 function createCategorySelectors(containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -37,15 +37,14 @@ function createCategorySelectors(containerId) {
         btn.innerText = categoriesConfig[key].name;
         btn.onclick = () => {
             activeCategory = key;
-            refreshUI();
+            refreshUI(); // Atualiza a renderização focando na nova categoria selecionada
         };
         container.appendChild(btn);
     }
 }
 
-// FLUXO DE RENDERIZAÇÃO COMPLETO E SEGURO
+// FLUXO DE RENDERIZAÇÃO COMPLETO
 function refreshUI() {
-    // Atualizadores Globais estáticos
     document.getElementById('yearIndicator').innerText = `Temporada ${currentYear}`;
     
     const btnSim = document.getElementById('btnSim');
@@ -57,34 +56,38 @@ function refreshUI() {
         btnSim.className = "btn btn-sim";
     }
 
-    // Renderiza a aba ativa em plano de fundo
     renderRaceResultWidget();
     renderStandingsTab();
     renderGaragesTab();
 }
 
-// CORREÇÃO: EXIBE OS DETALHES COMPLETOS DA ÚLTIMA CORRIDA SIMULADA COM DNFS
+// EXIBE OS DETALHES DA ÚLTIMA CORRIDA BASEADO NA ABA ATIVA
 function renderRaceResultWidget() {
     const panel = document.getElementById('raceResultPanel');
-    if (!lastRaceData || lastRaceData.category !== activeCategory) {
+    
+    // Valida se há dados salvos e se a categoria atual possui registros mapeados
+    if (!lastRaceData || !lastRaceData[activeCategory]) {
         panel.style.display = 'none';
         return;
     }
 
+    // Isola os dados exclusivos da categoria que o usuário está visualizando
+    const activeRaceData = lastRaceData[activeCategory];
+
     panel.style.display = 'block';
-    document.getElementById('txtRaceRound').innerText = `Etapa ${lastRaceData.roundNum} - ${categoriesConfig[activeCategory].name}`;
+    document.getElementById('txtRaceRound').innerText = `Etapa ${activeRaceData.roundNum} - ${categoriesConfig[activeCategory].name}`;
     
-    document.getElementById('podium-p1').innerText = lastRaceData.podium[0] || 'N/A';
-    document.getElementById('podium-p2').innerText = lastRaceData.podium[1] || 'N/A';
-    document.getElementById('podium-p3').innerText = lastRaceData.podium[2] || 'N/A';
+    document.getElementById('podium-p1').innerText = activeRaceData.podium[0] || 'N/A';
+    document.getElementById('podium-p2').innerText = activeRaceData.podium[1] || 'N/A';
+    document.getElementById('podium-p3').innerText = activeRaceData.podium[2] || 'N/A';
 
     const dnfList = document.getElementById('dnfList');
     dnfList.innerHTML = '';
     
-    if (lastRaceData.dnfs.length === 0) {
+    if (activeRaceData.dnfs.length === 0) {
         dnfList.innerHTML = '<li>🎉 Nenhum abandono registrado! Grid completo cruzou a linha.</li>';
     } else {
-        lastRaceData.dnfs.forEach(item => {
+        activeRaceData.dnfs.forEach(item => {
             const li = document.createElement('li');
             li.innerHTML = `<strong>${item.flag} ${item.name}</strong> - Motivo: <span style="color:#ef4444">${item.reason}</span>`;
             dnfList.appendChild(li);
@@ -92,7 +95,7 @@ function renderRaceResultWidget() {
     }
 }
 
-// EXPÕE AS TABELAS DE PONTUAÇÃO DE PILOTOS E CONSTRUTORES (ABA 2)
+// EXPÕE AS TABELAS DE PONTUAÇÃO DE PILOTOS E CONSTRUTORES
 function renderStandingsTab() {
     createCategorySelectors('catTabsCamp');
     
@@ -116,7 +119,7 @@ function renderStandingsTab() {
         ridersBody.appendChild(tr);
     });
 
-    // 2. Mundial de Equipes (Soma agregada de ambos os pilotos dos boxes)
+    // 2. Mundial de Equipes
     const teamScores = {};
     categoriesConfig[activeCategory].teams.forEach(t => teamScores[t] = 0);
     currentRiders.forEach(r => { if(teamScores[r.team] !== undefined) teamScores[r.team] += r.points; });
@@ -136,7 +139,7 @@ function renderStandingsTab() {
     });
 }
 
-// MAPEA OS BOXES OFICIAIS ATIVOS (ABA 3)
+// MAPEA OS BOXES OFICIAIS ATIVOS
 function renderGaragesTab() {
     createCategorySelectors('catTabsGarages');
     const body = document.getElementById('garageTableBody');
@@ -172,7 +175,7 @@ function renderGaragesTab() {
     });
 }
 
-// INICIALIZADOR COMPATÍVEL COM O SISTEMA WINDOW LOAD
+// INICIALIZADOR COMPATÍVEL
 function initUI() {
     switchTab('inicio');
 }
