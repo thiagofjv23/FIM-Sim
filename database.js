@@ -99,28 +99,28 @@ const categoriesConfig = {
 // CORREÇÃO APLICADA: As chaves do objeto agora englobam a lista da moto4_asia corretamente.
 const historicalSeeds = {
     motogp: [
-        { name: 'Francesco Bagnaia', flag: '🇮🇹', age: 29, speed: 95, potential: 97, isReal: true },
-        { name: 'Marc Márquez', flag: '🇪🇸', age: 33, speed: 94, potential: 95, isReal: true },
-        { name: 'Miguel Oliveira', flag: '🇵🇹', age: 31, speed: 85, potential: 86, isReal: true },
-        { name: 'Jack Miller', flag: '🇦🇺', age: 31, speed: 83, potential: 84, isReal: true },
-        { name: 'Jorge Martín', flag: '🇪🇸', age: 28, speed: 94, potential: 96, isReal: true },
-        { name: 'Marco Bezzecchi', flag: '🇮🇹', age: 27, speed: 87, potential: 91, isReal: true },
-        { name: 'Brad Binder', flag: '🇿🇦', age: 30, speed: 89, potential: 91, isReal: true },
-        { name: 'Pedro Acosta', flag: '🇪🇸', age: 22, speed: 91, potential: 98, isReal: true },
-        { name: 'Fabio Quartararo', flag: '🇫🇷', age: 27, speed: 89, potential: 93, isReal: true },
-        { name: 'Álex Rins', flag: '🇪🇸', age: 30, speed: 85, potential: 86, isReal: true },
-        { name: 'Luca Marini', flag: '🇮🇹', age: 28, speed: 82, potential: 86, isReal: true },
-        { name: 'Joan Mir', flag: '🇪🇸', age: 28, speed: 83, potential: 85, isReal: true },
-        { name: 'Álex Márquez', flag: '🇪🇸', age: 30, speed: 86, potential: 88, isReal: true },
-        { name: 'Fermín Aldeguer', flag: '🇪🇸', age: 21, speed: 82, potential: 93, isReal: true },
-        { name: 'Fabio Di Giannantonio', flag: '🇮🇹', age: 27, speed: 88, potential: 91, isReal: true },
-        { name: 'Franco Morbidelli', flag: '🇮🇹', age: 31, speed: 85, potential: 87, isReal: true },
-        { name: 'Raúl Fernández', flag: '🇪🇸', age: 25, speed: 84, potential: 88, isReal: true },
-        { name: 'Ai Ogura', flag: '🇯🇵', age: 25, speed: 83, potential: 92, isReal: true },
-        { name: 'Enea Bastianini', flag: '🇮🇹', age: 28, speed: 90, potential: 92, isReal: true },
-        { name: 'Maverick Viñales', flag: '🇪🇸', age: 31, speed: 88, potential: 89, isReal: true },
-        { name: 'Johann Zarco', flag: '🇫🇷', age: 35, speed: 84, potential: 85, isReal: true },
-        { name: 'Somkiat Chantra', flag: '🇹🇭', age: 27, speed: 79, potential: 85, isReal: true }
+        { name: "Francesco Bagnaia", flag: "🇮🇹", age: 29, speed: 96, potential: 96, isReal: true },
+        { name: "Marc Márquez", flag: "🇪🇸", age: 33, speed: 95, potential: 95, isReal: true },
+        { name: "Jorge Martín", flag: "🇪🇸", age: 28, speed: 95, potential: 96, isReal: true },
+        { name: "Fabio Quartararo", flag: "🇫🇷", age: 27, speed: 92, potential: 94, isReal: true },
+        { name: "Pedro Acosta", flag: "🇪🇸", age: 22, speed: 91, potential: 98, isReal: true },
+        { name: "Enea Bastianini", flag: "🇮🇹", age: 29, speed: 91, potential: 92, isReal: true },
+        { name: "Brad Binder", flag: "🇿🇦", age: 31, speed: 90, potential: 90, isReal: true },
+        { name: "Marco Bezzecchi", flag: "🇮🇹", age: 28, speed: 90, potential: 92, isReal: true },
+        { name: "Maverick Viñales", flag: "🇪🇸", age: 31, speed: 89, potential: 89, isReal: true },
+        { name: "Toprak Razgatlıoğlu", flag: "🇹🇷", age: 30, speed: 89, potential: 91, isReal: true },
+        { name: "Álex Márquez", flag: "🇪🇸", age: 30, speed: 88, potential: 88, isReal: true },
+        { name: "Álex Rins", flag: "🇪🇸", age: 31, speed: 88, potential: 88, isReal: true },
+        { name: "Fabio Di Giannantonio", flag: "🇮🇹", age: 28, speed: 88, potential: 89, isReal: true },
+        { name: "Franco Morbidelli", flag: "🇮🇹", age: 32, speed: 87, potential: 87, isReal: true },
+        { name: "Luca Marini", flag: "🇮🇹", age: 29, speed: 87, potential: 88, isReal: true },
+        { name: "Fermín Aldeguer", flag: "🇪🇸", age: 21, speed: 86, potential: 94, isReal: true },
+        { name: "Raúl Fernández", flag: "🇪🇸", age: 26, speed: 86, potential: 89, isReal: true },
+        { name: "Joan Mir", flag: "🇪🇸", age: 29, speed: 86, potential: 87, isReal: true },
+        { name: "Jack Miller", flag: "🇦🇺", age: 31, speed: 86, potential: 86, isReal: true },
+        { name: "Johann Zarco", flag: "🇫🇷", age: 36, speed: 85, potential: 85, isReal: true },
+        { name: "Ai Ogura", flag: "🇯🇵", age: 25, speed: 85, potential: 90, isReal: true },
+        { name: "Diogo Moreira", flag: "🇧🇷", age: 22, speed: 84, potential: 91, isReal: true }
     ],
     moto2: [
         { name: 'Sergio García', flag: '🇪🇸', age: 23, speed: 85, potential: 92, isReal: true },
@@ -189,6 +189,14 @@ const historicalSeeds = {
         { name: 'Saad Al-Harqan', flag: '🇶🇦', age: 15, speed: 58, potential: 75, isReal: true }
     ]
 };
+
+// ==========================================================================
+// 2.5 FREE AGENTS (Pilotos sem assento oficial no início do save)
+// ==========================================================================
+const freeAgents = [
+    { name: 'Miguel Oliveira', flag: '🇵🇹', age: 31, speed: 85, potential: 86, isReal: true },
+    { name: 'Somkiat Chantra', flag: '🇹🇭', age: 27, speed: 79, potential: 85, isReal: true }
+];
 
 // ==========================================================================
 // 3. A REDE DE SEGURANÇA (ALGORITMO DE PREENCHIMENTO HÍBRIDO)
@@ -309,4 +317,3 @@ window.addEventListener('DOMContentLoaded', () => {
         initializeRealEcosystem();
     }
 });
-
