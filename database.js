@@ -177,6 +177,52 @@ const historicalSeeds = {
         { name: 'Leo Rammerstorfer', flag: '🇦🇹', age: 20, speed: 58, potential: 76, isReal: true }
     ]
 };
+    moto4_asia: [
+        // Astra Honda Racing
+        { name: 'Veda Ega Pratama', flag: '🇮🇩', age: 15, speed: 68, potential: 90, isReal: true },
+        { name: 'Reykat Fadillah', flag: '🇮🇩', age: 15, speed: 65, potential: 84, isReal: true },
+        
+        // Honda Racing Thailand
+        { name: 'Jakkreephat Phuettisan', flag: '🇹🇭', age: 16, speed: 67, potential: 86, isReal: true },
+        { name: 'Kiattisak Singhapong', flag: '🇹🇭', age: 15, speed: 64, potential: 81, isReal: true },
+        
+        // Idemitsu Racing Japan
+        { name: 'Zen Mitani', flag: '🇯🇵', age: 16, speed: 69, potential: 92, isReal: true },
+        { name: 'Riichi Takahira', flag: '🇯🇵', age: 15, speed: 66, potential: 85, isReal: true },
+        
+        // SIC Racing Team
+        { name: 'Farish Hafiy', flag: '🇲🇾', age: 15, speed: 65, potential: 83, isReal: true },
+        { name: 'Farhan Naqib', flag: '🇲🇾', age: 14, speed: 62, potential: 80, isReal: true },
+        
+        // BRP Racing Australia
+        { name: 'Carter Paige', flag: '🇦🇺', age: 15, speed: 64, potential: 82, isReal: true },
+        { name: 'Hudson Paige', flag: '🇦🇺', age: 14, speed: 63, potential: 85, isReal: true },
+        
+        // Yamaha Racing ASEAN
+        { name: 'Arai Agaska', flag: '🇮🇩', age: 16, speed: 66, potential: 87, isReal: true },
+        { name: 'Kitsada Tanachot', flag: '🇹🇭', age: 15, speed: 63, potential: 81, isReal: true },
+        
+        // FIM Oceania Junior
+        { name: 'Marianos Nikolis', flag: '🇦🇺', age: 16, speed: 65, potential: 82, isReal: true },
+        { name: 'Levi Russo', flag: '🇦🇺', age: 14, speed: 61, potential: 79, isReal: true },
+        
+        // Honda Team Asia Junior
+        { name: 'Ryota Ogiwara', flag: '🇯🇵', age: 15, speed: 67, potential: 89, isReal: true },
+        { name: 'Sota Ogiwara', flag: '🇯🇵', age: 14, speed: 64, potential: 86, isReal: true },
+        
+        // Philippines Racing Team
+        { name: 'Alfonsi Daquigan', flag: '🇵🇭', age: 15, speed: 62, potential: 80, isReal: true },
+        { name: 'Eane Jaye Sobretodo', flag: '🇵🇭', age: 16, speed: 60, potential: 77, isReal: true },
+        
+        // TVS Racing India
+        { name: 'Chiranth Vishwanath', flag: '🇮🇳', age: 16, speed: 61, potential: 79, isReal: true },
+        { name: 'Rakshith Dave', flag: '🇮🇳', age: 15, speed: 59, potential: 76, isReal: true },
+        
+        // QMMF Racing
+        { name: 'Hamad Al-Sahouti', flag: '🇶🇦', age: 16, speed: 63, potential: 84, isReal: true },
+        { name: 'Saad Al-Harqan', flag: '🇶🇦', age: 15, speed: 58, potential: 75, isReal: true }
+    ],
+
 
 // ==========================================================================
 // 3. A REDE DE SEGURANÇA (ALGORITMO DE PREENCHIMENTO HÍBRIDO)
