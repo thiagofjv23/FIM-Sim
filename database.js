@@ -96,7 +96,6 @@ const categoriesConfig = {
 // ==========================================================================
 // 2. EXTRAÇÃO E SEEDING DOS PILOTOS REAIS (TEMPORADAS RECENTES)
 // ==========================================================================
-// CORREÇÃO APLICADA: As chaves do objeto agora englobam a lista da moto4_asia corretamente.
 const historicalSeeds = {
     motogp: [
         { name: "Francesco Bagnaia", flag: "🇮🇹", age: 29, speed: 96, potential: 96, isReal: true },
@@ -297,9 +296,15 @@ window.addEventListener('DOMContentLoaded', () => {
         try {
             const parsed = JSON.parse(saved);
             
-            // Trava de Segurança: Se o save antigo for de antes da expansão, reseta o banco para evitar quebras de interface
-            if (!parsed.ecosystem || !parsed.ecosystem['moto4_asia']) {
-                console.warn("Save de versão antiga detectado. Reconstruindo matriz de dados...");
+            // Nova Trava de Segurança Aprimorada:
+            // Além de conferir se a classe asiática existe, agora o sistema checa ativamente se
+            // a nova base de dados da MotoGP foi aplicada buscando pelo Toprak. Se não encontrar,
+            // ele forçará o recarregamento descartando o Miguel/Somkiat do cache antigo.
+            const hasNovaAtualizacao = parsed.ecosystem && parsed.ecosystem.motogp && 
+                                       parsed.ecosystem.motogp.some(p => p.name.includes("Toprak"));
+
+            if (!parsed.ecosystem || !parsed.ecosystem['moto4_asia'] || !hasNovaAtualizacao) {
+                console.warn("Save de versão antiga ou desatualizado detectado. Reconstruindo matriz de dados...");
                 initializeRealEcosystem();
                 return;
             }
