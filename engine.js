@@ -76,7 +76,7 @@ function runRaceRound() {
 }
 
 function processYearTransition() {
-    // Envelhecimento e ganho técnico linear até o teto de potencial
+    // 1. Envelhecimento e ganho técnico linear até o teto de potencial (Para as 10 categorias)
     for (const catKey in ecosystem) {
         ecosystem[catKey].forEach(r => {
             r.age += 1;
@@ -88,7 +88,7 @@ function processYearTransition() {
         });
     }
 
-    // Processa Aposentadoria na MotoGP
+    // 2. Processa Aposentadoria na MotoGP (Série de Elite)
     const motoGPRiders = ecosystem['motogp'];
     ecosystem['motogp'] = motoGPRiders.filter(r => {
         let chance = r.age >= 38 ? 100 : (r.age >= 35 ? 45 : (r.age >= 32 ? 15 : 0));
@@ -99,27 +99,76 @@ function processYearTransition() {
         return true;
     });
 
-    // Subida Vertical Automática da Base até o Topo
-    const flowOrder = ['motogp', 'moto3', 'moto4', 'minigp'];
-    for (let i = 0; i < flowOrder.length - 1; i++) {
-        const targetCat = flowOrder[i];
-        const lowerCat = flowOrder[i+1];
-        let structuralVacancies = 12 - ecosystem[targetCat].length;
+    // 3. Subida Vertical Automática da Pirâmide Mundial (Grids de 22 pilotos)
+    // Fluxo principal de acesso: Rookies Cup -> JuniorGP -> Moto3 -> Moto2 -> MotoGP
+    const mundialFlow = ['motogp', 'moto2', 'moto3', 'moto3_junior', 'rookies_cup'];
+    
+    for (let i = 0; i < mundialFlow.length - 1; i++) {
+        const targetCat = mundialFlow[i];
+        const lowerCat = mundialFlow[i+1];
+        let structuralVacancies = 22 - ecosystem[targetCat].length; // Agora são 22 vagas por grid
         
         if (structuralVacancies > 0) {
-            ecosystem[lowerCat].sort((a,b) => b.points - a.points); 
+            ecosystem[lowerCat].sort((a, b) => b.points - a.points); 
             const promotedList = ecosystem[lowerCat].splice(0, structuralVacancies);
             promotedList.forEach(p => ecosystem[targetCat].push(p));
         }
     }
 
-    // Preenchimento com Regens de 12 anos na MiniGP
-    let baseVacancies = 12 - ecosystem['minigp'].length;
-    for (let k = 0; k < baseVacancies; k++) {
-        ecosystem['minigp'].push(generateFictionalNewbie());
+    // 4. Alimentação da Rookies Cup através das Copas Regionais Moto4
+    let rookiesVacancies = 22 - ecosystem['rookies_cup'].length;
+    if (rookiesVacancies > 0) {
+        const regionals = ['moto4_latin', 'moto4_asia', 'moto4_british', 'moto4_northern', 'moto4_european'];
+        let regionalCandidates = [];
+
+        // Coleta os melhores de cada regional para disputar as vagas mundiais
+        regionals.forEach(regKey => {
+            ecosystem[regKey].sort((a, b) => b.points - a.points);
+            regionalCandidates.push(...ecosystem[regKey].slice(0, 4));
+        });
+
+        // Ordena os candidatos da base por desempenho na temporada
+        regionalCandidates.sort((a, b) => b.points - a.points);
+        const promotedToRookies = regionalCandidates.slice(0, rookiesVacancies);
+
+        // Remove os promovidos de suas categorias regionais antigas e insere na Rookies Cup
+        promotedToRookies.forEach(p => {
+            for (const regKey of regionals) {
+                const idx = ecosystem[regKey].indexOf(p);
+                if (idx !== -1) {
+                    ecosystem[regKey].splice(idx, 1);
+                    break;
+                }
+            }
+            ecosystem['rookies_cup'].push(p);
+        });
     }
 
-    // Redistribuição e reset anual de pontos das garagens
+    // 5. Preenchimento de Vagas das Categorias de Base com Regens de 12 anos (Com Regras de País!)
+    const baseCategories = ['moto4_latin', 'moto4_asia', 'moto4_british', 'moto4_northern', 'moto4_european'];
+    
+    baseCategories.forEach(catKey => {
+        let vacancies = 22 - ecosystem[catKey].length;
+        
+        // Puxa a lista de bandeiras/países permitidos configurada no database.js para esta categoria
+        const allowedNats = categoriesConfig[catKey].paisesPermitidos;
+
+        for (let k = 0; k < vacancies; k++) {
+            // Invoca a função geradora passando os países permitidos como argumento
+            let newRider = generateFictionalNewbie(allowedNats);
+            ecosystem[catKey].push(newRider);
+        }
+    });
+
+    // Caso a Rookies Cup ou JuniorGP ainda tenham vagas residuais por falta de candidatos
+    ['rookies_cup', 'moto3_junior'].forEach(catKey => {
+        let vacancies = 22 - ecosystem[catKey].length;
+        for (let k = 0; k < vacancies; k++) {
+            ecosystem[catKey].push(generateFictionalNewbie(["Mundial"]));
+        }
+    });
+
+    // 6. Redistribuição de contratos e reset anual de pontuação para o ano seguinte
     for (const catKey in ecosystem) {
         const cfg = categoriesConfig[catKey];
         ecosystem[catKey].forEach((r, idx) => {
