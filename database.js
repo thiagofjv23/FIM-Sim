@@ -96,6 +96,7 @@ const categoriesConfig = {
 // ==========================================================================
 // 2. EXTRAÇÃO E SEEDING DOS PILOTOS REAIS (TEMPORADAS RECENTES)
 // ==========================================================================
+// CORREÇÃO APLICADA: As chaves do objeto agora englobam a lista da moto4_asia corretamente.
 const historicalSeeds = {
     motogp: [
         { name: 'Francesco Bagnaia', flag: '🇮🇹', age: 29, speed: 95, potential: 97, isReal: true },
@@ -210,9 +211,9 @@ function generateFictionalNewbie(allowedCountries) {
         if (!uniqueNamesRegistry.has(fullName)) {
             uniqueNamesRegistry.add(fullName);
             return {
-                name: fullName, flag: nat.flag, age: 12, // Ingressam rigorosamente com 12 anos
-                speed: Math.floor(Math.random() * 9) + 38, // 38 a 46 base
-                potential: Math.floor(Math.random() * 21) + 76, // 76 a 96 potencial
+                name: fullName, flag: nat.flag, age: 12, 
+                speed: Math.floor(Math.random() * 9) + 38,
+                potential: Math.floor(Math.random() * 21) + 76,
                 isReal: false, points: 0, currentRaceScore: 0, team: '', seat: ''
             };
         }
@@ -278,15 +279,23 @@ function initializeRealEcosystem() {
     saveLocalStorage();
     
     if (typeof initUI === "function") initUI();
-    if (typeof logEvent === "function") logEvent("✔ Ecossistema Road to MotoGP™ carregado com 220 pilotos reais e regens regionais!", "sys");
+    if (typeof logEvent === "function") logEvent("✔ Ecossistema Road to MotoGP™ carregado com sucesso!", "sys");
 }
 
-// AGENTE DE CARREGAMENTO AUTO-EXECUTÁVEL
+// AGENTE DE CARREGAMENTO AUTO-EXECUTÁVEL (COM FAILSAFE)
 window.addEventListener('DOMContentLoaded', () => {
     const saved = localStorage.getItem('motogp_sim_save');
     if (saved) {
         try {
             const parsed = JSON.parse(saved);
+            
+            // Trava de Segurança: Se o save antigo for de antes da expansão, reseta o banco para evitar quebras de interface
+            if (!parsed.ecosystem || !parsed.ecosystem['moto4_asia']) {
+                console.warn("Save de versão antiga detectado. Reconstruindo matriz de dados...");
+                initializeRealEcosystem();
+                return;
+            }
+            
             currentYear = parsed.currentYear;
             currentRound = parsed.currentRound;
             activeCategory = parsed.activeCategory || 'motogp';
@@ -300,3 +309,4 @@ window.addEventListener('DOMContentLoaded', () => {
         initializeRealEcosystem();
     }
 });
+
