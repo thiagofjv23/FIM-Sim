@@ -46,7 +46,7 @@ const categoriesConfig = {
         paisesPermitidos: ["Mundial"],
         teams: ['Ducati Lenovo Team', 'Prima Pramac Racing', 'Aprilia Racing', 'Red Bull KTM Factory', 'Monster Energy Yamaha', 'Repsol Honda Team', 'Gresini Racing MotoGP', 'Pertamina Enduro VR46', 'Trackhouse Racing', 'Red Bull KTM Tech3', 'LCR Honda Castrol']
     },
-    crypto2: { // Chave identificadora simplificada para o engine
+    moto2: { 
         name: "Moto2™ World Championship",
         paisesPermitidos: ["Mundial"],
         teams: ['MT Helmets - MSI', 'Red Bull KTM Ajo', 'Beta Tools SpeedUp', 'Elf Marc VDS Racing', 'Italtrans Racing Team', 'Fantic Racing', 'OnlyFans American Racing', 'Yamaha VR46 Master Camp', 'QJMOTOR Gresini', 'Liqui Moly Intact GP', 'RW Racing GP']
@@ -72,22 +72,9 @@ const categoriesConfig = {
         teams: ['Yamaha IMS', 'Alex Barros Honda', 'Colombia Moto', 'Argentina GP', 'Chile Speed', 'Latin Conex', 'LS2 Squad', 'Mobil1 LATAM', 'Pirelli America', 'Gomez Racing', 'Andes Talents']
     },
     moto4_asia: {
-        nam    moto4_asia: {
         name: "Idemitsu Moto4 Asia Cup",
         paisesPermitidos: ["🇯🇵", "🇮🇩", "🇲🇾", "🇹🇭", "🇦🇺", "🇵🇭", "🇶🇦", "🇮🇳", "🇳🇿"],
-        teams: [
-            "Astra Honda Racing",
-            "Honda Racing Thailand",
-            "Idemitsu Racing Japan",
-            "SIC Racing Team",
-            "BRP Racing Australia",
-            "Yamaha Racing ASEAN",
-            "FIM Oceania Junior",
-            "Honda Team Asia Junior",
-            "Philippines Racing Team",
-            "TVS Racing India",
-            "QMMF Racing"
-        ]
+        teams: ["Astra Honda Racing", "Honda Racing Thailand", "Idemitsu Racing Japan", "SIC Racing Team", "BRP Racing Australia", "Yamaha Racing ASEAN", "FIM Oceania Junior", "Honda Team Asia Junior", "Philippines Racing Team", "TVS Racing India", "QMMF Racing"]
     },
     moto4_british: {
         name: "Moto4™ British Cup",
@@ -134,7 +121,7 @@ const historicalSeeds = {
         { name: 'Johann Zarco', flag: '🇫🇷', age: 35, speed: 84, potential: 85, isReal: true },
         { name: 'Somkiat Chantra', flag: '🇹🇭', age: 27, speed: 79, potential: 85, isReal: true }
     ],
-    crypto2: [
+    moto2: [
         { name: 'Sergio García', flag: '🇪🇸', age: 23, speed: 85, potential: 92, isReal: true },
         { name: 'Alonso López', flag: '🇪🇸', age: 24, speed: 84, potential: 89, isReal: true },
         { name: 'Tony Arbolino', flag: '🇮🇹', age: 25, speed: 83, potential: 88, isReal: true },
@@ -175,54 +162,32 @@ const historicalSeeds = {
         { name: 'Hakim Danish', flag: '🇲🇾', age: 19, speed: 60, potential: 82, isReal: true },
         { name: 'Carter Thompson', flag: '🇦🇺', age: 18, speed: 61, potential: 83, isReal: true },
         { name: 'Leo Rammerstorfer', flag: '🇦🇹', age: 20, speed: 58, potential: 76, isReal: true }
-    ]
-};
+    ],
     moto4_asia: [
-        // Astra Honda Racing
         { name: 'Veda Ega Pratama', flag: '🇮🇩', age: 15, speed: 68, potential: 90, isReal: true },
         { name: 'Reykat Fadillah', flag: '🇮🇩', age: 15, speed: 65, potential: 84, isReal: true },
-        
-        // Honda Racing Thailand
         { name: 'Jakkreephat Phuettisan', flag: '🇹🇭', age: 16, speed: 67, potential: 86, isReal: true },
         { name: 'Kiattisak Singhapong', flag: '🇹🇭', age: 15, speed: 64, potential: 81, isReal: true },
-        
-        // Idemitsu Racing Japan
         { name: 'Zen Mitani', flag: '🇯🇵', age: 16, speed: 69, potential: 92, isReal: true },
         { name: 'Riichi Takahira', flag: '🇯🇵', age: 15, speed: 66, potential: 85, isReal: true },
-        
-        // SIC Racing Team
         { name: 'Farish Hafiy', flag: '🇲🇾', age: 15, speed: 65, potential: 83, isReal: true },
         { name: 'Farhan Naqib', flag: '🇲🇾', age: 14, speed: 62, potential: 80, isReal: true },
-        
-        // BRP Racing Australia
         { name: 'Carter Paige', flag: '🇦🇺', age: 15, speed: 64, potential: 82, isReal: true },
         { name: 'Hudson Paige', flag: '🇦🇺', age: 14, speed: 63, potential: 85, isReal: true },
-        
-        // Yamaha Racing ASEAN
         { name: 'Arai Agaska', flag: '🇮🇩', age: 16, speed: 66, potential: 87, isReal: true },
         { name: 'Kitsada Tanachot', flag: '🇹🇭', age: 15, speed: 63, potential: 81, isReal: true },
-        
-        // FIM Oceania Junior
         { name: 'Marianos Nikolis', flag: '🇦🇺', age: 16, speed: 65, potential: 82, isReal: true },
         { name: 'Levi Russo', flag: '🇦🇺', age: 14, speed: 61, potential: 79, isReal: true },
-        
-        // Honda Team Asia Junior
         { name: 'Ryota Ogiwara', flag: '🇯🇵', age: 15, speed: 67, potential: 89, isReal: true },
         { name: 'Sota Ogiwara', flag: '🇯🇵', age: 14, speed: 64, potential: 86, isReal: true },
-        
-        // Philippines Racing Team
         { name: 'Alfonsi Daquigan', flag: '🇵🇭', age: 15, speed: 62, potential: 80, isReal: true },
         { name: 'Eane Jaye Sobretodo', flag: '🇵🇭', age: 16, speed: 60, potential: 77, isReal: true },
-        
-        // TVS Racing India
         { name: 'Chiranth Vishwanath', flag: '🇮🇳', age: 16, speed: 61, potential: 79, isReal: true },
         { name: 'Rakshith Dave', flag: '🇮🇳', age: 15, speed: 59, potential: 76, isReal: true },
-        
-        // QMMF Racing
         { name: 'Hamad Al-Sahouti', flag: '🇶🇦', age: 16, speed: 63, potential: 84, isReal: true },
         { name: 'Saad Al-Harqan', flag: '🇶🇦', age: 15, speed: 58, potential: 75, isReal: true }
-    ],
-
+    ]
+};
 
 // ==========================================================================
 // 3. A REDE DE SEGURANÇA (ALGORITMO DE PREENCHIMENTO HÍBRIDO)
@@ -257,37 +222,30 @@ function generateFictionalNewbie(allowedCountries) {
 }
 
 function inicializarGridsVazios() {
-    // Varre todas as 10 categorias estruturadas
     for (const catKey in categoriesConfig) {
         const config = categoriesConfig[catKey];
-        let preLoadedList = historicalSeeds[catKey] || [];
+        let preLoadedList = historicalSeeds[catKey] ? [...historicalSeeds[catKey]] : [];
         
-        // Limpa o grid da categoria antes de estruturar
         ecosystem[catKey] = [];
 
-        // Preenche rigorosamente as 11 equipes (22 assentos)
         for (let i = 0; i < 11; i++) {
             const teamName = config.teams[i];
 
             for (let seatNum = 1; seatNum <= 2; seatNum++) {
                 let rider;
 
-                // Se houver semente real disponível, faz o resgate de dados
                 if (preLoadedList.length > 0) {
                     rider = preLoadedList.shift();
                     uniqueNamesRegistry.add(rider.name);
                 } else {
-                    // Caso contrário, ativa a Rede de Segurança Regional
                     rider = generateFictionalNewbie(config.paisesPermitidos);
                     
-                    // Incremento técnico coerente caso o bot preencha classes de acesso superiores
-                    if (catKey === 'crypto2') { rider.speed += 36; rider.age = 19; }
+                    if (catKey === 'moto2') { rider.speed += 36; rider.age = 19; }
                     else if (catKey === 'moto3') { rider.speed += 32; rider.age = 17; }
                     else if (catKey === 'moto3_junior') { rider.speed += 20; rider.age = 15; }
                     else if (catKey === 'rookies_cup') { rider.speed += 16; rider.age = 14; }
                 }
 
-                // Ajusta os contratos fixos de box
                 rider.team = teamName;
                 rider.seat = `Piloto ${seatNum}`;
                 rider.points = 0;
@@ -297,6 +255,15 @@ function inicializarGridsVazios() {
             }
         }
     }
+}
+
+// PROFISSIONAL DE SALVAMENTO NO LOCALSTORAGE
+function saveLocalStorage() {
+    const dataToSave = {
+        currentYear, currentRound, activeCategory, ecosystem, lastRaceData,
+        uniqueNames: Array.from(uniqueNamesRegistry)
+    };
+    localStorage.setItem('motogp_sim_save', JSON.stringify(dataToSave));
 }
 
 // INICIALIZADOR COMPATÍVEL COM LOCALSTORAGE / SESSÃO
@@ -311,15 +278,7 @@ function initializeRealEcosystem() {
     saveLocalStorage();
     
     if (typeof initUI === "function") initUI();
-    logEvent("✔ Ecossistema Road to MotoGP™ carregado com 220 pilotos reais e regens regionais!", "sys");
-}
-
-function saveLocalStorage() {
-    const dataToSave = {
-        currentYear, currentRound, activeCategory, ecosystem, lastRaceData,
-        uniqueNames: Array.from(uniqueNamesRegistry)
-    };
-    localStorage.setItem('motogp_sim_save', JSON.stringify(dataToSave));
+    if (typeof logEvent === "function") logEvent("✔ Ecossistema Road to MotoGP™ carregado com 220 pilotos reais e regens regionais!", "sys");
 }
 
 // AGENTE DE CARREGAMENTO AUTO-EXECUTÁVEL
