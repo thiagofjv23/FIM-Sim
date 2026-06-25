@@ -16,8 +16,8 @@ let ecosystem = {
 
 // BANCO DE DADOS DE PAÍSES PARA GERADORES ALEATÓRIOS (REGENS DA BASE)
 const natData = [
-    { country: 'Espanha', flag: '🇪🇸', names: ['Marc', 'Joan', 'Pedro', 'Aleix', 'Jorge', 'Raúl', 'Izan', 'Sergio', 'Álvaro', 'Carlos', 'Maverick', 'Iván', 'Daniel', 'Marcos'], surnames: ['Márquez', 'Mir', 'Acosta', 'Espargaro', 'Martín', 'Fernández', 'Guevara', 'García', 'López', 'Sánchez', 'Viñales', 'Ortolá', 'Muñoz', 'Ramírez'] },
-    { country: 'Itália', flag: '🇮🇹', names: ['Francesco', 'Enea', 'Marco', 'Fabio', 'Luca', 'Tony', 'Celestino', 'Matteo', 'Filippo', 'Romano', 'Guido', 'Farioli'], surnames: ['Bagnaia', 'Bastianini', 'Bezzecchi', 'Di Giannantonio', 'Marini', 'Arbolino', 'Vietti', 'Gentili', 'Graziani', 'Rossi', 'Rossi', 'Morbidelli'] },
+    { country: 'Espanha', flag: '🇪🇸', names: ['Marc', 'Joan', 'Pedro', 'Aleix', 'Jorge', 'Raúl', 'Izan', 'Sergio', 'Álvaro', 'Carlos', 'Maverick', 'Iván', 'Daniel', 'Marcos'], surnames: ['Márquez', 'Mir', 'Oliveira', 'Espargaro', 'Bezzecchi', 'Viñales', 'Acosta', 'Fernández', 'García', 'López', 'Holgado', 'Alonso'] },
+    { country: 'Itália', flag: '🇮🇹', names: ['Francesco', 'Enea', 'Marco', 'Fabio', 'Luca', 'Tony', 'Celestino', 'Matteo', 'Filippo', 'Romano', 'Guido', 'Farioli'], surnames: ['Bagnaia', 'Bastianini', 'Bezzecchi', 'Di Giannantonio', 'Marini', 'Morbidelli', 'Arbolino', 'Vietti', 'Lunetta'] },
     { country: 'Japão', flag: '🇯🇵', names: ['Takaaki', 'Ai', 'Ayumu', 'Ryusei', 'Kaito', 'Taiyo', 'Tatsuki'], surnames: ['Nakagami', 'Ogura', 'Sasaki', 'Yamanaka', 'Toba', 'Furusato', 'Suzuki'] },
     { country: 'França', flag: '🇫🇷', names: ['Fabio', 'Johann', 'Lorenzo', 'Alan'], surnames: ['Quartararo', 'Zarco', 'Fellon', 'Techer'] },
     { country: 'Portugal', flag: '🇵🇹', names: ['Miguel', 'Ivo'], surnames: ['Oliveira', 'Lopes'] },
@@ -160,29 +160,29 @@ const moto22026 = {
   teams: [
     {
       id: 1,
-      name: 'Blu Cru Pramac Yamaha Moto2',
+      name: 'BLU CRU Pramac Yamaha Moto2',
       manufacturer: 'Yamaha',
       riders: [
         { riderId: generateRiderId(), name: 'Izan Guevara', flag: '🇪🇸', age: 22, speed: 81, potential: 86, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
-        { riderId: generateRiderId(), name: 'Alberto Ferrández', flag: '🇪🇸', age: 19, speed: 78, potential: 88, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+        { riderId: generateRiderId(), name: 'Alberto Ferrández', flag: '🇪🇸', age: 20, speed: 76, potential: 88, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
       ]
     },
     {
       id: 2,
-      name: 'CFMoto Aspar Team',
+      name: 'CFMOTO Aspar Team',
       manufacturer: 'CFMoto',
       riders: [
-        { riderId: generateRiderId(), name: 'David Alonso', flag: '🇨🇴', age: 20, speed: 84, potential: 92, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'David Alonso', flag: '🇨🇴', age: 20, speed: 84, potential: 94, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
         { riderId: generateRiderId(), name: 'Daniel Holgado', flag: '🇪🇸', age: 21, speed: 82, potential: 88, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
       ]
     },
     {
       id: 3,
-      name: 'Elf Marc VDS Racing Team',
+      name: 'ELF Marc VDS Racing Team',
       manufacturer: 'Kalex',
       riders: [
-        { riderId: generateRiderId(), name: 'Arón Canet', flag: '🇪🇸', age: 27, speed: 85, potential: 86, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
-        { riderId: generateRiderId(), name: 'Deniz Öncü', flag: '🇹🇷', age: 23, speed: 81, potential: 85, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+        { riderId: generateRiderId(), name: 'Arón Canet', flag: '🇪🇸', age: 26, speed: 85, potential: 86, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Deniz Öncü', flag: '🇹🇷', age: 22, speed: 85, potential: 85, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
       ]
     },
     {
@@ -191,7 +191,7 @@ const moto22026 = {
       manufacturer: 'Honda',
       riders: [
         { riderId: generateRiderId(), name: 'Mario Aji', flag: '🇮🇩', age: 22, speed: 79, potential: 82, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
-        { riderId: generateRiderId(), name: 'Taiyo Furusato', flag: '🇯🇵', age: 21, speed: 80, potential: 85, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+        { riderId: generateRiderId(), name: 'Taiyo Furusato', flag: '🇯🇵', age: 20, speed: 80, potential: 85, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
       ]
     },
     {
@@ -200,7 +200,7 @@ const moto22026 = {
       manufacturer: 'Kalex',
       riders: [
         { riderId: generateRiderId(), name: 'Sergio García', flag: '🇪🇸', age: 23, speed: 84, potential: 89, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
-        { riderId: generateRiderId(), name: 'Alonso López', flag: '🇪🇸', age: 25, speed: 85, potential: 88, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+        { riderId: generateRiderId(), name: 'Alonso López', flag: '🇪🇸', age: 24, speed: 85, potential: 88, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
       ]
     },
     {
@@ -208,8 +208,8 @@ const moto22026 = {
       name: 'Italtrans Racing Team',
       manufacturer: 'Kalex',
       riders: [
-        { riderId: generateRiderId(), name: 'Daniel Muñoz', flag: '🇪🇸', age: 20, speed: 79, potential: 84, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
-        { riderId: generateRiderId(), name: 'Adrián Huertas', flag: '🇪🇸', age: 23, speed: 82, potential: 86, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+        { riderId: generateRiderId(), name: 'Adrián Huertas', flag: '🇪🇸', age: 22, speed: 79, potential: 86, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Daniel Muñoz', flag: '🇪🇸', age: 19, speed: 79, potential: 84, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
       ]
     },
     {
@@ -217,17 +217,17 @@ const moto22026 = {
       name: 'Liqui Moly Dynavolt Intact GP',
       manufacturer: 'Kalex',
       riders: [
-        { riderId: generateRiderId(), name: 'Manuel González', flag: '🇪🇸', age: 24, speed: 87, potential: 89, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
-        { riderId: generateRiderId(), name: 'Senna Agius', flag: '🇦🇺', age: 21, speed: 82, potential: 87, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+        { riderId: generateRiderId(), name: 'Manuel González', flag: '🇪🇸', age: 24, speed: 87, potential: 90, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Senna Agius', flag: '🇦🇺', age: 21, speed: 86, potential: 89, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
       ]
     },
     {
       id: 8,
-      name: 'Momoven Idrofoglia RW Racing Team',
+      name: 'RW Racing GP',
       manufacturer: 'Kalex',
       riders: [
-        { riderId: generateRiderId(), name: 'Ayumu Sasaki', flag: '🇯🇵', age: 26, speed: 81, potential: 84, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
-        { riderId: generateRiderId(), name: 'Zonta van den Goorbergh', flag: '🇳🇱', age: 21, speed: 80, potential: 84, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+        { riderId: generateRiderId(), name: 'Ayumu Sasaki', flag: '🇯🇵', age: 25, speed: 81, potential: 84, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Zonta van den Goorbergh', flag: '🇳🇱', age: 20, speed: 80, potential: 84, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
       ]
     },
     {
@@ -235,62 +235,44 @@ const moto22026 = {
       name: 'OnlyFans American Racing Team',
       manufacturer: 'Kalex',
       riders: [
-        { riderId: generateRiderId(), name: 'Filip Salač', flag: '🇨🇿', age: 25, speed: 82, potential: 84, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Filip Salač', flag: '🇨🇿', age: 24, speed: 84, potential: 84, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
         { riderId: generateRiderId(), name: 'Joe Roberts', flag: '🇺🇸', age: 29, speed: 83, potential: 84, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
       ]
     },
     {
       id: 10,
-      name: 'Red Bull KTM Ajo',
-      manufacturer: 'KTM',
+      name: 'QJMotor-Frinsa-MSI',
+      manufacturer: 'QJMotor',
       riders: [
-        { riderId: generateRiderId(), name: 'Collin Veijer', flag: '🇳🇱', age: 21, speed: 84, potential: 91, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
-        { riderId: generateRiderId(), name: 'José Antonio Rueda', flag: '🇪🇸', age: 21, speed: 83, potential: 89, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+        { riderId: generateRiderId(), name: 'Iván Ortolá', flag: '🇪🇸', age: 21, speed: 82, potential: 88, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Ángel Piqueras', flag: '🇪🇸', age: 19, speed: 80, potential: 90, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
       ]
     },
     {
       id: 11,
-      name: 'Reds Fantic Racing',
-      manufacturer: 'Fantic',
+      name: 'Red Bull KTM Ajo',
+      manufacturer: 'KTM',
       riders: [
-        { riderId: generateRiderId(), name: 'Barry Baltus', flag: '🇧🇪', age: 22, speed: 80, potential: 84, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
-        { riderId: generateRiderId(), name: 'Tony Arbolino', flag: '🇮🇹', age: 26, speed: 84, potential: 86, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+        { riderId: generateRiderId(), name: 'Collin Veijer', flag: '🇳🇱', age: 21, speed: 84, potential: 92, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'José Antonio Rueda', flag: '🇪🇸', age: 20, speed: 83, potential: 89, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
       ]
     },
     {
       id: 12,
-      name: 'SpeedRS Team',
-      manufacturer: 'Kalex',
+      name: 'Fantic Racing Lino Sonego',
+      manufacturer: 'Fantic',
       riders: [
-        { riderId: generateRiderId(), name: 'Celestino Vietti', flag: '🇮🇹', age: 25, speed: 85, potential: 88, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
-        { riderId: generateRiderId(), name: 'Luca Lunetta', flag: '🇮🇹', age: 20, speed: 79, potential: 86, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+        { riderId: generateRiderId(), name: 'Barry Baltus', flag: '🇧🇪', age: 21, speed: 84, potential: 84, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Tony Arbolino', flag: '🇮🇹', age: 25, speed: 84, potential: 86, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
       ]
     },
     {
       id: 13,
-      name: 'QJMotor - MSi',
-      manufacturer: 'QJMotor',
-      riders: [
-        { riderId: generateRiderId(), name: 'Iván Ortolá', flag: '🇪🇸', age: 22, speed: 82, potential: 88, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
-        { riderId: generateRiderId(), name: 'Ángel Piqueras', flag: '🇪🇸', age: 20, speed: 80, potential: 90, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
-      ]
-    },
-    {
-      id: 14,
-      name: 'Klint Racing Team',
+      name: 'SpeedRS Team',
       manufacturer: 'Kalex',
       riders: [
-        { riderId: generateRiderId(), name: 'Jorge Navarro', flag: '🇪🇸', age: 30, speed: 81, potential: 81, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
-        { riderId: generateRiderId(), name: 'Álex Escrig', flag: '🇪🇸', age: 22, speed: 78, potential: 81, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
-      ]
-    },
-    {
-      id: 15,
-      name: 'QJMotor - Galfer',
-      manufacturer: 'QJMotor',
-      riders: [
-        { riderId: generateRiderId(), name: 'Xabi Zurutuza', flag: '🇪🇸', age: 20, speed: 78, potential: 83, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
-        { riderId: generateRiderId(), name: 'Marcos Ramírez', flag: '🇪🇸', age: 28, speed: 80, potential: 82, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+        { riderId: generateRiderId(), name: 'Celestino Vietti', flag: '🇮🇹', age: 24, speed: 85, potential: 88, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Luca Lunetta', flag: '🇮🇹', age: 20, speed: 76, potential: 86, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
       ]
     }
   ]
@@ -522,22 +504,22 @@ const categoriesConfig = {
     motogp: {
         name: "MotoGP™ Elite World Class",
         paisesPermitidos: ["Mundial"],
-        teams: ['Ducati Lenovo Team', 'Prima Pramac Racing', 'Aprilia Racing', 'Red Bull KTM Factory', 'Monster Energy Yamaha', 'Repsol Honda Team', 'Gresini Racing MotoGP', 'Pertamina Enduro VR46 Racing Team', 'Trackhouse MotoGP Team', 'Castrol Honda LCR', 'Red Bull KTM Tech3']
+        teams: ['Ducati Lenovo Team', 'Prima Pramac Racing', 'Aprilia Racing', 'Red Bull KTM Factory', 'Monster Energy Yamaha', 'Repsol Honda Team', 'Gresini Racing MotoGP', 'Pertamina Enduro VR46 Racing', 'Castrol Honda LCR', 'Red Bull KTM Tech3', 'Trackhouse MotoGP Team']
     },
     moto2: { 
         name: "Moto2™ World Championship",
         paisesPermitidos: ["Mundial"],
-        teams: ['MT Helmets - MSI', 'Red Bull KTM Ajo', 'Beta Tools SpeedUp', 'Elf Marc VDS Racing', 'Italtrans Racing Team', 'Fantic Racing', 'OnlyFans American Racing', 'Yamaha VR46 Master Camp', 'Gresini Racing Moto2', 'Liqui Moly Intact GP', 'Idemitsu Honda Team Asia', 'CFMoto Aspar Team', 'Ajo Motorsport', 'Finetwork Team Racedays', 'Devio Ajo', 'Pertamina Enduro Ajo', 'Micronic Racing Team']
+        teams: ['BLU CRU Pramac Yamaha Moto2', 'CFMOTO Aspar Team', 'ELF Marc VDS Racing Team', 'Idemitsu Honda Team Asia', 'Italjet Gresini Moto2', 'Italtrans Racing Team', 'Liqui Moly Dynavolt Intact GP', 'RW Racing GP', 'OnlyFans American Racing Team', 'QJMotor-Frinsa-MSI', 'Red Bull KTM Ajo', 'Fantic Racing Lino Sonego', 'SpeedRS Team']
     },
     moto3: {
         name: "Moto3™ World Cup",
         paisesPermitidos: ["Mundial"],
-        teams: ['CFMOTO Aspar Team', 'Liqui Moly Intact GP', 'MT Helmets - MSI', 'Red Bull KTM Ajo', 'Leopard Racing', 'Red Bull KTM Tech3', 'Honda Team Asia', 'BOE Motorsports', 'CIP Green Power', 'Devio Ajo', 'Ajo Motorsport', 'GASGAS Aspar Team']
+        teams: ['CFMOTO Aspar Team', 'Liqui Moly Intact GP', 'MT Helmets - MSI', 'Red Bull KTM Ajo', 'Leopard Racing', 'Red Bull KTM Tech3', 'Honda Team Asia', 'BOE Motorsports', 'CIP Green Power', 'Devioser Tuning', 'Kopron Rivacold']
     },
     moto3_junior: {
         name: "FIM JuniorGP™ Moto3",
         paisesPermitidos: ["Mundial"],
-        teams: ['Aspar Junior Team', 'Team Estrella Galicia 00', 'Monlau Motul School', 'Laglisse Academy', 'AC Racing Team', 'Finetwork Team', 'Artbox Junior', 'MTA Junior Team', 'AGR Team', 'Carrera Motorsport Team', 'SMX Motorsports', 'Schrötter Motorsports']
+        teams: ['Aspar Junior Team', 'Team Estrella Galicia 00', 'Monlau Motul School', 'Laglisse Academy', 'AC Racing Team', 'Finetwork Team', 'Artbox Junior', 'MTA Junior Team', 'AGR Team', 'Carrera Junior', 'Rins Motorsport Team']
     },
     rookies_cup: {
         name: "Red Bull MotoGP™ Rookies Cup",
@@ -552,12 +534,12 @@ const categoriesConfig = {
     moto4_asia: {
         name: "Idemitsu Moto4 Asia Cup",
         paisesPermitidos: ["🇯🇵", "🇮🇩", "🇲🇾", "🇹🇭", "🇦🇺", "🇵🇭", "🇶🇦", "🇮🇳", "🇳🇿"],
-        teams: ["Astra Honda Racing", "Honda Racing Thailand", "Idemitsu Racing Japan", "SIC Racing Team", "BRP Racing Australia", "Yamaha Racing ASEAN", "FIM Oceania Junior", "Honda Team Asia Junior", "Idemitsu Junior", "Suzuki Riders"]
+        teams: ["Astra Honda Racing", "Honda Racing Thailand", "Idemitsu Racing Japan", "SIC Racing Team", "BRP Racing Australia", "Yamaha Racing ASEAN", "FIM Oceania Junior", "Honda Team Asia Junior", "Musashi RT Suzuki"]
     },
     moto4_british: {
         name: "Moto4™ British Cup",
         paisesPermitidos: ["🇬🇧", "🇮🇪"],
-        teams: ['VisionTrack UK', 'Laverty Academy', 'R&G Youth', 'Irish Road Race', 'BSB Junior', 'Scotland Gun', 'Welsh Dragon', 'Oxford Products', 'Silverstone School', 'Donington Talents', 'Irish Academy']
+        teams: ['VisionTrack UK', 'Laverty Academy', 'R&G Youth', 'Irish Road Race', 'BSB Junior', 'Scotland Gun', 'Welsh Dragon', 'Oxford Products', 'Silverstone School', 'Donington Talents', 'Irish Racers']
     },
     moto4_northern: {
         name: "Moto4™ Northern Cup",
@@ -601,34 +583,31 @@ const historicalSeeds = {
     ],
     moto2: [
         { name: "Izan Guevara", flag: "🇪🇸", age: 22, speed: 81, potential: 86, isReal: true },
-        { name: "Alberto Ferrández", flag: "🇪🇸", age: 19, speed: 78, potential: 88, isReal: true },
-        { name: "David Alonso", flag: "🇨🇴", age: 20, speed: 84, potential: 92, isReal: true },
+        { name: "Alberto Ferrández", flag: "🇪🇸", age: 20, speed: 76, potential: 88, isReal: true },
+        { name: "David Alonso", flag: "🇨🇴", age: 20, speed: 84, potential: 94, isReal: true },
         { name: "Daniel Holgado", flag: "🇪🇸", age: 21, speed: 82, potential: 88, isReal: true },
-        { name: "Arón Canet", flag: "🇪🇸", age: 27, speed: 85, potential: 86, isReal: true },
-        { name: "Deniz Öncü", flag: "🇹🇷", age: 23, speed: 81, potential: 85, isReal: true },
+        { name: "Arón Canet", flag: "🇪🇸", age: 26, speed: 85, potential: 86, isReal: true },
+        { name: "Deniz Öncü", flag: "🇹🇷", age: 22, speed: 85, potential: 85, isReal: true },
         { name: "Mario Aji", flag: "🇮🇩", age: 22, speed: 79, potential: 82, isReal: true },
-        { name: "Taiyo Furusato", flag: "🇯🇵", age: 21, speed: 80, potential: 85, isReal: true },
+        { name: "Taiyo Furusato", flag: "🇯🇵", age: 20, speed: 80, potential: 85, isReal: true },
         { name: "Sergio García", flag: "🇪🇸", age: 23, speed: 84, potential: 89, isReal: true },
-        { name: "Alonso López", flag: "🇪🇸", age: 25, speed: 85, potential: 88, isReal: true },
-        { name: "Daniel Muñoz", flag: "🇪🇸", age: 20, speed: 79, potential: 84, isReal: true },
-        { name: "Adrián Huertas", flag: "🇪🇸", age: 23, speed: 82, potential: 86, isReal: true },
-        { name: "Jorge Navarro", flag: "🇪🇸", age: 30, speed: 81, potential: 81, isReal: true },
-        { name: "Álex Escrig", flag: "🇪🇸", age: 22, speed: 78, potential: 81, isReal: true },
-        { name: "Xabi Zurutuza", flag: "🇪🇸", age: 20, speed: 78, potential: 83, isReal: true },
-        { name: "Manuel González", flag: "🇪🇸", age: 24, speed: 87, potential: 89, isReal: true },
-        { name: "Senna Agius", flag: "🇦🇺", age: 21, speed: 82, potential: 87, isReal: true },
-        { name: "Ayumu Sasaki", flag: "🇯🇵", age: 26, speed: 81, potential: 84, isReal: true },
-        { name: "Zonta van den Goorbergh", flag: "🇳🇱", age: 21, speed: 80, potential: 84, isReal: true },
-        { name: "Filip Salač", flag: "🇨🇿", age: 25, speed: 82, potential: 84, isReal: true },
+        { name: "Alonso López", flag: "🇪🇸", age: 24, speed: 85, potential: 88, isReal: true },
+        { name: "Daniel Muñoz", flag: "🇪🇸", age: 19, speed: 79, potential: 84, isReal: true },
+        { name: "Adrián Huertas", flag: "🇪🇸", age: 22, speed: 79, potential: 86, isReal: true },
+        { name: "Manuel González", flag: "🇪🇸", age: 24, speed: 87, potential: 90, isReal: true },
+        { name: "Senna Agius", flag: "🇦🇺", age: 21, speed: 86, potential: 89, isReal: true },
+        { name: "Ayumu Sasaki", flag: "🇯🇵", age: 25, speed: 81, potential: 84, isReal: true },
+        { name: "Zonta van den Goorbergh", flag: "🇳🇱", age: 20, speed: 80, potential: 84, isReal: true },
+        { name: "Filip Salač", flag: "🇨🇿", age: 24, speed: 84, potential: 84, isReal: true },
         { name: "Joe Roberts", flag: "🇺🇸", age: 29, speed: 83, potential: 84, isReal: true },
-        { name: "Iván Ortolá", flag: "🇪🇸", age: 22, speed: 82, potential: 88, isReal: true },
-        { name: "Ángel Piqueras", flag: "🇪🇸", age: 20, speed: 80, potential: 90, isReal: true },
-        { name: "Collin Veijer", flag: "🇳🇱", age: 21, speed: 84, potential: 91, isReal: true },
-        { name: "José Antonio Rueda", flag: "🇪🇸", age: 21, speed: 83, potential: 89, isReal: true },
-        { name: "Barry Baltus", flag: "🇧🇪", age: 22, speed: 80, potential: 84, isReal: true },
-        { name: "Tony Arbolino", flag: "🇮🇹", age: 26, speed: 84, potential: 86, isReal: true },
-        { name: "Celestino Vietti", flag: "🇮🇹", age: 25, speed: 85, potential: 88, isReal: true },
-        { name: "Luca Lunetta", flag: "🇮🇹", age: 20, speed: 79, potential: 86, isReal: true }
+        { name: "Iván Ortolá", flag: "🇪🇸", age: 21, speed: 82, potential: 88, isReal: true },
+        { name: "Ángel Piqueras", flag: "🇪🇸", age: 19, speed: 80, potential: 90, isReal: true },
+        { name: "Collin Veijer", flag: "🇳🇱", age: 21, speed: 84, potential: 92, isReal: true },
+        { name: "José Antonio Rueda", flag: "🇪🇸", age: 20, speed: 83, potential: 89, isReal: true },
+        { name: "Barry Baltus", flag: "🇧🇪", age: 21, speed: 84, potential: 84, isReal: true },
+        { name: "Tony Arbolino", flag: "🇮🇹", age: 25, speed: 84, potential: 86, isReal: true },
+        { name: "Celestino Vietti", flag: "🇮🇹", age: 24, speed: 85, potential: 88, isReal: true },
+        { name: "Luca Lunetta", flag: "🇮🇹", age: 20, speed: 76, potential: 86, isReal: true }
     ],
     moto3: [
         { name: 'David Alonso', flag: '🇨🇴', age: 20, speed: 86, potential: 96, isReal: true },
