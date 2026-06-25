@@ -122,18 +122,35 @@ const historicalSeeds = {
         { name: "Diogo Moreira", flag: "🇧🇷", age: 22, speed: 84, potential: 91, isReal: true }
     ],
     moto2: [
-        { name: 'Sergio García', flag: '🇪🇸', age: 23, speed: 85, potential: 92, isReal: true },
-        { name: 'Alonso López', flag: '🇪🇸', age: 24, speed: 84, potential: 89, isReal: true },
-        { name: 'Tony Arbolino', flag: '🇮🇹', age: 25, speed: 83, potential: 88, isReal: true },
-        { name: 'Jake Dixon', flag: '🇬🇧', age: 30, speed: 82, potential: 83, isReal: true },
-        { name: 'Aron Canet', flag: '🇪🇸', age: 26, speed: 84, potential: 86, isReal: true },
-        { name: 'Celestino Vietti', flag: '🇮🇹', age: 24, speed: 82, potential: 87, isReal: true },
-        { name: 'Joe Roberts', flag: '🇺🇸', age: 29, speed: 83, potential: 84, isReal: true },
-        { name: 'Marcos Ramírez', flag: '🇪🇸', age: 28, speed: 80, potential: 81, isReal: true },
-        { name: 'Manuel González', flag: '🇪🇸', age: 23, speed: 83, potential: 90, isReal: true },
-        { name: 'Albert Arenas', flag: '🇪🇸', age: 29, speed: 79, potential: 80, isReal: true },
-        { name: 'Diogo Moreira', flag: '🇧🇷', age: 22, speed: 78, potential: 89, isReal: true },
-        { name: 'Filip Salač', flag: '🇨🇿', age: 24, speed: 78, potential: 82, isReal: true }
+        { name: "Izan Guevara", flag: "🇪🇸", age: 22, speed: 81, potential: 86, isReal: true },
+        { name: "Alberto Ferrández", flag: "🇪🇸", age: 19, speed: 78, potential: 88, isReal: true },
+        { name: "David Alonso", flag: "🇨🇴", age: 20, speed: 84, potential: 92, isReal: true },
+        { name: "Daniel Holgado", flag: "🇪🇸", age: 21, speed: 82, potential: 88, isReal: true },
+        { name: "Arón Canet", flag: "🇪🇸", age: 27, speed: 85, potential: 86, isReal: true },
+        { name: "Deniz Öncü", flag: "🇹🇷", age: 23, speed: 81, potential: 85, isReal: true },
+        { name: "Mario Aji", flag: "🇮🇩", age: 22, speed: 79, potential: 82, isReal: true },
+        { name: "Taiyo Furusato", flag: "🇯🇵", age: 21, speed: 80, potential: 85, isReal: true },
+        { name: "Sergio García", flag: "🇪🇸", age: 23, speed: 84, potential: 89, isReal: true },
+        { name: "Alonso López", flag: "🇪🇸", age: 25, speed: 85, potential: 88, isReal: true },
+        { name: "Daniel Muñoz", flag: "🇪🇸", age: 20, speed: 79, potential: 84, isReal: true },
+        { name: "Adrián Huertas", flag: "🇪🇸", age: 23, speed: 82, potential: 86, isReal: true },
+        { name: "Jorge Navarro", flag: "🇪🇸", age: 30, speed: 81, potential: 81, isReal: true },
+        { name: "Álex Escrig", flag: "🇪🇸", age: 22, speed: 78, potential: 81, isReal: true },
+        { name: "Xabi Zurutuza", flag: "🇪🇸", age: 20, speed: 78, potential: 83, isReal: true },
+        { name: "Manuel González", flag: "🇪🇸", age: 24, speed: 87, potential: 89, isReal: true },
+        { name: "Senna Agius", flag: "🇦🇺", age: 21, speed: 82, potential: 87, isReal: true },
+        { name: "Ayumu Sasaki", flag: "🇯🇵", age: 26, speed: 81, potential: 84, isReal: true },
+        { name: "Zonta van den Goorbergh", flag: "🇳🇱", age: 21, speed: 80, potential: 84, isReal: true },
+        { name: "Filip Salač", flag: "🇨🇿", age: 25, speed: 82, potential: 84, isReal: true },
+        { name: "Joe Roberts", flag: "🇺🇸", age: 29, speed: 83, potential: 84, isReal: true },
+        { name: "Iván Ortolá", flag: "🇪🇸", age: 22, speed: 82, potential: 88, isReal: true },
+        { name: "Ángel Piqueras", flag: "🇪🇸", age: 20, speed: 80, potential: 90, isReal: true },
+        { name: "Collin Veijer", flag: "🇳🇱", age: 21, speed: 84, potential: 91, isReal: true },
+        { name: "José Antonio Rueda", flag: "🇪🇸", age: 21, speed: 83, potential: 89, isReal: true },
+        { name: "Barry Baltus", flag: "🇧🇪", age: 22, speed: 80, potential: 84, isReal: true },
+        { name: "Tony Arbolino", flag: "🇮🇹", age: 26, speed: 84, potential: 86, isReal: true },
+        { name: "Celestino Vietti", flag: "🇮🇹", age: 25, speed: 85, potential: 88, isReal: true },
+        { name: "Luca Lunetta", flag: "🇮🇹", age: 20, speed: 79, potential: 86, isReal: true }
     ],
     moto3: [
         { name: 'David Alonso', flag: '🇨🇴', age: 20, speed: 86, potential: 96, isReal: true },
@@ -248,10 +265,10 @@ function inicializarGridsVazios() {
                 } else {
                     rider = generateFictionalNewbie(config.paisesPermitidos);
                     
-                    if (catKey === 'moto2') { rider.speed += 36; rider.age = 19; }
-                    else if (catKey === 'moto3') { rider.speed += 32; rider.age = 17; }
-                    else if (catKey === 'moto3_junior') { rider.speed += 20; rider.age = 15; }
-                    else if (catKey === 'rookies_cup') { rider.speed += 16; rider.age = 14; }
+                    if (catKey === 'moto2') { r.speed += 36; r.age = 19; }
+                    else if (catKey === 'moto3') { r.speed += 32; r.age = 17; }
+                    else if (catKey === 'moto3_junior') { r.speed += 20; r.age = 15; }
+                    else if (catKey === 'rookies_cup') { r.speed += 16; r.age = 14; }
                 }
 
                 rider.team = teamName;
@@ -296,15 +313,16 @@ window.addEventListener('DOMContentLoaded', () => {
         try {
             const parsed = JSON.parse(saved);
             
-            // Nova Trava de Segurança Aprimorada:
-            // Além de conferir se a classe asiática existe, agora o sistema checa ativamente se
-            // a nova base de dados da MotoGP foi aplicada buscando pelo Toprak. Se não encontrar,
-            // ele forçará o recarregamento descartando o Miguel/Somkiat do cache antigo.
-            const hasNovaAtualizacao = parsed.ecosystem && parsed.ecosystem.motogp && 
-                                       parsed.ecosystem.motogp.some(p => p.name.includes("Toprak"));
+            // Trava de Segurança Combinada (MotoGP + Moto2):
+            // O sistema checa se a nova estrutura do grid e os pilotos atualizados foram carregados.
+            // Se encontrar dados defasados, forçará um wipe limpo no cache.
+            const hasNovaMotoGP = parsed.ecosystem && parsed.ecosystem.motogp && 
+                                  parsed.ecosystem.motogp.some(p => p.name.includes("Toprak"));
+            const hasNovaMoto2 = parsed.ecosystem && parsed.ecosystem.moto2 && 
+                                 parsed.ecosystem.moto2.some(p => p.name.includes("Deniz Öncü") || p.name.includes("Izan Guevara"));
 
-            if (!parsed.ecosystem || !parsed.ecosystem['moto4_asia'] || !hasNovaAtualizacao) {
-                console.warn("Save de versão antiga ou desatualizado detectado. Reconstruindo matriz de dados...");
+            if (!parsed.ecosystem || !parsed.ecosystem['moto4_asia'] || !hasNovaMotoGP || !hasNovaMoto2) {
+                console.warn("Save de versão antiga ou defasada detectado. Reconstruindo matriz de dados...");
                 initializeRealEcosystem();
                 return;
             }
