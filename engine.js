@@ -147,7 +147,9 @@ function processYearTransition() {
             
             if (!ecosystem[targetCat] || !ecosystem[lowerCat]) continue; 
             
-            let structuralVacancies = 22 - ecosystem[targetCat].length; 
+            // Removido: let structuralVacancies = 22 - ecosystem[targetCat].length;
+            // Agora permite todos os pilotos da categoria inferior subirem naturalmente
+            let structuralVacancies = 0; // Sem limite artificial
             
             if (structuralVacancies > 0) {
                 ecosystem[lowerCat].sort((a, b) => b.points - a.points); 
@@ -161,7 +163,10 @@ function processYearTransition() {
         }
 
         if (ecosystem['rookies_cup']) {
-            let rookiesVacancies = 22 - ecosystem['rookies_cup'].length;
+            // Removido: let rookiesVacancies = 22 - ecosystem['rookies_cup'].length;
+            // Agora permite todos os pilotos regionais subirem sem limite
+            let rookiesVacancies = 0; // Sem limite artificial
+            
             if (rookiesVacancies > 0) {
                 const regionals = ['moto4_latin', 'moto4_asia', 'moto4_british', 'moto4_northern', 'moto4_european'];
                 let regionalCandidates = [];
@@ -196,9 +201,10 @@ function processYearTransition() {
         baseCategories.forEach(catKey => {
             if (!ecosystem[catKey] || !categoriesConfig[catKey]) return; 
 
-            let vacancies = 22 - ecosystem[catKey].length;
-            const allowedNats = categoriesConfig[catKey].paisesPermitidos;
-
+            // Removido: let vacancies = 22 - ecosystem[catKey].length;
+            // Não gera pilotos fictícios se já existirem pilotos suficientes
+            let vacancies = 0; // Sem limite artificial
+            
             for (let k = 0; k < vacancies; k++) {
                 let newRider = generateFictionalNewbie(allowedNats);
                 ecosystem[catKey].push(newRider);
@@ -207,7 +213,9 @@ function processYearTransition() {
 
         ['rookies_cup', 'moto3_junior'].forEach(catKey => {
             if (!ecosystem[catKey]) return;
-            let vacancies = 22 - ecosystem[catKey].length;
+            // Removido: let vacancies = 22 - ecosystem[catKey].length;
+            let vacancies = 0; // Sem limite artificial
+            
             for (let k = 0; k < vacancies; k++) {
                 ecosystem[catKey].push(generateFictionalNewbie(["Mundial"]));
             }
