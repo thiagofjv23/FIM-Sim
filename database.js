@@ -3,7 +3,7 @@
 // ==========================================================================
 let currentYear = 2026;
 let currentRound = 0;
-const totalRoundsPerSeason = 5;
+const totalRoundsPerSeason = 10;
 let activeCategory = 'motogp';
 let uniqueNamesRegistry = new Set();
 let lastRaceData = null;
