@@ -16,8 +16,8 @@ let ecosystem = {
 
 // BANCO DE DADOS DE PAÍSES PARA GERADORES ALEATÓRIOS (REGENS DA BASE)
 const natData = [
-    { country: 'Espanha', flag: '🇪🇸', names: ['Marc', 'Joan', 'Pedro', 'Aleix', 'Jorge', 'Raúl', 'Izan', 'Sergio', 'Álvaro', 'Carlos', 'Maverick', 'Iván', 'Daniel', 'Marcos'], surnames: ['Martín', 'Mir', 'Acosta', 'Espargaró', 'Fernández', 'Guevara', 'García', 'Cano', 'Ortolá', 'Holgado', 'Piqueras', 'Almansa'] },
-    { country: 'Itália', flag: '🇮🇹', names: ['Francesco', 'Enea', 'Marco', 'Fabio', 'Luca', 'Tony', 'Celestino', 'Matteo', 'Filippo', 'Romano', 'Guido', 'Farioli'], surnames: ['Bagnaia', 'Bastianini', 'Bezzecchi', 'Marini', 'Arbolino', 'Vietti', 'Foggia', 'Rossi', 'Pini', 'Lunetta', 'Bertelle'] },
+    { country: 'Espanha', flag: '🇪🇸', names: ['Marc', 'Joan', 'Pedro', 'Aleix', 'Jorge', 'Raúl', 'Izan', 'Sergio', 'Álvaro', 'Carlos', 'Maverick', 'Iván', 'Daniel', 'Marcos'], surnames: ['Márquez', 'Mir', 'Acosta', 'Espargaro', 'Martín', 'Fernández', 'Guevara', 'García', 'López', 'Sánchez', 'Viñales', 'Ortolá', 'Muñoz', 'Ramírez'] },
+    { country: 'Itália', flag: '🇮🇹', names: ['Francesco', 'Enea', 'Marco', 'Fabio', 'Luca', 'Tony', 'Celestino', 'Matteo', 'Filippo', 'Romano', 'Guido', 'Farioli'], surnames: ['Bagnaia', 'Bastianini', 'Bezzecchi', 'Di Giannantonio', 'Marini', 'Arbolino', 'Vietti', 'Gentili', 'Graziani', 'Rossi', 'Rossi', 'Morbidelli'] },
     { country: 'Japão', flag: '🇯🇵', names: ['Takaaki', 'Ai', 'Ayumu', 'Ryusei', 'Kaito', 'Taiyo', 'Tatsuki'], surnames: ['Nakagami', 'Ogura', 'Sasaki', 'Yamanaka', 'Toba', 'Furusato', 'Suzuki'] },
     { country: 'França', flag: '🇫🇷', names: ['Fabio', 'Johann', 'Lorenzo', 'Alan'], surnames: ['Quartararo', 'Zarco', 'Fellon', 'Techer'] },
     { country: 'Portugal', flag: '🇵🇹', names: ['Miguel', 'Ivo'], surnames: ['Oliveira', 'Lopes'] },
@@ -38,28 +38,506 @@ const natData = [
 ];
 
 // ==========================================================================
-// 1. METADADOS E ESTRUTURA REAL DAS CATEGORIAS (CONFIGURAÇÃO MASTER)
+// GERADOR DE IDs GLOBAL
+// ==========================================================================
+let nextRiderId = 1000; // IDs de pilotos começam em 1000
+let riderIdMap = {}; // Mapa de nome -> ID para rastreamento
+
+function generateRiderId() {
+    return nextRiderId++;
+}
+
+// ==========================================================================
+// NOVA ESTRUTURA: MotoGP 2026 COM IDs DE PILOTOS
+// ==========================================================================
+const motogp2026 = {
+  season: 2026,
+  teams: [
+    {
+      id: 1,
+      name: 'Aprilia Racing',
+      manufacturer: 'Aprilia',
+      riders: [
+        { riderId: generateRiderId(), name: 'Marco Bezzecchi', flag: '🇮🇹', age: 28, speed: 90, potential: 92, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Jorge Martín', flag: '🇪🇸', age: 28, speed: 95, potential: 96, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 2,
+      name: 'Trackhouse MotoGP Team',
+      manufacturer: 'Aprilia',
+      riders: [
+        { riderId: generateRiderId(), name: 'Raúl Fernández', flag: '🇪🇸', age: 26, speed: 86, potential: 89, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Ai Ogura', flag: '🇯🇵', age: 25, speed: 85, potential: 90, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 3,
+      name: 'Ducati Lenovo Team',
+      manufacturer: 'Ducati',
+      riders: [
+        { riderId: generateRiderId(), name: 'Francesco Bagnaia', flag: '🇮🇹', age: 29, speed: 96, potential: 96, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Marc Márquez', flag: '🇪🇸', age: 33, speed: 95, potential: 95, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 4,
+      name: 'Pertamina Enduro VR46 Racing Team',
+      manufacturer: 'Ducati',
+      riders: [
+        { riderId: generateRiderId(), name: 'Fabio Di Giannantonio', flag: '🇮🇹', age: 28, speed: 88, potential: 89, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Franco Morbidelli', flag: '🇮🇹', age: 32, speed: 87, potential: 87, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 5,
+      name: 'BK8 Gresini Racing MotoGP',
+      manufacturer: 'Ducati',
+      riders: [
+        { riderId: generateRiderId(), name: 'Álex Márquez', flag: '🇪🇸', age: 30, speed: 88, potential: 88, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Fermín Aldeguer', flag: '🇪🇸', age: 21, speed: 86, potential: 94, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 6,
+      name: 'Honda HRC Castrol',
+      manufacturer: 'Honda',
+      riders: [
+        { riderId: generateRiderId(), name: 'Luca Marini', flag: '🇮🇹', age: 29, speed: 87, potential: 88, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Joan Mir', flag: '🇪🇸', age: 29, speed: 86, potential: 87, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 7,
+      name: 'Castrol Honda LCR',
+      manufacturer: 'Honda',
+      riders: [
+        { riderId: generateRiderId(), name: 'Johann Zarco', flag: '🇫🇷', age: 36, speed: 85, potential: 85, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Diogo Moreira', flag: '🇧🇷', age: 22, speed: 84, potential: 91, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 8,
+      name: 'Red Bull KTM Factory Racing',
+      manufacturer: 'KTM',
+      riders: [
+        { riderId: generateRiderId(), name: 'Brad Binder', flag: '🇿🇦', age: 31, speed: 90, potential: 90, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Pedro Acosta', flag: '🇪🇸', age: 22, speed: 91, potential: 98, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 9,
+      name: 'Red Bull KTM Tech3',
+      manufacturer: 'KTM',
+      riders: [
+        { riderId: generateRiderId(), name: 'Maverick Viñales', flag: '🇪🇸', age: 31, speed: 89, potential: 89, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Enea Bastianini', flag: '🇮🇹', age: 29, speed: 91, potential: 92, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 10,
+      name: 'Monster Energy Yamaha MotoGP Team',
+      manufacturer: 'Yamaha',
+      riders: [
+        { riderId: generateRiderId(), name: 'Fabio Quartararo', flag: '🇫🇷', age: 27, speed: 92, potential: 94, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Álex Rins', flag: '🇪🇸', age: 31, speed: 88, potential: 88, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 11,
+      name: 'Prima Pramac Yamaha MotoGP',
+      manufacturer: 'Yamaha',
+      riders: [
+        { riderId: generateRiderId(), name: 'Toprak Razgatlıoğlu', flag: '🇹🇷', age: 30, speed: 89, potential: 91, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Jack Miller', flag: '🇦🇺', age: 31, speed: 86, potential: 86, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    }
+  ]
+};
+
+const moto22026 = {
+  season: 2026,
+  teams: [
+    {
+      id: 1,
+      name: 'Blu Cru Pramac Yamaha Moto2',
+      manufacturer: 'Yamaha',
+      riders: [
+        { riderId: generateRiderId(), name: 'Izan Guevara', flag: '🇪🇸', age: 22, speed: 81, potential: 86, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Alberto Ferrández', flag: '🇪🇸', age: 19, speed: 78, potential: 88, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 2,
+      name: 'CFMoto Aspar Team',
+      manufacturer: 'CFMoto',
+      riders: [
+        { riderId: generateRiderId(), name: 'David Alonso', flag: '🇨🇴', age: 20, speed: 84, potential: 92, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Daniel Holgado', flag: '🇪🇸', age: 21, speed: 82, potential: 88, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 3,
+      name: 'Elf Marc VDS Racing Team',
+      manufacturer: 'Kalex',
+      riders: [
+        { riderId: generateRiderId(), name: 'Arón Canet', flag: '🇪🇸', age: 27, speed: 85, potential: 86, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Deniz Öncü', flag: '🇹🇷', age: 23, speed: 81, potential: 85, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 4,
+      name: 'Idemitsu Honda Team Asia',
+      manufacturer: 'Honda',
+      riders: [
+        { riderId: generateRiderId(), name: 'Mario Aji', flag: '🇮🇩', age: 22, speed: 79, potential: 82, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Taiyo Furusato', flag: '🇯🇵', age: 21, speed: 80, potential: 85, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 5,
+      name: 'Italjet Gresini Moto2',
+      manufacturer: 'Kalex',
+      riders: [
+        { riderId: generateRiderId(), name: 'Sergio García', flag: '🇪🇸', age: 23, speed: 84, potential: 89, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Alonso López', flag: '🇪🇸', age: 25, speed: 85, potential: 88, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 6,
+      name: 'Italtrans Racing Team',
+      manufacturer: 'Kalex',
+      riders: [
+        { riderId: generateRiderId(), name: 'Daniel Muñoz', flag: '🇪🇸', age: 20, speed: 79, potential: 84, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Adrián Huertas', flag: '🇪🇸', age: 23, speed: 82, potential: 86, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 7,
+      name: 'Liqui Moly Dynavolt Intact GP',
+      manufacturer: 'Kalex',
+      riders: [
+        { riderId: generateRiderId(), name: 'Manuel González', flag: '🇪🇸', age: 24, speed: 87, potential: 89, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Senna Agius', flag: '🇦🇺', age: 21, speed: 82, potential: 87, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 8,
+      name: 'Momoven Idrofoglia RW Racing Team',
+      manufacturer: 'Kalex',
+      riders: [
+        { riderId: generateRiderId(), name: 'Ayumu Sasaki', flag: '🇯🇵', age: 26, speed: 81, potential: 84, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Zonta van den Goorbergh', flag: '🇳🇱', age: 21, speed: 80, potential: 84, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 9,
+      name: 'OnlyFans American Racing Team',
+      manufacturer: 'Kalex',
+      riders: [
+        { riderId: generateRiderId(), name: 'Filip Salač', flag: '🇨🇿', age: 25, speed: 82, potential: 84, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Joe Roberts', flag: '🇺🇸', age: 29, speed: 83, potential: 84, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 10,
+      name: 'Red Bull KTM Ajo',
+      manufacturer: 'KTM',
+      riders: [
+        { riderId: generateRiderId(), name: 'Collin Veijer', flag: '🇳🇱', age: 21, speed: 84, potential: 91, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'José Antonio Rueda', flag: '🇪🇸', age: 21, speed: 83, potential: 89, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 11,
+      name: 'Reds Fantic Racing',
+      manufacturer: 'Fantic',
+      riders: [
+        { riderId: generateRiderId(), name: 'Barry Baltus', flag: '🇧🇪', age: 22, speed: 80, potential: 84, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Tony Arbolino', flag: '🇮🇹', age: 26, speed: 84, potential: 86, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 12,
+      name: 'SpeedRS Team',
+      manufacturer: 'Kalex',
+      riders: [
+        { riderId: generateRiderId(), name: 'Celestino Vietti', flag: '🇮🇹', age: 25, speed: 85, potential: 88, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Luca Lunetta', flag: '🇮🇹', age: 20, speed: 79, potential: 86, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 13,
+      name: 'QJMotor - MSi',
+      manufacturer: 'QJMotor',
+      riders: [
+        { riderId: generateRiderId(), name: 'Iván Ortolá', flag: '🇪🇸', age: 22, speed: 82, potential: 88, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Ángel Piqueras', flag: '🇪🇸', age: 20, speed: 80, potential: 90, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 14,
+      name: 'Klint Racing Team',
+      manufacturer: 'Kalex',
+      riders: [
+        { riderId: generateRiderId(), name: 'Jorge Navarro', flag: '🇪🇸', age: 30, speed: 81, potential: 81, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Álex Escrig', flag: '🇪🇸', age: 22, speed: 78, potential: 81, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    },
+    {
+      id: 15,
+      name: 'QJMotor - Galfer',
+      manufacturer: 'QJMotor',
+      riders: [
+        { riderId: generateRiderId(), name: 'Xabi Zurutuza', flag: '🇪🇸', age: 20, speed: 78, potential: 83, isReal: true, seat: 1, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Marcos Ramírez', flag: '🇪🇸', age: 28, speed: 80, potential: 82, isReal: true, seat: 2, points: 0, currentRaceScore: 0 }
+      ]
+    }
+  ]
+};
+
+// ==========================================================================
+// FUNÇÕES AUXILIARES PARA ACESSAR DADOS
+// ==========================================================================
+
+/**
+ * Buscar um piloto por ID
+ * @param {number} riderId - ID do piloto
+ * @param {string} category - 'motogp' ou 'moto2'
+ * @returns {object} Piloto com dados da equipe
+ */
+function findRiderById(riderId, category = 'motogp') {
+  const championship = category === 'motogp' ? motogp2026 : moto22026;
+  
+  for (const team of championship.teams) {
+    for (const rider of team.riders) {
+      if (rider.riderId === riderId) {
+        return {
+          ...rider,
+          team: team.name,
+          teamId: team.id,
+          manufacturer: team.manufacturer
+        };
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * Buscar um piloto por nome e categoria
+ * @param {string} riderName - Nome do piloto
+ * @param {string} category - 'motogp' ou 'moto2'
+ * @returns {object} Piloto com dados da equipe
+ */
+function findRiderByName(riderName, category = 'motogp') {
+  const championship = category === 'motogp' ? motogp2026 : moto22026;
+  
+  for (const team of championship.teams) {
+    for (const rider of team.riders) {
+      if (rider.name === riderName) {
+        return {
+          ...rider,
+          team: team.name,
+          teamId: team.id,
+          manufacturer: team.manufacturer
+        };
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * Buscar uma equipe por ID
+ * @param {number} teamId - ID da equipe
+ * @param {string} category - 'motogp' ou 'moto2'
+ * @returns {object} Equipe com seus pilotos
+ */
+function findTeamById(teamId, category = 'motogp') {
+  const championship = category === 'motogp' ? motogp2026 : moto22026;
+  return championship.teams.find(t => t.id === teamId) || null;
+}
+
+/**
+ * Buscar todos os pilotos de uma equipe
+ * @param {string} teamName - Nome da equipe
+ * @param {string} category - 'motogp' ou 'moto2'
+ * @returns {array} Array de pilotos da equipe
+ */
+function getRidersByTeam(teamName, category = 'motogp') {
+  const championship = category === 'motogp' ? motogp2026 : moto22026;
+  const team = championship.teams.find(t => t.name === teamName);
+  
+  if (!team) return [];
+  
+  return team.riders.map(r => ({
+    ...r,
+    team: team.name,
+    teamId: team.id,
+    manufacturer: team.manufacturer
+  }));
+}
+
+/**
+ * Buscar todos os pilotos de um fabricante
+ * @param {string} manufacturer - Nome do fabricante
+ * @param {string} category - 'motogp' ou 'moto2'
+ * @returns {array} Array de pilotos do fabricante
+ */
+function getRidersByManufacturer(manufacturer, category = 'motogp') {
+  const championship = category === 'motogp' ? motogp2026 : moto22026;
+  const riders = [];
+  
+  for (const team of championship.teams) {
+    if (team.manufacturer === manufacturer) {
+      riders.push(...team.riders.map(r => ({
+        ...r,
+        team: team.name,
+        teamId: team.id,
+        manufacturer: team.manufacturer
+      })));
+    }
+  }
+  return riders;
+}
+
+/**
+ * Retornar todos os pilotos de uma categoria em formato grid
+ * @param {string} category - 'motogp' ou 'moto2'
+ * @returns {array} Array de todos os pilotos
+ */
+function getAllRiders(category = 'motogp') {
+  const championship = category === 'motogp' ? motogp2026 : moto22026;
+  const allRiders = [];
+  
+  for (const team of championship.teams) {
+    for (const rider of team.riders) {
+      allRiders.push({
+        ...rider,
+        team: team.name,
+        teamId: team.id,
+        manufacturer: team.manufacturer
+      });
+    }
+  }
+  return allRiders;
+}
+
+/**
+ * Transferir piloto para nova equipe
+ * @param {number} riderId - ID do piloto
+ * @param {number} newTeamId - ID da nova equipe
+ * @param {number} newSeat - Número do novo assento
+ * @param {string} category - 'motogp' ou 'moto2'
+ * @returns {boolean} Sucesso da transferência
+ */
+function transferRider(riderId, newTeamId, newSeat, category = 'motogp') {
+  const championship = category === 'motogp' ? motogp2026 : moto22026;
+  
+  let riderToTransfer = null;
+  let oldTeamIndex = -1;
+  let oldRiderIndex = -1;
+  
+  // Encontrar piloto e sua equipe atual
+  for (let t = 0; t < championship.teams.length; t++) {
+    for (let r = 0; r < championship.teams[t].riders.length; r++) {
+      if (championship.teams[t].riders[r].riderId === riderId) {
+        riderToTransfer = { ...championship.teams[t].riders[r] };
+        oldTeamIndex = t;
+        oldRiderIndex = r;
+        break;
+      }
+    }
+    if (riderToTransfer) break;
+  }
+  
+  if (!riderToTransfer) {
+    console.error(`Piloto com ID ${riderId} não encontrado`);
+    return false;
+  }
+  
+  // Encontrar nova equipe
+  const newTeamIndex = championship.teams.findIndex(t => t.id === newTeamId);
+  if (newTeamIndex === -1) {
+    console.error(`Equipe com ID ${newTeamId} não encontrada`);
+    return false;
+  }
+  
+  // Verificar se assento está disponível
+  if (newSeat < 1 || newSeat > 2) {
+    console.error(`Assento inválido. Deve ser 1 ou 2`);
+    return false;
+  }
+  
+  const newTeam = championship.teams[newTeamIndex];
+  const seatOccupied = newTeam.riders.some(r => r.seat === newSeat);
+  
+  if (seatOccupied) {
+    console.error(`Assento ${newSeat} já está ocupado em ${newTeam.name}`);
+    return false;
+  }
+  
+  // Remover piloto da equipe antiga
+  championship.teams[oldTeamIndex].riders.splice(oldRiderIndex, 1);
+  
+  // Adicionar piloto à nova equipe
+  riderToTransfer.seat = newSeat;
+  riderToTransfer.points = 0; // Reset de pontos na transferência
+  riderToTransfer.currentRaceScore = 0;
+  newTeam.riders.push(riderToTransfer);
+  
+  console.log(`✔ ${riderToTransfer.name} transferido para ${newTeam.name} (Assento ${newSeat})`);
+  return true;
+}
+
+/**
+ * Criar piloto fictício com ID único
+ * @param {string} name - Nome completo do piloto
+ * @param {string} flag - Flag do país
+ * @param {number} age - Idade
+ * @param {number} speed - Velocidade
+ * @param {number} potential - Potencial
+ * @returns {object} Novo piloto com ID
+ */
+function createNewRider(name, flag, age, speed, potential) {
+  return {
+    riderId: generateRiderId(),
+    name: name,
+    flag: flag,
+    age: age,
+    speed: speed,
+    potential: potential,
+    isReal: false,
+    seat: 0,
+    points: 0,
+    currentRaceScore: 0
+  };
+}
+
+// ==========================================================================
+// METADADOS E ESTRUTURA REAL DAS CATEGORIAS (CONFIGURAÇÃO MASTER)
 // ==========================================================================
 const categoriesConfig = {
     motogp: {
         name: "MotoGP™ Elite World Class",
         paisesPermitidos: ["Mundial"],
-        teams: ['Ducati Lenovo Team', 'Prima Pramac Racing', 'Aprilia Racing', 'Red Bull KTM Factory', 'Monster Energy Yamaha', 'Repsol Honda Team', 'Gresini Racing MotoGP', 'Pertamina Enduro VR46', 'Trackhouse Racing', 'Red Bull KTM Tech3', 'LCR Honda Castrol']
+        teams: ['Ducati Lenovo Team', 'Prima Pramac Racing', 'Aprilia Racing', 'Red Bull KTM Factory', 'Monster Energy Yamaha', 'Repsol Honda Team', 'Gresini Racing MotoGP', 'Pertamina Enduro VR46 Racing Team', 'Trackhouse MotoGP Team', 'Castrol Honda LCR', 'Red Bull KTM Tech3']
     },
     moto2: { 
         name: "Moto2™ World Championship",
         paisesPermitidos: ["Mundial"],
-        teams: ['MT Helmets - MSI', 'Red Bull KTM Ajo', 'Beta Tools SpeedUp', 'Elf Marc VDS Racing', 'Italtrans Racing Team', 'Fantic Racing', 'OnlyFans American Racing', 'Yamaha VR46 Master Camp', 'QJMOTOR Gresini', 'Liqui Moly Intact GP', 'RW Racing GP']
+        teams: ['MT Helmets - MSI', 'Red Bull KTM Ajo', 'Beta Tools SpeedUp', 'Elf Marc VDS Racing', 'Italtrans Racing Team', 'Fantic Racing', 'OnlyFans American Racing', 'Yamaha VR46 Master Camp', 'Gresini Racing Moto2', 'Liqui Moly Intact GP', 'Idemitsu Honda Team Asia', 'CFMoto Aspar Team', 'Ajo Motorsport', 'Finetwork Team Racedays', 'Devio Ajo', 'Pertamina Enduro Ajo', 'Micronic Racing Team']
     },
     moto3: {
         name: "Moto3™ World Cup",
         paisesPermitidos: ["Mundial"],
-        teams: ['CFMOTO Aspar Team', 'Liqui Moly Intact GP', 'MT Helmets - MSI', 'Red Bull KTM Ajo', 'Leopard Racing', 'Red Bull KTM Tech3', 'Honda Team Asia', 'BOE Motorsports', 'CIP Green Power', 'Rivacold Snipers', 'SIC58 Squadra Corse']
+        teams: ['CFMOTO Aspar Team', 'Liqui Moly Intact GP', 'MT Helmets - MSI', 'Red Bull KTM Ajo', 'Leopard Racing', 'Red Bull KTM Tech3', 'Honda Team Asia', 'BOE Motorsports', 'CIP Green Power', 'Devio Ajo', 'Ajo Motorsport', 'GASGAS Aspar Team']
     },
     moto3_junior: {
         name: "FIM JuniorGP™ Moto3",
         paisesPermitidos: ["Mundial"],
-        teams: ['Aspar Junior Team', 'Team Estrella Galicia 00', 'Monlau Motul School', 'Laglisse Academy', 'AC Racing Team', 'Finetwork Team', 'Artbox Junior', 'MTA Junior Team', 'AGR Team', 'Cardoso Racing', 'Fau55 Tey Racing']
+        teams: ['Aspar Junior Team', 'Team Estrella Galicia 00', 'Monlau Motul School', 'Laglisse Academy', 'AC Racing Team', 'Finetwork Team', 'Artbox Junior', 'MTA Junior Team', 'AGR Team', 'Carrera Motorsport Team', 'SMX Motorsports', 'Schrötter Motorsports']
     },
     rookies_cup: {
         name: "Red Bull MotoGP™ Rookies Cup",
@@ -74,12 +552,12 @@ const categoriesConfig = {
     moto4_asia: {
         name: "Idemitsu Moto4 Asia Cup",
         paisesPermitidos: ["🇯🇵", "🇮🇩", "🇲🇾", "🇹🇭", "🇦🇺", "🇵🇭", "🇶🇦", "🇮🇳", "🇳🇿"],
-        teams: ["Astra Honda Racing", "Honda Racing Thailand", "Idemitsu Racing Japan", "SIC Racing Team", "BRP Racing Australia", "Yamaha Racing ASEAN", "FIM Oceania Junior", "Honda Team Asia Junior", "Philippines Racing Team", "TVS Racing India", "QMMF Racing"]
+        teams: ["Astra Honda Racing", "Honda Racing Thailand", "Idemitsu Racing Japan", "SIC Racing Team", "BRP Racing Australia", "Yamaha Racing ASEAN", "FIM Oceania Junior", "Honda Team Asia Junior", "Idemitsu Junior", "Suzuki Riders"]
     },
     moto4_british: {
         name: "Moto4™ British Cup",
         paisesPermitidos: ["🇬🇧", "🇮🇪"],
-        teams: ['VisionTrack UK', 'Laverty Academy', 'R&G Youth', 'Irish Road Race', 'BSB Junior', 'Scotland Gun', 'Welsh Dragon', 'Oxford Products', 'Silverstone School', 'Donington Talents', 'Irish Squad']
+        teams: ['VisionTrack UK', 'Laverty Academy', 'R&G Youth', 'Irish Road Race', 'BSB Junior', 'Scotland Gun', 'Welsh Dragon', 'Oxford Products', 'Silverstone School', 'Donington Talents', 'Irish Academy']
     },
     moto4_northern: {
         name: "Moto4™ Northern Cup",
@@ -89,7 +567,7 @@ const categoriesConfig = {
     moto4_european: {
         name: "Moto4™ European Cup",
         paisesPermitidos: ["🇪🇸", "🇮🇹", "🇫🇷", "🇵🇹"],
-        teams: ['Cuna de Campeones', 'Monlau Competición', 'Talento Azzurro', 'FFM Junior', 'Oliveira Fan Club', 'VR46 Base', 'Leopard Junior', 'EG 00 Junior', 'IgaxTeam', 'Cardoso ETC', 'Fau55 Tey']
+        teams: ['Cuna de Campeones', 'Monlau Competición', 'Talento Azzurro', 'FFM Junior', 'Oliveira Fan Club', 'VR46 Base', 'Leopard Junior', 'EG 00 Junior', 'IgaxTeam', 'Cardoso ETC', 'Fau55 Team']
     }
 };
 
@@ -210,8 +688,8 @@ const historicalSeeds = {
 // 2.5 FREE AGENTS (Pilotos sem assento oficial no início do save)
 // ==========================================================================
 const freeAgents = [
-    { name: 'Miguel Oliveira', flag: '🇵🇹', age: 31, speed: 85, potential: 86, isReal: true },
-    { name: 'Somkiat Chantra', flag: '🇹🇭', age: 27, speed: 79, potential: 85, isReal: true }
+    { riderId: generateRiderId(), name: 'Miguel Oliveira', flag: '🇵🇹', age: 31, speed: 85, potential: 86, isReal: true, seat: 0, points: 0, currentRaceScore: 0 },
+    { riderId: generateRiderId(), name: 'Somkiat Chantra', flag: '🇹🇭', age: 27, speed: 79, potential: 85, isReal: true, seat: 0, points: 0, currentRaceScore: 0 }
 ];
 
 // ==========================================================================
@@ -235,15 +713,32 @@ function generateFictionalNewbie(allowedCountries) {
         if (!uniqueNamesRegistry.has(fullName)) {
             uniqueNamesRegistry.add(fullName);
             return {
-                name: fullName, flag: nat.flag, age: 12, 
+                riderId: generateRiderId(),
+                name: fullName, 
+                flag: nat.flag, 
+                age: 12, 
                 speed: Math.floor(Math.random() * 9) + 38,
                 potential: Math.floor(Math.random() * 21) + 76,
-                isReal: false, points: 0, currentRaceScore: 0, team: '', seat: ''
+                isReal: false, 
+                points: 0, 
+                currentRaceScore: 0, 
+                seat: ''
             };
         }
         attempts++;
     }
-    return { name: `Regen ${Math.floor(Math.random()*8999)+1000}`, flag: availableNats[0].flag, age: 12, speed: 40, potential: 80, isReal: false, points: 0, currentRaceScore: 0, team: '', seat: '' };
+    return { 
+        riderId: generateRiderId(),
+        name: `Regen ${Math.floor(Math.random()*8999)+1000}`, 
+        flag: availableNats[0].flag, 
+        age: 12, 
+        speed: 40, 
+        potential: 80, 
+        isReal: false, 
+        points: 0, 
+        currentRaceScore: 0, 
+        seat: '' 
+    };
 }
 
 function inicializarGridsVazios() {
@@ -260,22 +755,26 @@ function inicializarGridsVazios() {
                 let rider;
 
                 if (preLoadedList.length > 0) {
-                    rider = preLoadedList.shift();
+                    const preLoaded = preLoadedList.shift();
+                    rider = {
+                        riderId: generateRiderId(),
+                        ...preLoaded,
+                        seat: seatNum,
+                        points: 0,
+                        currentRaceScore: 0
+                    };
                     uniqueNamesRegistry.add(rider.name);
                 } else {
                     rider = generateFictionalNewbie(config.paisesPermitidos);
+                    rider.seat = seatNum;
                     
-                    if (catKey === 'moto2') { r.speed += 36; r.age = 19; }
-                    else if (catKey === 'moto3') { r.speed += 32; r.age = 17; }
-                    else if (catKey === 'moto3_junior') { r.speed += 20; r.age = 15; }
-                    else if (catKey === 'rookies_cup') { r.speed += 16; r.age = 14; }
+                    if (catKey === 'moto2') { rider.speed += 36; rider.age = 19; }
+                    else if (catKey === 'moto3') { rider.speed += 32; rider.age = 17; }
+                    else if (catKey === 'moto3_junior') { rider.speed += 20; rider.age = 15; }
+                    else if (catKey === 'rookies_cup') { rider.speed += 16; rider.age = 14; }
                 }
 
                 rider.team = teamName;
-                rider.seat = `Piloto ${seatNum}`;
-                rider.points = 0;
-                rider.currentRaceScore = 0;
-
                 ecosystem[catKey].push(rider);
             }
         }
@@ -286,7 +785,8 @@ function inicializarGridsVazios() {
 function saveLocalStorage() {
     const dataToSave = {
         currentYear, currentRound, activeCategory, ecosystem, lastRaceData,
-        uniqueNames: Array.from(uniqueNamesRegistry)
+        uniqueNames: Array.from(uniqueNamesRegistry),
+        nextRiderId: nextRiderId
     };
     localStorage.setItem('motogp_sim_save', JSON.stringify(dataToSave));
 }
@@ -294,6 +794,7 @@ function saveLocalStorage() {
 // INICIALIZADOR COMPATÍVEL COM LOCALSTORAGE / SESSÃO
 function initializeRealEcosystem() {
     uniqueNamesRegistry.clear();
+    nextRiderId = 1000;
     inicializarGridsVazios();
     
     currentRound = 0;
@@ -333,6 +834,7 @@ window.addEventListener('DOMContentLoaded', () => {
             ecosystem = parsed.ecosystem;
             lastRaceData = parsed.lastRaceData || null;
             uniqueNamesRegistry = new Set(parsed.uniqueNames || []);
+            nextRiderId = parsed.nextRiderId || 1000;
         } catch(e) {
             initializeRealEcosystem();
         }
