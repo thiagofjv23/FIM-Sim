@@ -727,7 +727,7 @@ function inicializarGridsVazios() {
         
         ecosystem[catKey] = [];
 
-        for (let i = 0; i < 11; i++) {
+        for (let i = 0; i < config.teams.length; i++) {
             const teamName = config.teams[i];
 
             for (let seatNum = 1; seatNum <= 2; seatNum++) {
