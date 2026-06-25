@@ -62,7 +62,12 @@ function runRaceRound() {
                 if (dnfIndices.has(idx)) {
                     r.currentRaceScore = -1; // Flag de DNF
                     const reason = dnfReasons[Math.floor(Math.random() * dnfReasons.length)];
-                    lastRaceData[catKey].dnfs.push({ name: r.name, flag: r.flag, reason: reason });
+                    lastRaceData[catKey].dnfs.push({ 
+                        riderId: r.riderId,
+                        name: r.name, 
+                        flag: r.flag, 
+                        reason: reason 
+                    });
                 } else {
                     let speedAtributo = Number(r.speed) || 50; 
                     r.currentRaceScore = (speedAtributo * 0.75) + (Math.random() * 25);
@@ -72,9 +77,24 @@ function runRaceRound() {
             const finishers = riders.filter(r => r.currentRaceScore !== -1)
                                      .sort((a, b) => b.currentRaceScore - a.currentRaceScore);
 
-            if (finishers[0]) lastRaceData[catKey].podium.push(`${finishers[0].flag} ${finishers[0].name}`);
-            if (finishers[1]) lastRaceData[catKey].podium.push(`${finishers[1].flag} ${finishers[1].name}`);
-            if (finishers[2]) lastRaceData[catKey].podium.push(`${finishers[2].flag} ${finishers[2].name}`);
+            if (finishers[0]) lastRaceData[catKey].podium.push({
+                riderId: finishers[0].riderId,
+                name: finishers[0].name,
+                flag: finishers[0].flag,
+                display: `${finishers[0].flag} ${finishers[0].name}`
+            });
+            if (finishers[1]) lastRaceData[catKey].podium.push({
+                riderId: finishers[1].riderId,
+                name: finishers[1].name,
+                flag: finishers[1].flag,
+                display: `${finishers[1].flag} ${finishers[1].name}`
+            });
+            if (finishers[2]) lastRaceData[catKey].podium.push({
+                riderId: finishers[2].riderId,
+                name: finishers[2].name,
+                flag: finishers[2].flag,
+                display: `${finishers[2].flag} ${finishers[2].name}`
+            });
 
             finishers.forEach((rider, index) => {
                 if (index < fimPoints.length) {
@@ -132,7 +152,11 @@ function processYearTransition() {
             if (structuralVacancies > 0) {
                 ecosystem[lowerCat].sort((a, b) => b.points - a.points); 
                 const promotedList = ecosystem[lowerCat].splice(0, structuralVacancies);
-                promotedList.forEach(p => ecosystem[targetCat].push(p));
+                promotedList.forEach(p => {
+                    p.points = 0;
+                    p.currentRaceScore = 0;
+                    ecosystem[targetCat].push(p);
+                });
             }
         }
 
@@ -155,12 +179,14 @@ function processYearTransition() {
                 promotedToRookies.forEach(p => {
                     for (const regKey of regionals) {
                         if(!ecosystem[regKey]) continue;
-                        const idx = ecosystem[regKey].indexOf(p);
+                        const idx = ecosystem[regKey].findIndex(rider => rider.riderId === p.riderId);
                         if (idx !== -1) {
                             ecosystem[regKey].splice(idx, 1);
                             break;
                         }
                     }
+                    p.points = 0;
+                    p.currentRaceScore = 0;
                     ecosystem['rookies_cup'].push(p);
                 });
             }
@@ -194,7 +220,7 @@ function processYearTransition() {
             ecosystem[catKey].forEach((r, idx) => {
                 let teamIndex = Math.floor(idx / 2);
                 r.team = cfg.teams[teamIndex] || "Equipe Independente";
-                r.seat = (idx % 2 === 0) ? 'Piloto 1' : 'Piloto 2';
+                r.seat = (idx % 2 === 0) ? 1 : 2;
                 r.points = 0;
                 r.currentRaceScore = 0;
             });
@@ -208,4 +234,133 @@ function processYearTransition() {
     } catch (transitionError) {
         console.error("[Erro Transição] Ocorreu um problema ao avançar de ano:", transitionError);
     }
+}
+
+// ==========================================================================
+// FUNÇÕES DE GERENCIAMENTO DE TRANSFERÊNCIA
+// ==========================================================================
+
+/**
+ * Interface de transferência de piloto (UI trigger)
+ * @param {number} riderId - ID do piloto
+ * @param {number} newTeamId - ID da nova equipe
+ * @param {number} newSeat - Novo assento (1 ou 2)
+ */
+function executeRiderTransfer(riderId, newTeamId, newSeat) {
+    const championship = activeCategory === 'motogp' ? motogp2026 : moto22026;
+    
+    let riderToTransfer = null;
+    let oldTeamIndex = -1;
+    let oldRiderIndex = -1;
+
+    // Encontrar piloto e equipe atual no ecosystem
+    for (let catKey in ecosystem) {
+        const riders = ecosystem[catKey];
+        for (let idx = 0; idx < riders.length; idx++) {
+            if (riders[idx].riderId === riderId) {
+                riderToTransfer = riders[idx];
+                oldTeamIndex = catKey;
+                oldRiderIndex = idx;
+                break;
+            }
+        }
+        if (riderToTransfer) break;
+    }
+
+    if (!riderToTransfer) {
+        console.error(`❌ Piloto com ID ${riderId} não encontrado no grid`);
+        if (typeof logEvent === "function") logEvent(`❌ Erro: Piloto não encontrado`, "error");
+        return false;
+    }
+
+    const oldTeam = riderToTransfer.team;
+    const oldSeat = riderToTransfer.seat;
+
+    // Validar nova equipe
+    let newTeamName = null;
+    const cfg = categoriesConfig[activeCategory];
+    if (!cfg || !cfg.teams) {
+        console.error(`❌ Configuração de categoria inválida`);
+        return false;
+    }
+
+    // Encontrar nome da equipe pelo ID (busca no config de times)
+    for (const team of cfg.teams) {
+        if (team === cfg.teams[newTeamId - 1]) {
+            newTeamName = team;
+            break;
+        }
+    }
+
+    // Validar assento
+    if (newSeat < 1 || newSeat > 2) {
+        console.error(`❌ Assento inválido. Deve ser 1 ou 2`);
+        if (typeof logEvent === "function") logEvent(`❌ Assento inválido para transferência`, "error");
+        return false;
+    }
+
+    // Verificar se assento está ocupado na nova equipe
+    const seatOccupied = ecosystem[activeCategory].some(r => 
+        r.team === newTeamName && r.seat === newSeat && r.riderId !== riderId
+    );
+
+    if (seatOccupied) {
+        console.error(`❌ Assento ${newSeat} já está ocupado em ${newTeamName}`);
+        if (typeof logEvent === "function") logEvent(`❌ Assento ${newSeat} indisponível em ${newTeamName}`, "error");
+        return false;
+    }
+
+    // Executar transferência
+    riderToTransfer.team = newTeamName;
+    riderToTransfer.seat = newSeat;
+    riderToTransfer.points = 0;
+    riderToTransfer.currentRaceScore = 0;
+
+    console.log(`✔ ${riderToTransfer.name} transferido de ${oldTeam} (Assento ${oldSeat}) para ${newTeamName} (Assento ${newSeat})`);
+    if (typeof logEvent === "function") {
+        logEvent(`✔ ${riderToTransfer.flag} ${riderToTransfer.name} transferido para ${newTeamName}`, "success");
+    }
+    
+    saveLocalStorage();
+    return true;
+}
+
+/**
+ * Obter dados de transferência para UI (listar opções disponíveis)
+ */
+function getTransferOptions(riderId) {
+    let rider = null;
+    
+    for (let catKey in ecosystem) {
+        const found = ecosystem[catKey].find(r => r.riderId === riderId);
+        if (found) {
+            rider = { ...found, category: catKey };
+            break;
+        }
+    }
+
+    if (!rider) return null;
+
+    const cfg = categoriesConfig[rider.category];
+    const availableTeams = [];
+
+    cfg.teams.forEach((teamName, idx) => {
+        const occupiedSeats = ecosystem[rider.category].filter(r => r.team === teamName).map(r => r.seat);
+        const availableSeats = [1, 2].filter(s => !occupiedSeats.includes(s));
+        
+        if (availableSeats.length > 0) {
+            availableTeams.push({
+                teamId: idx + 1,
+                teamName: teamName,
+                availableSeats: availableSeats
+            });
+        }
+    });
+
+    return {
+        rider: rider,
+        currentTeam: rider.team,
+        currentSeat: rider.seat,
+        availableTransfers: availableTeams
+    };
 }
