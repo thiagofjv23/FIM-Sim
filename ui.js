@@ -96,7 +96,7 @@ function renderRaceResultWidget() {
     }
 }
 
- // EXPÕE AS TABELAS DE PONTUAÇÃO DE PILOTOS E CONSTRUTORES
+// EXPÕE AS TABELAS DE PONTUAÇÃO DE PILOTOS E CONSTRUTORES
 function renderStandingsTab() {
     createCategorySelectors('catTabsCamp');
     
@@ -114,8 +114,6 @@ function renderStandingsTab() {
         const regenBadge = r.isReal ? '' : '<span class="fictional-tag">Regen</span>';
         const riderIdDisplay = `<span style="font-size: 0.8em; color: #9ca3af;">ID: ${r.riderId}</span>`;
         
-        // AQUI ESTÁ A IMPLEMENTAÇÃO DO PASSO 2.3: 
-        // Envolvemos o nome do piloto numa tag <a> que chama o openRiderProfile no clique
         tr.innerHTML = `
             <td class="text-center font-weight-bold">P${idx+1}</td>
             <td>
@@ -130,11 +128,20 @@ function renderStandingsTab() {
         ridersBody.appendChild(tr);
     });
 
-    // 2. Mundial de Equipes
+    // 2. Mundial de Equipes (CORRIGIDO)
     const teamScores = {};
-    categoriesConfig[activeCategory].teams.forEach(t => teamScores[t] = 0);
     
-    currentRiders.forEach(r => { if(teamScores[r.team] !== undefined) teamScores[r.team] += r.points; });
+    // Agora extraímos corretamente a propriedade .name do objeto da equipe
+    categoriesConfig[activeCategory].teams.forEach(t => {
+        const teamName = t.name || t; // Failsafe para suportar objetos ou strings
+        teamScores[teamName] = 0;
+    });
+    
+    currentRiders.forEach(r => { 
+        if(teamScores[r.team] !== undefined) {
+            teamScores[r.team] += r.points; 
+        }
+    });
     
     const sortedTeams = Object.keys(teamScores).map(key => ({ name: key, points: teamScores[key] }))
                                                 .sort((a,b) => b.points - a.points);
@@ -150,7 +157,6 @@ function renderStandingsTab() {
         teamsBody.appendChild(tr);
     });
 }
-
 
 // MAPEA OS BOXES OFICIAIS ATIVOS
 function renderGaragesTab() {
