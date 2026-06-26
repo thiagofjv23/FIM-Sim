@@ -154,16 +154,17 @@ function renderGaragesTab() {
 
     title.innerText = `Alocação de Vagas de Fábrica - ${categoriesConfig[activeCategory].name}`;
     body.innerHTML = '';
-
     const riders = ecosystem[activeCategory];
     
-    categoriesConfig[activeCategory].teams.forEach(teamName => {
+    // CORREÇÃO: Iterar sobre o teamObj e acessar a propriedade .name
+    categoriesConfig[activeCategory].teams.forEach(teamObj => {
         const teamHeader = document.createElement('tr');
         teamHeader.className = 'team-row-head';
-        teamHeader.innerHTML = `<td colspan="5">⚡ ${teamName}</td>`;
+        teamHeader.innerHTML = `<td colspan="5">⚡ ${teamObj.name}</td>`;
         body.appendChild(teamHeader);
 
-        const teammates = riders.filter(r => r.team === teamName);
+        // O filtro agora compara r.team com teamObj.name
+        const teammates = riders.filter(r => r.team === teamObj.name);
         teammates.forEach(r => {
             const tr = document.createElement('tr');
             const tag = r.isReal ? '' : '<span class="fictional-tag">Regen</span>';
@@ -182,6 +183,8 @@ function renderGaragesTab() {
         });
     });
 }
+
+
 
 // ==========================================================================
 // SISTEMA DE TRANSFERÊNCIA DE PILOTOS (UI)
