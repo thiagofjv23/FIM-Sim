@@ -96,7 +96,7 @@ function renderRaceResultWidget() {
     }
 }
 
-// EXPÕE AS TABELAS DE PONTUAÇÃO DE PILOTOS E CONSTRUTORES
+ // EXPÕE AS TABELAS DE PONTUAÇÃO DE PILOTOS E CONSTRUTORES
 function renderStandingsTab() {
     createCategorySelectors('catTabsCamp');
     
@@ -113,10 +113,15 @@ function renderStandingsTab() {
         const tr = document.createElement('tr');
         const regenBadge = r.isReal ? '' : '<span class="fictional-tag">Regen</span>';
         const riderIdDisplay = `<span style="font-size: 0.8em; color: #9ca3af;">ID: ${r.riderId}</span>`;
+        
+        // AQUI ESTÁ A IMPLEMENTAÇÃO DO PASSO 2.3: 
+        // Envolvemos o nome do piloto numa tag <a> que chama o openRiderProfile no clique
         tr.innerHTML = `
             <td class="text-center font-weight-bold">P${idx+1}</td>
             <td>
-                <strong>${r.flag} ${r.name}</strong> ${regenBadge}
+                <a href="#" onclick="openRiderProfile(${r.riderId}); return false;" style="color: white; text-decoration: none; border-bottom: 1px dashed var(--text-secondary);">
+                    <strong>${r.flag} ${r.name}</strong>
+                </a> ${regenBadge}
                 <br><small style="color:#6b7280">${r.team} - Assento ${r.seat}</small>
                 <br>${riderIdDisplay}
             </td>
@@ -127,8 +132,7 @@ function renderStandingsTab() {
 
     // 2. Mundial de Equipes
     const teamScores = {};
-    // CORREÇÃO: Usar teamObj.name como chave do objeto de pontuação
-    categoriesConfig[activeCategory].teams.forEach(teamObj => teamScores[teamObj.name] = 0);
+    categoriesConfig[activeCategory].teams.forEach(t => teamScores[t] = 0);
     
     currentRiders.forEach(r => { if(teamScores[r.team] !== undefined) teamScores[r.team] += r.points; });
     
