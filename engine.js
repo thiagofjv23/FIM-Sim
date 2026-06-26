@@ -681,7 +681,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const parsed = JSON.parse(saved);
 
             // Trava de Segurança Defensiva V3.2
-            // Invalida saves antigos que não têm o grid Moto3 completo (26 pilotos)
+            // Invalida saves antigos que não têm o grid Moto3 completo (26 pilotos reais)
             const hasNewArchitecture = parsed.ecosystem &&
                                        parsed.ecosystem.motogp &&
                                        parsed.ecosystem.motogp[0] &&
@@ -691,8 +691,11 @@ window.addEventListener('DOMContentLoaded', () => {
                                      parsed.ecosystem.moto3 &&
                                      parsed.ecosystem.moto3.length >= 26;
 
-            if (!hasNewArchitecture || !hasMoto3Complete) {
-                console.warn("[Sistema] Save desatualizado detectado (Moto3 incompleta). Reconstruindo V3.2...");
+            const hasMoto3AllReal = hasMoto3Complete &&
+                                    parsed.ecosystem.moto3.filter(r => r.isReal).length >= 26;
+
+            if (!hasNewArchitecture || !hasMoto3Complete || !hasMoto3AllReal) {
+                console.warn("[Sistema] Save desatualizado detectado (Moto3 incompleta ou com regens). Reconstruindo V3.2...");
                 initializeRealEcosystem();
                 return;
             }
