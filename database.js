@@ -423,45 +423,47 @@ const historicalSeeds = {
         { name: 'Adrián Fernández', flag: '🇪🇸', age: 21, speed: 75, potential: 80, consistency: 75, lineage: 65, isReal: true },
         { name: 'Jacob Roulstone', flag: '🇦🇺', age: 21, speed: 73, potential: 84, consistency: 72, lineage: 60, isReal: true }
     ],
-moto3_junior: [
-        { name: 'Álvaro Carpe', flag: '🇪🇸', age: 19, speed: 67, potential: 89, isReal: true },
-        { name: 'Máximo Quiles', flag: '🇪🇸', age: 18, speed: 66, potential: 91, isReal: true },
-        { name: 'Brian Uriarte', flag: '🇪🇸', age: 18, speed: 65, potential: 88, isReal: true },
-        { name: 'Rico Salmela', flag: '🇫🇮', age: 18, speed: 63, potential: 86, isReal: true },
-        { name: 'Guido Pini', flag: '🇮🇹', age: 18, speed: 64, potential: 87, isReal: true },
-        { name: 'Cormac Buchanan', flag: '🇳🇿', age: 19, speed: 61, potential: 81, isReal: true }
+    moto3_junior: [
+        { name: 'Álvaro Carpe', flag: '🇪🇸', age: 19, speed: 67, potential: 89, consistency: 72, lineage: 65, isReal: true },
+        { name: 'Máximo Quiles', flag: '🇪🇸', age: 18, speed: 66, potential: 91, consistency: 70, lineage: 70, isReal: true },
+        { name: 'Brian Uriarte', flag: '🇪🇸', age: 18, speed: 65, potential: 88, consistency: 74, lineage: 64, isReal: true },
+        { name: 'Rico Salmela', flag: '🇫🇮', age: 18, speed: 63, potential: 86, consistency: 75, lineage: 60, isReal: true },
+        { name: 'Guido Pini', flag: '🇮🇹', age: 18, speed: 64, potential: 87, consistency: 71, lineage: 62, isReal: true },
+        { name: 'Cormac Buchanan', flag: '🇳🇿', age: 19, speed: 61, potential: 81, consistency: 78, lineage: 58, isReal: true }
     ],
     rookies_cup: [
-        { name: 'Valentin Perrone', flag: '🇦🇷', age: 18, speed: 65, potential: 88, isReal: true },
-        { name: 'Hakim Danish', flag: '🇲🇾', age: 19, speed: 60, potential: 82, isReal: true },
-        { name: 'Carter Thompson', flag: '🇦🇺', age: 18, speed: 61, potential: 83, isReal: true },
-        { name: 'Leo Rammerstorfer', flag: '🇦🇹', age: 20, speed: 58, potential: 76, isReal: true }
+        { name: 'Valentin Perrone', flag: '🇦🇷', age: 18, speed: 65, potential: 88, consistency: 73, lineage: 65, isReal: true },
+        { name: 'Hakim Danish', flag: '🇲🇾', age: 19, speed: 60, potential: 82, consistency: 70, lineage: 58, isReal: true },
+        { name: 'Carter Thompson', flag: '🇦🇺', age: 18, speed: 61, potential: 83, consistency: 72, lineage: 60, isReal: true },
+        { name: 'Leo Rammerstorfer', flag: '🇦🇹', age: 20, speed: 58, potential: 76, consistency: 76, lineage: 55, isReal: true }
     ],
     moto4_asia: [
-        { name: 'Veda Ega Pratama', flag: '🇮🇩', age: 15, speed: 68, potential: 90, isReal: true },
-        { name: 'Reykat Fadillah', flag: '🇮🇩', age: 15, speed: 65, potential: 84, isReal: true },
-        { name: 'Jakkreephat Phuettisan', flag: '🇹🇭', age: 16, speed: 67, potential: 86, isReal: true },
-        { name: 'Kiattisak Singhapong', flag: '🇹🇭', age: 15, speed: 64, potential: 81, isReal: true },
-        { name: 'Zen Mitani', flag: '🇯🇵', age: 16, speed: 69, potential: 92, isReal: true },
-        { name: 'Riichi Takahira', flag: '🇯🇵', age: 15, speed: 66, potential: 85, isReal: true },
-        { name: 'Farish Hafiy', flag: '🇲🇾', age: 15, speed: 65, potential: 83, isReal: true },
-        { name: 'Farhan Naqib', flag: '🇲🇾', age: 14, speed: 62, potential: 80, isReal: true },
-        { name: 'Carter Paige', flag: '🇦🇺', age: 15, speed: 64, potential: 82, isReal: true },
-        { name: 'Hudson Paige', flag: '🇦🇺', age: 14, speed: 63, potential: 85, isReal: true },
-        { name: 'Arai Agaska', flag: '🇮🇩', age: 16, speed: 66, potential: 87, isReal: true },
-        { name: 'Kitsada Tanachot', flag: '🇹🇭', age: 15, speed: 63, potential: 81, isReal: true },
-        { name: 'Marianos Nikolis', flag: '🇦🇺', age: 16, speed: 65, potential: 82, isReal: true },
-        { name: 'Levi Russo', flag: '🇦🇺', age: 14, speed: 61, potential: 79, isReal: true },
-        { name: 'Ryota Ogiwara', flag: '🇯🇵', age: 15, speed: 67, potential: 89, isReal: true },
-        { name: 'Sota Ogiwara', flag: '🇯🇵', age: 14, speed: 64, potential: 86, isReal: true },
-        { name: 'Alfonsi Daquigan', flag: '🇵🇭', age: 15, speed: 62, potential: 80, isReal: true },
-        { name: 'Eane Jaye Sobretodo', flag: '🇵🇭', age: 16, speed: 60, potential: 77, isReal: true },
-        { name: 'Chiranth Vishwanath', flag: '🇮🇳', age: 16, speed: 61, potential: 79, isReal: true },
-        { name: 'Rakshith Dave', flag: '🇮🇳', age: 15, speed: 59, potential: 76, isReal: true },
-        { name: 'Hamad Al-Sahouti', flag: '🇶🇦', age: 16, speed: 63, potential: 84, isReal: true },
-        { name: 'Saad Al-Harqan', flag: '🇶🇦', age: 15, speed: 58, potential: 75, isReal: true }
+        { name: 'Veda Ega Pratama', flag: '🇮🇩', age: 15, speed: 68, potential: 90, consistency: 75, lineage: 60, isReal: true },
+        { name: 'Reykat Fadillah', flag: '🇮🇩', age: 15, speed: 65, potential: 84, consistency: 70, lineage: 50, isReal: true },
+        { name: 'Jakkreephat Phuettisan', flag: '🇹🇭', age: 16, speed: 67, potential: 86, consistency: 72, lineage: 52, isReal: true },
+        { name: 'Kiattisak Singhapong', flag: '🇹🇭', age: 15, speed: 64, potential: 81, consistency: 68, lineage: 45, isReal: true },
+        { name: 'Zen Mitani', flag: '🇯🇵', age: 16, speed: 69, potential: 92, consistency: 76, lineage: 65, isReal: true },
+        { name: 'Riichi Takahira', flag: '🇯🇵', age: 15, speed: 66, potential: 85, consistency: 71, lineage: 48, isReal: true },
+        { name: 'Farish Hafiy', flag: '🇲🇾', age: 15, speed: 65, potential: 83, consistency: 69, lineage: 46, isReal: true },
+        { name: 'Farhan Naqib', flag: '🇲🇾', age: 14, speed: 62, potential: 80, consistency: 65, lineage: 40, isReal: true },
+        { name: 'Carter Paige', flag: '🇦🇺', age: 15, speed: 64, potential: 82, consistency: 70, lineage: 44, isReal: true },
+        { name: 'Hudson Paige', flag: '🇦🇺', age: 14, speed: 63, potential: 85, consistency: 67, lineage: 45, isReal: true },
+        { name: 'Arai Agaska', flag: '🇮🇩', age: 16, speed: 66, potential: 87, consistency: 72, lineage: 51, isReal: true },
+        { name: 'Kitsada Tanachot', flag: '🇹🇭', age: 15, speed: 63, potential: 81, consistency: 66, lineage: 42, isReal: true },
+        { name: 'Marianos Nikolis', flag: '🇦🇺', age: 16, speed: 65, potential: 82, consistency: 68, lineage: 43, isReal: true },
+        { name: 'Levi Russo', flag: '🇦🇺', age: 14, speed: 61, potential: 79, consistency: 64, lineage: 38, isReal: true },
+        { name: 'Ryota Ogiwara', flag: '🇯🇵', age: 15, speed: 67, potential: 89, consistency: 73, lineage: 55, isReal: true },
+        { name: 'Sota Ogiwara', flag: '🇯🇵', age: 14, speed: 64, potential: 86, consistency: 70, lineage: 50, isReal: true },
+        { name: 'Alfonsi Daquigan', flag: '🇵🇭', age: 15, speed: 62, potential: 80, consistency: 65, lineage: 40, isReal: true },
+        { name: 'Eane Jaye Sobretodo', flag: '🇵🇭', age: 16, speed: 60, potential: 77, consistency: 62, lineage: 35, isReal: true },
+        { name: 'Chiranth Vishwanath', flag: '🇮🇳', age: 16, speed: 61, potential: 79, consistency: 63, lineage: 37, isReal: true },
+        { name: 'Rakshith Dave', flag: '🇮🇳', age: 15, speed: 59, potential: 76, consistency: 60, lineage: 32, isReal: true },
+        { name: 'Hamad Al-Sahouti', flag: '🇶🇦', age: 16, speed: 63, potential: 84, consistency: 67, lineage: 46, isReal: true },
+        { name: 'Saad Al-Harqan', flag: '🇶🇦', age: 15, speed: 58, potential: 75, consistency: 58, lineage: 30, isReal: true }
     ]
 };
+
+ 
 
 // ==========================================================================
 // FREE AGENTS (Pilotos sem equipe inicial)
