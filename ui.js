@@ -127,12 +127,14 @@ function renderStandingsTab() {
 
     // 2. Mundial de Equipes
     const teamScores = {};
-    categoriesConfig[activeCategory].teams.forEach(t => teamScores[t] = 0);
+    // CORREÇÃO: Usar teamObj.name como chave do objeto de pontuação
+    categoriesConfig[activeCategory].teams.forEach(teamObj => teamScores[teamObj.name] = 0);
+    
     currentRiders.forEach(r => { if(teamScores[r.team] !== undefined) teamScores[r.team] += r.points; });
-
+    
     const sortedTeams = Object.keys(teamScores).map(key => ({ name: key, points: teamScores[key] }))
                                                 .sort((a,b) => b.points - a.points);
-
+    
     teamsBody.innerHTML = '';
     sortedTeams.forEach((t, idx) => {
         const tr = document.createElement('tr');
@@ -144,6 +146,7 @@ function renderStandingsTab() {
         teamsBody.appendChild(tr);
     });
 }
+
 
 // MAPEA OS BOXES OFICIAIS ATIVOS
 function renderGaragesTab() {
