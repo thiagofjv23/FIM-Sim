@@ -387,3 +387,119 @@ function initUI() {
 }
 
 window.addEventListener('DOMContentLoaded', initUI);
+
+/**
+ * Abre o perfil detalhado do piloto (estilo MotoGP Oficial)
+ * @param {number} riderId - O ID do piloto a ser inspecionado
+ * @param {string} categoryKey - A categoria em que ele corre (ex: 'motogp')
+ */
+function openRiderProfile(riderId, categoryKey = activeCategory) {
+    try {
+        const grid = ecosystem[categoryKey];
+        const rider = grid.find(r => r.riderId === riderId);
+        
+        if (!rider) throw new Error("Piloto não encontrado no grid ativo.");
+
+        // 1. Programação Defensiva: Garante que os stats existam
+        rider.stats = rider.stats || { wins: 0, podiums: 0, poles: 0, races: 0, dnfs: 0 };
+
+        // 2. Cálculo em Tempo Real da Posição
+        const sortedGrid = [...grid].sort((a, b) => b.points - a.points);
+        const championshipPos = sortedGrid.findIndex(r => r.riderId === riderId) + 1;
+
+        // 3. Busca Relacional do Companheiro de Equipe
+        const teammate = grid.find(r => r.teamId === rider.teamId && r.riderId !== riderId);
+        const teammateName = teammate ? teammate.name : "N/A";
+
+        // Criação do Elemento Modal
+        const modal = document.createElement('div');
+        modal.id = `modal-profile-${riderId}`;
+        modal.className = 'modal-overlay';
+        modal.style.cssText = `
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); display: flex;
+            justify-content: center; align-items: center; z-index: 2000; padding: 1rem;
+        `;
+
+        // Split do nome para o efeito visual (Nome menor em cima, Sobrenome maior)
+        const nameParts = rider.name.split(' ');
+        const firstName = nameParts[0];
+        const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
+
+        // Utilizar o assento ou o ID de forma estilizada caso não tenhamos números oficiais de corrida ainda
+        const displayNum = rider.isReal ? (rider.riderId.toString().slice(-2)) : rider.seat;
+
+        const html = `
+            <div class="profile-modal-content">
+                <div style="text-align: right; padding: 10px;">
+                    <button onclick="document.getElementById('modal-profile-${riderId}').remove()" style="background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">&times;</button>
+                </div>
+                
+                <div class="profile-header">
+                    <div class="profile-number">${displayNum}</div>
+                    <div class="profile-name">
+                        <span style="font-size: 0.6em; display: block; color: var(--text-secondary);">${rider.flag} ${firstName}</span>
+                        ${lastName || firstName}
+                    </div>
+                    <div style="font-size: 0.8rem; color: var(--accent); font-weight: bold; text-transform: uppercase;">
+                        ${rider.team}
+                    </div>
+                </div>
+
+                <div style="padding: 1rem 0 0;">
+                    <div class="profile-tabs">
+                        <button class="profile-tab active">${currentYear} Season</button>
+                        <button class="profile-tab">Attributes</button>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Position</div>
+                        <div class="stat-value">${championshipPos}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Points</div>
+                        <div class="stat-value">${rider.points}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Victories</div>
+                        <div class="stat-value">${rider.stats.wins}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Podiums</div>
+                        <div class="stat-value">${rider.stats.podiums}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Poles</div>
+                        <div class="stat-value">${rider.stats.poles}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Races</div>
+                        <div class="stat-value">${rider.stats.races}</div>
+                    </div>
+                </div>
+
+                ${teammate ? `
+                <div class="teammate-card" onclick="document.getElementById('modal-profile-${riderId}').remove(); openRiderProfile(${teammate.riderId}, '${categoryKey}')">
+                    <div>
+                        <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 2px;">Teammate</div>
+                        <div style="font-weight: bold; font-size: 0.95rem;">${teammate.flag} ${teammateName}</div>
+                    </div>
+                    <div style="color: var(--text-secondary);">›</div>
+                </div>` : ''}
+            </div>
+        `;
+
+        modal.innerHTML = html;
+        document.body.appendChild(modal);
+
+        // Fechar ao clicar fora
+        modal.onclick = (e) => {
+            if (e.target === modal) modal.remove();
+        };
+
+    } catch (error) {
+        console.warn(`[UI] Falha ao renderizar perfil do piloto: ${error.message}`);
+    }
+}
