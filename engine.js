@@ -369,128 +369,128 @@ const categoriesConfig = {
 // ==========================================================================
 const historicalSeeds = {
     motogp: [
-        { name: "Francesco Bagnaia", flag: "🇮🇹", age: 29, speed: 96, potential: 96, consistency: 94, lineage: 95, isReal: true },
-        { name: "Jorge Martín", flag: "🇪🇸", age: 28, speed: 95, potential: 96, consistency: 89, lineage: 90, isReal: true },
-        { name: "Marc Márquez", flag: "🇪🇸", age: 33, speed: 95, potential: 95, consistency: 85, lineage: 99, isReal: true },
-        { name: "Pedro Acosta", flag: "🇪🇸", age: 22, speed: 91, potential: 98, consistency: 82, lineage: 85, isReal: true },
-        { name: "Enea Bastianini", flag: "🇮🇹", age: 29, speed: 91, potential: 92, consistency: 86, lineage: 88, isReal: true },
-        { name: "Fabio Quartararo", flag: "🇫🇷", age: 27, speed: 92, potential: 94, consistency: 88, lineage: 92, isReal: true },
-        { name: "Brad Binder", flag: "🇿🇦", age: 31, speed: 90, potential: 90, consistency: 90, lineage: 87, isReal: true },
-        { name: "Marco Bezzecchi", flag: "🇮🇹", age: 28, speed: 90, potential: 92, consistency: 83, lineage: 85, isReal: true },
-        { name: "Maverick Viñales", flag: "🇪🇸", age: 31, speed: 89, potential: 89, consistency: 80, lineage: 88, isReal: true },
-        { name: "Toprak Razgatlıoğlu", flag: "🇹🇷", age: 30, speed: 89, potential: 91, consistency: 88, lineage: 90, isReal: true },
-        { name: "Álex Márquez", flag: "🇪🇸", age: 30, speed: 88, potential: 88, consistency: 84, lineage: 86, isReal: true },
-        { name: "Fermín Aldeguer", flag: "🇪🇸", age: 21, speed: 86, potential: 94, consistency: 78, lineage: 80, isReal: true },
-        { name: "Fabio Di Giannantonio", flag: "🇮🇹", age: 28, speed: 88, potential: 89, consistency: 85, lineage: 82, isReal: true },
-        { name: "Franco Morbidelli", flag: "🇮🇹", age: 32, speed: 87, potential: 87, consistency: 82, lineage: 85, isReal: true },
-        { name: "Luca Marini", flag: "🇮🇹", age: 29, speed: 87, potential: 88, consistency: 91, lineage: 83, isReal: true },
-        { name: "Álex Rins", flag: "🇪🇸", age: 31, speed: 88, potential: 88, consistency: 81, lineage: 87, isReal: true },
-        { name: "Raúl Fernández", flag: "🇪🇸", age: 26, speed: 86, potential: 89, consistency: 80, lineage: 81, isReal: true },
-        { name: "Joan Mir", flag: "🇪🇸", age: 29, speed: 86, potential: 87, consistency: 83, lineage: 88, isReal: true },
-        { name: "Jack Miller", flag: "🇦🇺", age: 31, speed: 86, potential: 86, consistency: 78, lineage: 85, isReal: true },
-        { name: "Johann Zarco", flag: "🇫🇷", age: 36, speed: 85, potential: 85, consistency: 86, lineage: 84, isReal: true },
-        { name: "Ai Ogura", flag: "🇯🇵", age: 25, speed: 85, potential: 90, consistency: 88, lineage: 80, isReal: true },
-        { name: "Diogo Moreira", flag: "🇧🇷", age: 22, speed: 84, potential: 91, consistency: 82, lineage: 75, isReal: true }
+        { name: "Francesco Bagnaia", flag: "🇮🇹", age: 29, speed: 96, potential: 96, consistency: 94, isReal: true },
+        { name: "Jorge Martín", flag: "🇪🇸", age: 28, speed: 95, potential: 96, consistency: 89, isReal: true },
+        { name: "Marc Márquez", flag: "🇪🇸", age: 33, speed: 95, potential: 95, consistency: 85, isReal: true },
+        { name: "Pedro Acosta", flag: "🇪🇸", age: 22, speed: 91, potential: 98, consistency: 82, isReal: true },
+        { name: "Enea Bastianini", flag: "🇮🇹", age: 29, speed: 91, potential: 92, consistency: 86, isReal: true },
+        { name: "Fabio Quartararo", flag: "🇫🇷", age: 27, speed: 92, potential: 94, consistency: 88, isReal: true },
+        { name: "Brad Binder", flag: "🇿🇦", age: 31, speed: 90, potential: 90, consistency: 90, isReal: true },
+        { name: "Marco Bezzecchi", flag: "🇮🇹", age: 28, speed: 90, potential: 92, consistency: 83, isReal: true },
+        { name: "Maverick Viñales", flag: "🇪🇸", age: 31, speed: 89, potential: 89, consistency: 80, isReal: true },
+        { name: "Toprak Razgatlıoğlu", flag: "🇹🇷", age: 30, speed: 89, potential: 91, consistency: 88, isReal: true },
+        { name: "Álex Márquez", flag: "🇪🇸", age: 30, speed: 88, potential: 88, consistency: 84, isReal: true },
+        { name: "Fermín Aldeguer", flag: "🇪🇸", age: 21, speed: 86, potential: 94, consistency: 78, isReal: true },
+        { name: "Fabio Di Giannantonio", flag: "🇮🇹", age: 28, speed: 88, potential: 89, consistency: 85, isReal: true },
+        { name: "Franco Morbidelli", flag: "🇮🇹", age: 32, speed: 87, potential: 87, consistency: 82, isReal: true },
+        { name: "Luca Marini", flag: "🇮🇹", age: 29, speed: 87, potential: 88, consistency: 91, isReal: true },
+        { name: "Álex Rins", flag: "🇪🇸", age: 31, speed: 88, potential: 88, consistency: 81, isReal: true },
+        { name: "Raúl Fernández", flag: "🇪🇸", age: 26, speed: 86, potential: 89, consistency: 80, isReal: true },
+        { name: "Joan Mir", flag: "🇪🇸", age: 29, speed: 86, potential: 87, consistency: 83, isReal: true },
+        { name: "Jack Miller", flag: "🇦🇺", age: 31, speed: 86, potential: 86, consistency: 78, isReal: true },
+        { name: "Johann Zarco", flag: "🇫🇷", age: 36, speed: 85, potential: 85, consistency: 86, isReal: true },
+        { name: "Ai Ogura", flag: "🇯🇵", age: 25, speed: 85, potential: 90, consistency: 88, isReal: true },
+        { name: "Diogo Moreira", flag: "🇧🇷", age: 22, speed: 84, potential: 91, consistency: 82, isReal: true }
     ],
     moto2: [
-        { name: "Izan Guevara", flag: "🇪🇸", age: 22, speed: 81, potential: 86, consistency: 80, lineage: 75, isReal: true },
-        { name: "Alberto Ferrández", flag: "🇪🇸", age: 20, speed: 76, potential: 88, consistency: 75, lineage: 65, isReal: true },
-        { name: "David Alonso", flag: "🇨🇴", age: 20, speed: 84, potential: 94, consistency: 85, lineage: 78, isReal: true },
-        { name: "Daniel Holgado", flag: "🇪🇸", age: 21, speed: 82, potential: 88, consistency: 82, lineage: 72, isReal: true },
-        { name: "Arón Canet", flag: "🇪🇸", age: 26, speed: 85, potential: 86, consistency: 80, lineage: 82, isReal: true },
-        { name: "Deniz Öncü", flag: "🇹🇷", age: 22, speed: 85, potential: 85, consistency: 78, lineage: 77, isReal: true },
-        { name: "Mario Aji", flag: "🇮🇩", age: 22, speed: 79, potential: 82, consistency: 81, lineage: 70, isReal: true },
-        { name: "Taiyo Furusato", flag: "🇯🇵", age: 20, speed: 80, potential: 85, consistency: 76, lineage: 68, isReal: true },
-        { name: "Sergio García", flag: "🇪🇸", age: 23, speed: 84, potential: 89, consistency: 86, lineage: 76, isReal: true },
-        { name: "Alonso López", flag: "🇪🇸", age: 24, speed: 85, potential: 88, consistency: 81, lineage: 79, isReal: true },
-        { name: "Daniel Muñoz", flag: "🇪🇸", age: 19, speed: 79, potential: 84, consistency: 77, lineage: 65, isReal: true },
-        { name: "Adrián Huertas", flag: "🇪🇸", age: 22, speed: 79, potential: 86, consistency: 80, lineage: 70, isReal: true },
-        { name: "Manuel González", flag: "🇪🇸", age: 24, speed: 87, potential: 90, consistency: 88, lineage: 80, isReal: true },
-        { name: "Senna Agius", flag: "🇦🇺", age: 21, speed: 86, potential: 89, consistency: 82, lineage: 74, isReal: true },
-        { name: "Ayumu Sasaki", flag: "🇯🇵", age: 25, speed: 81, potential: 84, consistency: 85, lineage: 78, isReal: true },
-        { name: "Zonta van den Goorbergh", flag: "🇳🇱", age: 20, speed: 80, potential: 84, consistency: 79, lineage: 68, isReal: true },
-        { name: "Filip Salač", flag: "🇨🇿", age: 24, speed: 84, potential: 84, consistency: 83, lineage: 75, isReal: true },
-        { name: "Joe Roberts", flag: "🇺🇸", age: 29, speed: 83, potential: 84, consistency: 82, lineage: 80, isReal: true },
-        { name: "Iván Ortolá", flag: "🇪🇸", age: 21, speed: 82, potential: 88, consistency: 81, lineage: 72, isReal: true },
-        { name: "Ángel Piqueras", flag: "🇪🇸", age: 19, speed: 80, potential: 90, consistency: 78, lineage: 69, isReal: true },
-        { name: "Collin Veijer", flag: "🇳🇱", age: 21, speed: 84, potential: 92, consistency: 87, lineage: 75, isReal: true },
-        { name: "José Antonio Rueda", flag: "🇪🇸", age: 20, speed: 83, potential: 89, consistency: 84, lineage: 73, isReal: true },
-        { name: "Barry Baltus", flag: "🇧🇪", age: 21, speed: 84, potential: 84, consistency: 80, lineage: 70, isReal: true },
-        { name: "Tony Arbolino", flag: "🇮🇹", age: 25, speed: 84, potential: 86, consistency: 83, lineage: 78, isReal: true },
-        { name: "Celestino Vietti", flag: "🇮🇹", age: 24, speed: 85, potential: 88, consistency: 84, lineage: 79, isReal: true },
-        { name: "Luca Lunetta", flag: "🇮🇹", age: 20, speed: 76, potential: 86, consistency: 75, lineage: 65, isReal: true }
+        { name: "Izan Guevara", flag: "🇪🇸", age: 22, speed: 81, potential: 86, consistency: 80, isReal: true },
+        { name: "Alberto Ferrández", flag: "🇪🇸", age: 20, speed: 76, potential: 88, consistency: 75, isReal: true },
+        { name: "David Alonso", flag: "🇨🇴", age: 20, speed: 84, potential: 94, consistency: 85, isReal: true },
+        { name: "Daniel Holgado", flag: "🇪🇸", age: 21, speed: 82, potential: 88, consistency: 82, isReal: true },
+        { name: "Arón Canet", flag: "🇪🇸", age: 26, speed: 85, potential: 86, consistency: 80, isReal: true },
+        { name: "Deniz Öncü", flag: "🇹🇷", age: 22, speed: 85, potential: 85, consistency: 78, isReal: true },
+        { name: "Mario Aji", flag: "🇮🇩", age: 22, speed: 79, potential: 82, consistency: 81, isReal: true },
+        { name: "Taiyo Furusato", flag: "🇯🇵", age: 20, speed: 80, potential: 85, consistency: 76, isReal: true },
+        { name: "Sergio García", flag: "🇪🇸", age: 23, speed: 84, potential: 89, consistency: 86, isReal: true },
+        { name: "Alonso López", flag: "🇪🇸", age: 24, speed: 85, potential: 88, consistency: 81, isReal: true },
+        { name: "Daniel Muñoz", flag: "🇪🇸", age: 19, speed: 79, potential: 84, consistency: 77, isReal: true },
+        { name: "Adrián Huertas", flag: "🇪🇸", age: 22, speed: 79, potential: 86, consistency: 80, isReal: true },
+        { name: "Manuel González", flag: "🇪🇸", age: 24, speed: 87, potential: 90, consistency: 88, isReal: true },
+        { name: "Senna Agius", flag: "🇦🇺", age: 21, speed: 86, potential: 89, consistency: 82, isReal: true },
+        { name: "Ayumu Sasaki", flag: "🇯🇵", age: 25, speed: 81, potential: 84, consistency: 85, isReal: true },
+        { name: "Zonta van den Goorbergh", flag: "🇳🇱", age: 20, speed: 80, potential: 84, consistency: 79, isReal: true },
+        { name: "Filip Salač", flag: "🇨🇿", age: 24, speed: 84, potential: 84, consistency: 83, isReal: true },
+        { name: "Joe Roberts", flag: "🇺🇸", age: 29, speed: 83, potential: 84, consistency: 82, isReal: true },
+        { name: "Iván Ortolá", flag: "🇪🇸", age: 21, speed: 82, potential: 88, consistency: 81, isReal: true },
+        { name: "Ángel Piqueras", flag: "🇪🇸", age: 19, speed: 80, potential: 90, consistency: 78, isReal: true },
+        { name: "Collin Veijer", flag: "🇳🇱", age: 21, speed: 84, potential: 92, consistency: 87, isReal: true },
+        { name: "José Antonio Rueda", flag: "🇪🇸", age: 20, speed: 83, potential: 89, consistency: 84, isReal: true },
+        { name: "Barry Baltus", flag: "🇧🇪", age: 21, speed: 84, potential: 84, consistency: 80, isReal: true },
+        { name: "Tony Arbolino", flag: "🇮🇹", age: 25, speed: 84, potential: 86, consistency: 83, isReal: true },
+        { name: "Celestino Vietti", flag: "🇮🇹", age: 24, speed: 85, potential: 88, consistency: 84, isReal: true },
+        { name: "Luca Lunetta", flag: "🇮🇹", age: 20, speed: 76, potential: 86, consistency: 75, isReal: true }
     ],
     // ── MOTO3 2026 — 26 PILOTOS REAIS EM ORDEM DE EQUIPE ─────────────────────
     // Ordem espelha categoriesConfig.moto3.teams (2 pilotos por time)
     moto3: [
         // SIC58 Squadra Corse
-        { name: 'Leo Rammerstorfer',  flag: '🇦🇹', age: 22, speed: 74, potential: 81, consistency: 74, lineage: 60, isReal: true },
-        { name: "Casey O'Gorman",     flag: '🇮🇪', age: 21, speed: 73, potential: 80, consistency: 74, lineage: 60, isReal: true },
+        { name: 'Leo Rammerstorfer',  flag: '🇦🇹', age: 22, speed: 74, potential: 81, consistency: 74, isReal: true },
+        { name: "Casey O'Gorman",     flag: '🇮🇪', age: 21, speed: 73, potential: 80, consistency: 74, isReal: true },
         // AEON Credit - MT Helmets - MSI
-        { name: 'Ryusei Yamanaka',    flag: '🇯🇵', age: 26, speed: 75, potential: 77, consistency: 80, lineage: 72, isReal: true },
-        { name: 'Hakim Danish',       flag: '🇲🇾', age: 24, speed: 74, potential: 76, consistency: 76, lineage: 62, isReal: true },
+        { name: 'Ryusei Yamanaka',    flag: '🇯🇵', age: 26, speed: 75, potential: 77, consistency: 80, isReal: true },
+        { name: 'Hakim Danish',       flag: '🇲🇾', age: 24, speed: 74, potential: 76, consistency: 76, isReal: true },
         // GRYD Racing
-        { name: "Eddie O'Shea",       flag: '🇬🇧', age: 19, speed: 71, potential: 84, consistency: 72, lineage: 58, isReal: true },
-        { name: 'Joel Kelso',         flag: '🇦🇺', age: 23, speed: 74, potential: 80, consistency: 74, lineage: 60, isReal: true },
+        { name: "Eddie O'Shea",       flag: '🇬🇧', age: 19, speed: 71, potential: 84, consistency: 72, isReal: true },
+        { name: 'Joel Kelso',         flag: '🇦🇺', age: 23, speed: 74, potential: 80, consistency: 74, isReal: true },
         // Honda Team Asia
-        { name: 'Veda Pratama',       flag: '🇮🇩', age: 19, speed: 70, potential: 85, consistency: 72, lineage: 58, isReal: true },
-        { name: 'Zen Mitani',         flag: '🇯🇵', age: 19, speed: 71, potential: 87, consistency: 73, lineage: 60, isReal: true },
+        { name: 'Veda Pratama',       flag: '🇮🇩', age: 19, speed: 70, potential: 85, consistency: 72, isReal: true },
+        { name: 'Zen Mitani',         flag: '🇯🇵', age: 19, speed: 71, potential: 87, consistency: 73, isReal: true },
         // Rivacold Snipers Team
-        { name: 'Nicola Carraro',     flag: '🇮🇹', age: 19, speed: 69, potential: 82, consistency: 70, lineage: 58, isReal: true },
-        { name: 'Jesús Ríos',         flag: '🇪🇸', age: 20, speed: 68, potential: 80, consistency: 70, lineage: 56, isReal: true },
+        { name: 'Nicola Carraro',     flag: '🇮🇹', age: 19, speed: 69, potential: 82, consistency: 70, isReal: true },
+        { name: 'Jesús Ríos',         flag: '🇪🇸', age: 20, speed: 68, potential: 80, consistency: 70, isReal: true },
         // CIP Green Power
-        { name: 'Adrián Cruces',      flag: '🇪🇸', age: 20, speed: 72, potential: 82, consistency: 73, lineage: 59, isReal: true },
-        { name: 'Scott Ogden',        flag: '🇬🇧', age: 24, speed: 72, potential: 78, consistency: 75, lineage: 62, isReal: true },
+        { name: 'Adrián Cruces',      flag: '🇪🇸', age: 20, speed: 72, potential: 82, consistency: 73, isReal: true },
+        { name: 'Scott Ogden',        flag: '🇬🇧', age: 24, speed: 72, potential: 78, consistency: 75, isReal: true },
         // CODE Motorsports
-        { name: 'Cormac Buchanan',    flag: '🇳🇿', age: 22, speed: 73, potential: 82, consistency: 75, lineage: 62, isReal: true },
-        { name: 'Ruche Moodley',      flag: '🇿🇦', age: 21, speed: 67, potential: 79, consistency: 68, lineage: 52, isReal: true },
+        { name: 'Cormac Buchanan',    flag: '🇳🇿', age: 22, speed: 73, potential: 82, consistency: 75, isReal: true },
+        { name: 'Ruche Moodley',      flag: '🇿🇦', age: 21, speed: 67, potential: 79, consistency: 68, isReal: true },
         // LEVELUP - MTA
-        { name: 'Matteo Bertelle',    flag: '🇮🇹', age: 20, speed: 70, potential: 82, consistency: 72, lineage: 60, isReal: true },
-        { name: 'Joel Esteban',       flag: '🇪🇸', age: 23, speed: 79, potential: 83, consistency: 78, lineage: 68, isReal: true },
+        { name: 'Matteo Bertelle',    flag: '🇮🇹', age: 20, speed: 70, potential: 82, consistency: 72, isReal: true },
+        { name: 'Joel Esteban',       flag: '🇪🇸', age: 23, speed: 79, potential: 83, consistency: 78, isReal: true },
         // Liqui Moly Dynavolt Intact GP
-        { name: 'David Almansa',      flag: '🇪🇸', age: 21, speed: 73, potential: 83, consistency: 74, lineage: 60, isReal: true },
-        { name: 'David Muñoz',        flag: '🇪🇸', age: 20, speed: 71, potential: 81, consistency: 73, lineage: 60, isReal: true },
+        { name: 'David Almansa',      flag: '🇪🇸', age: 21, speed: 73, potential: 83, consistency: 74, isReal: true },
+        { name: 'David Muñoz',        flag: '🇪🇸', age: 20, speed: 71, potential: 81, consistency: 73, isReal: true },
         // Red Bull KTM Tech3
-        { name: 'Rico Salmela',       flag: '🇫🇮', age: 21, speed: 78, potential: 87, consistency: 78, lineage: 62, isReal: true },
-        { name: 'Valentin Perrone',   flag: '🇦🇷', age: 22, speed: 76, potential: 84, consistency: 76, lineage: 63, isReal: true },
+        { name: 'Rico Salmela',       flag: '🇫🇮', age: 21, speed: 78, potential: 87, consistency: 78, isReal: true },
+        { name: 'Valentin Perrone',   flag: '🇦🇷', age: 22, speed: 76, potential: 84, consistency: 76, isReal: true },
         // CFMOTO Gaviota Aspar Team
-        { name: 'Máximo Quiles',      flag: '🇪🇸', age: 20, speed: 82, potential: 92, consistency: 82, lineage: 68, isReal: true },
-        { name: 'Marco Morelli',      flag: '🇦🇷', age: 21, speed: 69, potential: 81, consistency: 72, lineage: 58, isReal: true },
+        { name: 'Máximo Quiles',      flag: '🇪🇸', age: 20, speed: 82, potential: 92, consistency: 82, isReal: true },
+        { name: 'Marco Morelli',      flag: '🇦🇷', age: 21, speed: 69, potential: 81, consistency: 72, isReal: true },
         // Leopard Racing
-        { name: 'Adrián Fernández',   flag: '🇪🇸', age: 24, speed: 76, potential: 79, consistency: 78, lineage: 68, isReal: true },
-        { name: 'Guido Pini',         flag: '🇮🇹', age: 20, speed: 75, potential: 84, consistency: 75, lineage: 62, isReal: true },
+        { name: 'Adrián Fernández',   flag: '🇪🇸', age: 24, speed: 76, potential: 79, consistency: 78, isReal: true },
+        { name: 'Guido Pini',         flag: '🇮🇹', age: 20, speed: 75, potential: 84, consistency: 75, isReal: true },
         // Red Bull KTM Ajo
-        { name: 'Brian Uriarte',      flag: '🇪🇸', age: 21, speed: 80, potential: 88, consistency: 80, lineage: 65, isReal: true },
-        { name: 'Álvaro Carpe',       flag: '🇪🇸', age: 21, speed: 81, potential: 90, consistency: 83, lineage: 66, isReal: true }
+        { name: 'Brian Uriarte',      flag: '🇪🇸', age: 21, speed: 80, potential: 88, consistency: 80, isReal: true },
+        { name: 'Álvaro Carpe',       flag: '🇪🇸', age: 21, speed: 81, potential: 90, consistency: 83, isReal: true }
     ],
     // ── MOTO3 JUNIOR — pilotos promovidos removidos, vagas viram regens ───────
     moto3_junior: [],
     // ── ROOKIES CUP — Perrone e Rammerstorfer promovidos à Moto3 ─────────────
     rookies_cup: [
-        { name: 'Carter Thompson', flag: '🇦🇺', age: 18, speed: 61, potential: 83, consistency: 72, lineage: 60, isReal: true }
+        { name: 'Carter Thompson', flag: '🇦🇺', age: 18, speed: 61, potential: 83, consistency: 72, isReal: true }
     ],
     moto4_asia: [
         // Veda Pratama e Zen Mitani removidos (promovidos à Moto3)
-        { name: 'Reykat Fadillah',      flag: '🇮🇩', age: 15, speed: 65, potential: 84, consistency: 70, lineage: 50, isReal: true },
-        { name: 'Jakkreephat Phuettisan',flag: '🇹🇭', age: 16, speed: 67, potential: 86, consistency: 72, lineage: 52, isReal: true },
-        { name: 'Kiattisak Singhapong', flag: '🇹🇭', age: 15, speed: 64, potential: 81, consistency: 68, lineage: 45, isReal: true },
-        { name: 'Riichi Takahira',      flag: '🇯🇵', age: 15, speed: 66, potential: 85, consistency: 71, lineage: 48, isReal: true },
-        { name: 'Farish Hafiy',         flag: '🇲🇾', age: 15, speed: 65, potential: 83, consistency: 69, lineage: 46, isReal: true },
-        { name: 'Farhan Naqib',         flag: '🇲🇾', age: 14, speed: 62, potential: 80, consistency: 65, lineage: 40, isReal: true },
-        { name: 'Carter Paige',         flag: '🇦🇺', age: 15, speed: 64, potential: 82, consistency: 70, lineage: 44, isReal: true },
-        { name: 'Hudson Paige',         flag: '🇦🇺', age: 14, speed: 63, potential: 85, consistency: 67, lineage: 45, isReal: true },
-        { name: 'Arai Agaska',          flag: '🇮🇩', age: 16, speed: 66, potential: 87, consistency: 72, lineage: 51, isReal: true },
-        { name: 'Kitsada Tanachot',     flag: '🇹🇭', age: 15, speed: 63, potential: 81, consistency: 66, lineage: 42, isReal: true },
-        { name: 'Marianos Nikolis',     flag: '🇦🇺', age: 16, speed: 65, potential: 82, consistency: 68, lineage: 43, isReal: true },
-        { name: 'Levi Russo',           flag: '🇦🇺', age: 14, speed: 61, potential: 79, consistency: 64, lineage: 38, isReal: true },
-        { name: 'Ryota Ogiwara',        flag: '🇯🇵', age: 15, speed: 67, potential: 89, consistency: 73, lineage: 55, isReal: true },
-        { name: 'Sota Ogiwara',         flag: '🇯🇵', age: 14, speed: 64, potential: 86, consistency: 70, lineage: 50, isReal: true },
-        { name: 'Alfonsi Daquigan',     flag: '🇵🇭', age: 15, speed: 62, potential: 80, consistency: 65, lineage: 40, isReal: true },
-        { name: 'Eane Jaye Sobretodo',  flag: '🇵🇭', age: 16, speed: 60, potential: 77, consistency: 62, lineage: 35, isReal: true },
-        { name: 'Chiranth Vishwanath',  flag: '🇮🇳', age: 16, speed: 61, potential: 79, consistency: 63, lineage: 37, isReal: true },
-        { name: 'Rakshith Dave',        flag: '🇮🇳', age: 15, speed: 59, potential: 76, consistency: 60, lineage: 32, isReal: true },
-        { name: 'Hamad Al-Sahouti',     flag: '🇶🇦', age: 16, speed: 63, potential: 84, consistency: 67, lineage: 46, isReal: true },
-        { name: 'Saad Al-Harqan',       flag: '🇶🇦', age: 15, speed: 58, potential: 75, consistency: 58, lineage: 30, isReal: true }
+        { name: 'Reykat Fadillah',      flag: '🇮🇩', age: 15, speed: 65, potential: 84, consistency: 70, isReal: true },
+        { name: 'Jakkreephat Phuettisan',flag: '🇹🇭', age: 16, speed: 67, potential: 86, consistency: 72, isReal: true },
+        { name: 'Kiattisak Singhapong', flag: '🇹🇭', age: 15, speed: 64, potential: 81, consistency: 68, isReal: true },
+        { name: 'Riichi Takahira',      flag: '🇯🇵', age: 15, speed: 66, potential: 85, consistency: 71, isReal: true },
+        { name: 'Farish Hafiy',         flag: '🇲🇾', age: 15, speed: 65, potential: 83, consistency: 69, isReal: true },
+        { name: 'Farhan Naqib',         flag: '🇲🇾', age: 14, speed: 62, potential: 80, consistency: 65, isReal: true },
+        { name: 'Carter Paige',         flag: '🇦🇺', age: 15, speed: 64, potential: 82, consistency: 70, isReal: true },
+        { name: 'Hudson Paige',         flag: '🇦🇺', age: 14, speed: 63, potential: 85, consistency: 67, isReal: true },
+        { name: 'Arai Agaska',          flag: '🇮🇩', age: 16, speed: 66, potential: 87, consistency: 72, isReal: true },
+        { name: 'Kitsada Tanachot',     flag: '🇹🇭', age: 15, speed: 63, potential: 81, consistency: 66, isReal: true },
+        { name: 'Marianos Nikolis',     flag: '🇦🇺', age: 16, speed: 65, potential: 82, consistency: 68, isReal: true },
+        { name: 'Levi Russo',           flag: '🇦🇺', age: 14, speed: 61, potential: 79, consistency: 64, isReal: true },
+        { name: 'Ryota Ogiwara',        flag: '🇯🇵', age: 15, speed: 67, potential: 89, consistency: 73, isReal: true },
+        { name: 'Sota Ogiwara',         flag: '🇯🇵', age: 14, speed: 64, potential: 86, consistency: 70, isReal: true },
+        { name: 'Alfonsi Daquigan',     flag: '🇵🇭', age: 15, speed: 62, potential: 80, consistency: 65, isReal: true },
+        { name: 'Eane Jaye Sobretodo',  flag: '🇵🇭', age: 16, speed: 60, potential: 77, consistency: 62, isReal: true },
+        { name: 'Chiranth Vishwanath',  flag: '🇮🇳', age: 16, speed: 61, potential: 79, consistency: 63, isReal: true },
+        { name: 'Rakshith Dave',        flag: '🇮🇳', age: 15, speed: 59, potential: 76, consistency: 60, isReal: true },
+        { name: 'Hamad Al-Sahouti',     flag: '🇶🇦', age: 16, speed: 63, potential: 84, consistency: 67, isReal: true },
+        { name: 'Saad Al-Harqan',       flag: '🇶🇦', age: 15, speed: 58, potential: 75, consistency: 58, isReal: true }
     ]
 };
 
@@ -498,8 +498,8 @@ const historicalSeeds = {
 // FREE AGENTS (Pilotos sem equipe inicial)
 // ==========================================================================
 const freeAgents = [
-    { riderId: generateRiderId(), name: 'Miguel Oliveira', flag: '🇵🇹', age: 31, speed: 85, potential: 86, consistency: 84, lineage: 85, isReal: true, teamId: null, seat: 0, points: 0, currentRaceScore: 0 },
-    { riderId: generateRiderId(), name: 'Somkiat Chantra', flag: '🇹🇭', age: 27, speed: 79, potential: 85, consistency: 75, lineage: 70, isReal: true, teamId: null, seat: 0, points: 0, currentRaceScore: 0 }
+    { riderId: generateRiderId(), name: 'Miguel Oliveira', flag: '🇵🇹', age: 31, speed: 85, potential: 86, consistency: 84, isReal: true, teamId: null, seat: 0, points: 0, currentRaceScore: 0 },
+    { riderId: generateRiderId(), name: 'Somkiat Chantra', flag: '🇹🇭', age: 27, speed: 79, potential: 85, consistency: 75, isReal: true, teamId: null, seat: 0, points: 0, currentRaceScore: 0 }
 ];
 
 // ==========================================================================
@@ -533,7 +533,7 @@ function generateFictionalNewbie(allowedCountries) {
                 speed: baseSpeed,
                 potential: Math.floor(Math.random() * 21) + 76,
                 consistency: Math.floor(Math.random() * 41) + 50,
-                lineage: Math.floor(Math.random() * 41) + 30,
+                isPayDriver: Math.random() < 0.30,
                 isReal: false,
                 points: 0,
                 currentRaceScore: 0,
@@ -545,7 +545,7 @@ function generateFictionalNewbie(allowedCountries) {
         }
         attempts++;
     }
-    return { riderId: generateRiderId(), name: `Regen ${Math.floor(Math.random()*8999)+1000}`, flag: availableNats[0].flag, age: 14, speed: 40, potential: 80, consistency: 60, lineage: 40, isReal: false, points: 0, currentRaceScore: 0, seat: 0, teamId: null };
+    return { riderId: generateRiderId(), name: `Regen ${Math.floor(Math.random()*8999)+1000}`, flag: availableNats[0].flag, age: 14, speed: 40, potential: 80, consistency: 60, isPayDriver: Math.random() < 0.30, isReal: false, points: 0, currentRaceScore: 0, seat: 0, teamId: null };
 }
 
 function inicializarGridsVazios() {

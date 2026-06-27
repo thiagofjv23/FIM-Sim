@@ -50,8 +50,8 @@ const SPONSOR_POOL_SECONDARY = [
 function calculateRiderSalary(rider, catKey) {
     const factor = SALARY_FACTORS[catKey] || SALARY_FACTORS['moto4_european'];
 
-    if (factor.allowPayDriver && !rider.isReal && rider.lineage > 55 && rider.speed < 76) {
-        return parseFloat((-(rider.lineage * 0.003)).toFixed(3));
+    if (factor.allowPayDriver && rider.isPayDriver) {
+        return parseFloat((-(rider.speed * 0.003)).toFixed(3));
     }
 
     const speedAboveBase = Math.max(0, rider.speed - 70);
