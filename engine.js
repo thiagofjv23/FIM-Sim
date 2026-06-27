@@ -679,7 +679,7 @@ function _triggerSimulationCore() {
         currentYear++;
         currentRound = 0;
         for (const cat in ecosystem) {
-            ecosystem[cat].forEach(r => { r.points = 0; r.currentRaceScore = 0; });
+            ecosystem[cat].forEach(r => { r.points = 0; r.currentRaceScore = 0; r.age = (r.age || 0) + 1; });
         }
         if (typeof logEvent === 'function') logEvent(`🏆 Temporada ${currentYear - 1} encerrada! Começando ${currentYear}.`, "sys");
         saveLocalStorage();
