@@ -684,8 +684,32 @@ function triggerSimulation() {
     }
 }
 
+function shouldRenew(rider, teamObj) {
+    if (teamObj.aiPersonality === 'caca_talentos')        return rider.potential >= 82;
+    if (teamObj.aiPersonality === 'conservadora')         return (rider.speed + rider.consistency) / 2 >= 70;
+    if (teamObj.aiPersonality === 'resultados_imediatos') return rider.speed >= 75;
+    return rider.speed >= 72;
+}
+
 function runYearEndTransfers() {
     lastYearTransfers = [];
+
+    // Passo 0: renovar contratos expirados para quem a equipe quer manter
+    for (const cat in ecosystem) {
+        ecosystem[cat].forEach(r => {
+            if (r.contractEndYear && r.contractEndYear < currentYear) {
+                const teamObj = categoriesConfig[cat].teams.find(t => t.id === r.teamId);
+                if (!teamObj) return;
+                if (shouldRenew(r, teamObj)) {
+                    const years = Math.floor(Math.random() * 2) + 1;
+                    r.contractEndYear = currentYear + years;
+                    lastYearTransfers.push({ type: 'renovacao', rider: { name: r.name, flag: r.flag, age: r.age, isReal: r.isReal }, cat, team: r.team, years });
+                    if (typeof logEvent === 'function')
+                        logEvent(`🔄 ${r.flag} ${r.name} renovou com ${r.team} (+${years} ano${years > 1 ? 's' : ''})`, 'sys');
+                }
+            }
+        });
+    }
 
     // Passo 1: liberar riders acima de maxAge ou com contrato vencido
     for (const cat in ecosystem) {
@@ -694,6 +718,7 @@ function runYearEndTransfers() {
             const overAge  = r.age > maxAge;
             const expired  = r.contractEndYear && r.contractEndYear < currentYear;
             if (overAge || expired) {
+                r.previousTeam = r.team;
                 r.teamId = null; r.team = null; r.seat = 0;
                 r.points = 0; r.currentRaceScore = 0;
                 const motivo = overAge ? `${r.age}a > limite ${maxAge}` : `contrato vencido ${r.contractEndYear}`;
@@ -761,7 +786,7 @@ function runYearEndTransfers() {
                 if (idxInFA !== -1) freeAgents.splice(idxInFA, 1);
                 grid.push(chosen);
 
-                lastYearTransfers.push({ type: 'entrada', rider: { name: chosen.name, flag: chosen.flag, age: chosen.age, isReal: chosen.isReal }, cat, team: teamObj.name, seat: seatNum });
+                lastYearTransfers.push({ type: 'entrada', rider: { name: chosen.name, flag: chosen.flag, age: chosen.age, isReal: chosen.isReal }, cat, team: teamObj.name, seat: seatNum, previousTeam: chosen.previousTeam || null });
 
                 if (typeof logEvent === 'function')
                     logEvent(`📥 ${chosen.flag} ${chosen.name} contratado por ${teamObj.name} (${cat.toUpperCase()}, assento ${seatNum})`, 'sys');

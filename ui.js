@@ -538,27 +538,49 @@ function renderTransfersTab() {
     if (!header || !content) return;
 
     const transfers = (typeof lastYearTransfers !== 'undefined') ? lastYearTransfers : [];
+    const fas = (typeof freeAgents !== 'undefined') ? freeAgents : [];
 
     if (!transfers || transfers.length === 0) {
         header.textContent = 'Mercado de Transferências';
-        content.innerHTML = '<p style="color:var(--text-secondary);padding:1rem;">Nenhuma transferência registrada nesta temporada.</p>';
+        const faRows = fas.length
+            ? fas.map(r => `<tr>
+                <td>${r.flag} ${r.name}${r.isReal ? ' <span style="font-size:0.65rem;background:var(--accent);color:#000;border-radius:3px;padding:1px 4px;">REAL</span>' : ''}</td>
+                <td class="text-center">${r.age}</td>
+                <td class="text-center">${r.speed}</td>
+                <td class="text-center">${r.potential}</td>
+                <td>${r.previousTeam || '—'}</td>
+            </tr>`).join('')
+            : `<tr><td colspan="5" style="color:var(--text-secondary);text-align:center;">Pool vazio</td></tr>`;
+        content.innerHTML = `
+            <p style="color:var(--text-secondary);padding:0.5rem 0 1rem;">Nenhuma transferência registrada nesta temporada.</p>
+            <div class="panel-header" style="font-size:0.9rem;">⚡ Free Agents Disponíveis (${fas.length})</div>
+            <div class="table-res"><table>
+                <thead><tr>
+                    <th style="width:35%">Piloto</th>
+                    <th style="width:8%" class="text-center">Idade</th>
+                    <th style="width:8%" class="text-center">Vel</th>
+                    <th style="width:8%" class="text-center">Pot</th>
+                    <th style="width:41%">Equipe Anterior</th>
+                </tr></thead>
+                <tbody>${faRows}</tbody>
+            </table></div>`;
         return;
     }
 
-    const filtered = transfers.filter(t => t.cat === activeCategory);
-    const saidas   = filtered.filter(t => t.type === 'saida');
-    const entradas = filtered.filter(t => t.type === 'entrada');
+    const filtered  = transfers.filter(t => t.cat === activeCategory);
+    const saidas    = filtered.filter(t => t.type === 'saida');
+    const entradas  = filtered.filter(t => t.type === 'entrada');
+    const renovacoes = filtered.filter(t => t.type === 'renovacao');
 
-    header.textContent = `Mercado — Temporada ${currentYear - 1} → ${currentYear}  |  📤 ${saidas.length} saídas  |  📥 ${entradas.length} contratações`;
+    header.textContent = `Mercado — Temporada ${currentYear - 1} → ${currentYear}  |  📤 ${saidas.length}  |  📥 ${entradas.length}  |  🔄 ${renovacoes.length}  |  ⚡ ${fas.length} FA`;
 
-    const riderBadge = (r) => r.isReal
+    const realBadge = (r) => r.isReal
         ? `<span style="font-size:0.65rem;background:var(--accent);color:#000;border-radius:3px;padding:1px 4px;margin-left:4px;">REAL</span>`
         : '';
 
     const rowsSaidas = saidas.length
-        ? saidas.map(t => `
-            <tr>
-                <td>${t.rider.flag} ${t.rider.name}${riderBadge(t.rider)}</td>
+        ? saidas.map(t => `<tr>
+                <td>${t.rider.flag} ${t.rider.name}${realBadge(t.rider)}</td>
                 <td class="text-center">${t.rider.age}</td>
                 <td>${t.motivo}</td>
             </tr>`).join('')
@@ -566,47 +588,87 @@ function renderTransfersTab() {
 
     const rowsEntradas = entradas.length
         ? entradas.map(t => {
-            const newBadge = !t.rider.isReal
+            const novoBadge = !t.rider.isReal
                 ? `<span style="font-size:0.65rem;background:#2a6e2a;color:#aaffaa;border-radius:3px;padding:1px 4px;margin-left:4px;">NOVO</span>`
                 : '';
-            return `
-            <tr>
-                <td>${t.rider.flag} ${t.rider.name}${newBadge}${riderBadge(t.rider)}</td>
+            const origem = t.previousTeam ? `${t.previousTeam} → ${t.team}` : `Novato → ${t.team}`;
+            return `<tr>
+                <td>${t.rider.flag} ${t.rider.name}${novoBadge}${realBadge(t.rider)}</td>
                 <td class="text-center">${t.rider.age}</td>
-                <td>${t.team}</td>
-                <td class="text-center">${t.seat}</td>
+                <td style="font-size:0.8rem;">${origem}</td>
             </tr>`;
           }).join('')
-        : `<tr><td colspan="4" style="color:var(--text-secondary);text-align:center;">Sem contratações nesta categoria</td></tr>`;
+        : `<tr><td colspan="3" style="color:var(--text-secondary);text-align:center;">Sem contratações nesta categoria</td></tr>`;
+
+    const rowsRenovacoes = renovacoes.length
+        ? renovacoes.map(t => `<tr>
+                <td>${t.rider.flag} ${t.rider.name}${realBadge(t.rider)}</td>
+                <td class="text-center">${t.rider.age}</td>
+                <td>${t.team}</td>
+                <td class="text-center">+${t.years} ano${t.years > 1 ? 's' : ''}</td>
+            </tr>`).join('')
+        : `<tr><td colspan="4" style="color:var(--text-secondary);text-align:center;">Sem renovações nesta categoria</td></tr>`;
+
+    const rowsFA = fas.length
+        ? fas.map(r => `<tr>
+                <td>${r.flag} ${r.name}${realBadge(r)}</td>
+                <td class="text-center">${r.age}</td>
+                <td class="text-center">${r.speed}</td>
+                <td class="text-center">${r.potential}</td>
+                <td style="font-size:0.8rem;">${r.previousTeam || '—'}</td>
+            </tr>`).join('')
+        : `<tr><td colspan="5" style="color:var(--text-secondary);text-align:center;">Pool vazio</td></tr>`;
 
     content.innerHTML = `
         <div class="grid-layout">
             <div>
-                <div class="panel-header" style="font-size:0.9rem;">📤 Saídas / Free Agents</div>
-                <div class="table-res">
-                    <table>
-                        <thead><tr>
-                            <th style="width:50%">Piloto</th>
-                            <th style="width:10%" class="text-center">Idade</th>
-                            <th style="width:40%">Motivo</th>
-                        </tr></thead>
-                        <tbody>${rowsSaidas}</tbody>
-                    </table>
-                </div>
+                <div class="panel-header" style="font-size:0.9rem;">📤 Saídas / Liberados</div>
+                <div class="table-res"><table>
+                    <thead><tr>
+                        <th style="width:45%">Piloto</th>
+                        <th style="width:10%" class="text-center">Idade</th>
+                        <th style="width:45%">Motivo</th>
+                    </tr></thead>
+                    <tbody>${rowsSaidas}</tbody>
+                </table></div>
             </div>
             <div>
                 <div class="panel-header" style="font-size:0.9rem;">📥 Contratações</div>
-                <div class="table-res">
-                    <table>
-                        <thead><tr>
-                            <th style="width:40%">Piloto</th>
-                            <th style="width:10%" class="text-center">Idade</th>
-                            <th style="width:40%">Equipe</th>
-                            <th style="width:10%" class="text-center">Assento</th>
-                        </tr></thead>
-                        <tbody>${rowsEntradas}</tbody>
-                    </table>
-                </div>
+                <div class="table-res"><table>
+                    <thead><tr>
+                        <th style="width:30%">Piloto</th>
+                        <th style="width:8%" class="text-center">Idade</th>
+                        <th style="width:62%">Origem → Destino</th>
+                    </tr></thead>
+                    <tbody>${rowsEntradas}</tbody>
+                </table></div>
+            </div>
+        </div>
+        <div class="grid-layout" style="margin-top:1rem;">
+            <div>
+                <div class="panel-header" style="font-size:0.9rem;">🔄 Contratos Renovados</div>
+                <div class="table-res"><table>
+                    <thead><tr>
+                        <th style="width:35%">Piloto</th>
+                        <th style="width:10%" class="text-center">Idade</th>
+                        <th style="width:45%">Equipe</th>
+                        <th style="width:10%" class="text-center">Duração</th>
+                    </tr></thead>
+                    <tbody>${rowsRenovacoes}</tbody>
+                </table></div>
+            </div>
+            <div>
+                <div class="panel-header" style="font-size:0.9rem;">⚡ Free Agents Disponíveis (${fas.length})</div>
+                <div class="table-res"><table>
+                    <thead><tr>
+                        <th style="width:30%">Piloto</th>
+                        <th style="width:8%" class="text-center">Idade</th>
+                        <th style="width:8%" class="text-center">Vel</th>
+                        <th style="width:8%" class="text-center">Pot</th>
+                        <th style="width:46%">Equipe Anterior</th>
+                    </tr></thead>
+                    <tbody>${rowsFA}</tbody>
+                </table></div>
             </div>
         </div>`;
 }
