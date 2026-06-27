@@ -660,32 +660,15 @@ function transferRider(riderId, newTeamId, newSeat, category = 'motogp') {
 }
 
 // ==========================================================================
-// SIMULAÇÃO DE CORRIDA
+// SIMULAÇÃO DE CORRIDA - CORREÇÃO GLOBAL
 // ==========================================================================
-
-function triggerSimulation() {
-    try {
-        _triggerSimulationCore();
-    } catch(err) {
-        console.error('[triggerSimulation] Erro:', err);
-        if (typeof logEvent === 'function') logEvent(`⚠️ Erro na simulação: ${err.message}`, 'warn');
-    }
-}
-
 function _triggerSimulationCore() {
     const RACE_POINTS = [25, 20, 16, 13, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
-    const catKey = activeCategory;
-    const grid = ecosystem[catKey];
-    if (!grid || grid.length === 0) {
-        if (typeof logEvent === 'function') logEvent("⚠️ Nenhum piloto na categoria ativa.", "warn");
-        return;
-    }
 
-    // Temporada completa → virar o ano
+    // 1. Temporada completa → virar o ano e resetar todos
     if (currentRound >= totalRoundsPerSeason) {
         currentYear++;
         currentRound = 0;
-        // Resetar pontos de todos os pilotos
         for (const cat in ecosystem) {
             ecosystem[cat].forEach(r => { r.points = 0; r.currentRaceScore = 0; });
         }
@@ -696,68 +679,84 @@ function _triggerSimulationCore() {
         return;
     }
 
+    // 2. Avança a rodada UMA única vez para o mundo inteiro
     currentRound++;
     const round = currentRound;
+    
+    let activeCategoryResult = null; // Vai guardar o pódio só da aba que está aberta
 
-    // Gerar scores de corrida com aleatoriedade
-    const raceEntries = grid.map(rider => {
-        const base = rider.speed * 0.55 + rider.consistency * 0.30 + rider.potential * 0.10;
-        const luck = (Math.random() - 0.48) * 22;
-        return { rider, score: base + luck };
-    });
+    // 3. LOOP MÁGICO: Simula a corrida em TODAS as categorias!
+    for (const catKey in ecosystem) {
+        const grid = ecosystem[catKey];
+        if (!grid || grid.length === 0) continue;
 
-    // Determinar DNFs (~10% chance por piloto, mínimo 1 máx 4)
-    const dnfCandidates = [...raceEntries].sort(() => Math.random() - 0.5);
-    const dnfCount = Math.min(4, Math.max(0, Math.floor(Math.random() * grid.length * 0.12)));
-    const dnfSet = new Set(dnfCandidates.slice(0, dnfCount).map(e => e.rider.riderId));
+        // Gerar scores de corrida com aleatoriedade
+        const raceEntries = grid.map(rider => {
+            const base = rider.speed * 0.55 + rider.consistency * 0.30 + rider.potential * 0.10;
+            const luck = (Math.random() - 0.48) * 22;
+            return { rider, score: base + luck };
+        });
 
-    const finishers = raceEntries
-        .filter(e => !dnfSet.has(e.rider.riderId))
-        .sort((a, b) => b.score - a.score);
+        // Determinar DNFs (Abandonos)
+        const dnfCandidates = [...raceEntries].sort(() => Math.random() - 0.5);
+        const dnfCount = Math.min(4, Math.max(0, Math.floor(Math.random() * grid.length * 0.12)));
+        const dnfSet = new Set(dnfCandidates.slice(0, dnfCount).map(e => e.rider.riderId));
 
-    const dnfRiders = raceEntries.filter(e => dnfSet.has(e.rider.riderId));
+        const finishers = raceEntries
+            .filter(e => !dnfSet.has(e.rider.riderId))
+            .sort((a, b) => b.score - a.score);
 
-    // Atribuir pontos
-    finishers.forEach((entry, idx) => {
-        const pts = RACE_POINTS[idx] || 0;
-        entry.rider.points = (entry.rider.points || 0) + pts;
-        entry.rider.currentRaceScore = pts;
-        if (entry.rider.stats) {
-            entry.rider.stats.races++;
-            if (idx === 0) { entry.rider.stats.wins++; entry.rider.stats.podiums++; }
-            else if (idx === 1 || idx === 2) entry.rider.stats.podiums++;
+        const dnfRiders = raceEntries.filter(e => dnfSet.has(e.rider.riderId));
+
+        // Atribuir pontos para a categoria que está sendo rodada no loop
+        finishers.forEach((entry, idx) => {
+            const pts = RACE_POINTS[idx] || 0;
+            entry.rider.points = (entry.rider.points || 0) + pts;
+            entry.rider.currentRaceScore = pts;
+            if (entry.rider.stats) {
+                entry.rider.stats.races++;
+                if (idx === 0) { entry.rider.stats.wins++; entry.rider.stats.podiums++; }
+                else if (idx === 1 || idx === 2) entry.rider.stats.podiums++;
+            }
+        });
+        
+        dnfRiders.forEach(entry => {
+            entry.rider.currentRaceScore = 0;
+            if (entry.rider.stats) { entry.rider.stats.races++; entry.rider.stats.dnfs++; }
+        });
+
+        const teamPts = {};
+        grid.forEach(r => { teamPts[r.teamId] = (teamPts[r.teamId] || 0) + (r.points || 0); });
+
+        // Distribuir Finanças e Prize Money para as equipes dessa categoria
+        const finisherIds = finishers.map(e => e.rider.riderId);
+        if (typeof processRaceFinances === 'function') processRaceFinances(finisherIds, catKey);
+
+        // Disparar Log de vitória
+        const winner = finishers[0]?.rider;
+        if (winner && typeof logEvent === 'function') {
+            logEvent(`🏁 Etapa ${round}/${totalRoundsPerSeason} (${catKey.toUpperCase()}): <strong>${winner.flag} ${winner.name}</strong> vence!`, "race");
         }
-    });
-    dnfRiders.forEach(entry => {
-        entry.rider.currentRaceScore = 0;
-        if (entry.rider.stats) { entry.rider.stats.races++; entry.rider.stats.dnfs++; }
-    });
 
-    // Classificação de equipes (acumulada)
-    const teamPts = {};
-    grid.forEach(r => { teamPts[r.teamId] = (teamPts[r.teamId] || 0) + (r.points || 0); });
-
-    lastRaceData = {
-        round,
-        catKey,
-        finishers: finishers.map(e => ({ riderId: e.rider.riderId, name: e.rider.name, teamId: e.rider.teamId, team: e.rider.team, flag: e.rider.flag })),
-        dnfs: dnfRiders.map(e => ({ riderId: e.rider.riderId, name: e.rider.name, team: e.rider.team, flag: e.rider.flag })),
-        teamPoints: teamPts
-    };
-
-    // Finanças
-    const finisherIds = finishers.map(e => e.rider.riderId);
-    if (typeof processRaceFinances === 'function') processRaceFinances(finisherIds, catKey);
-
-    // Mensagem de vitória no log
-    const winner = finishers[0]?.rider;
-    if (winner && typeof logEvent === 'function') {
-        logEvent(`🏁 Etapa ${round}/${totalRoundsPerSeason} (${catKey.toUpperCase()}): <strong>${winner.flag} ${winner.name}</strong> vence!`, "race");
+        // Separar o resultado apenas da aba que o usuário está vendo para renderizar o Widget do Pódio
+        if (catKey === activeCategory) {
+            activeCategoryResult = {
+                round,
+                catKey,
+                finishers: finishers.map(e => ({ riderId: e.rider.riderId, name: e.rider.name, teamId: e.rider.teamId, team: e.rider.team, flag: e.rider.flag })),
+                dnfs: dnfRiders.map(e => ({ riderId: e.rider.riderId, name: e.rider.name, team: e.rider.team, flag: e.rider.flag })),
+                teamPoints: teamPts
+            };
+        }
     }
+
+    // 4. Salva no lastRaceData apenas os dados da aba que estava aberta para o pódio não bugar
+    lastRaceData = activeCategoryResult;
 
     saveLocalStorage();
     if (typeof refreshUI === 'function') refreshUI();
 }
+
 
 // ==========================================================================
 // BOOTSTRAP E ARMAZENAMENTO DE SESSÃO
@@ -789,6 +788,9 @@ function initializeRealEcosystem() {
     if (typeof logEvent === "function") logEvent("✔ Banco de Dados V3.2 (Moto3 2026 — 13 equipes / 26 pilotos reais) carregado com sucesso!", "sys");
 }
 
+// ==========================================================================
+// CORREÇÃO DO BOOTSTRAP (Substitua o final do seu engine.js por isso)
+// ==========================================================================
 window.addEventListener('DOMContentLoaded', () => {
     const saved = localStorage.getItem('motogp_sim_save');
     if (saved) {
@@ -811,9 +813,11 @@ window.addEventListener('DOMContentLoaded', () => {
                 initializeRealEcosystem();
             }
         } catch (e) {
+            console.error("[Sistema] Erro ao ler save. Resetando...", e);
             initializeRealEcosystem();
         }
     } else {
         initializeRealEcosystem();
     }
 });
+

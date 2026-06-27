@@ -197,8 +197,6 @@ function renderGaragesTab() {
     });
 }
 
-
-
 // ==========================================================================
 // SISTEMA DE TRANSFERÊNCIA DE PILOTOS (UI)
 // ==========================================================================
@@ -374,6 +372,7 @@ function renderTransferPanel() {
             <p style="margin: 8px 0 0 0; color: #d1d5db;">Total de pilotos: <strong>${riders.length}</strong></p>
             <p style="margin: 8px 0 0 0; color: #d1d5db;">Temporada: <strong>${currentYear}</strong></p>
             <p style="margin: 8px 0 0 0; color: #d1d5db;">Categoria: <strong>${categoriesConfig[activeCategory].name}</strong></p>
+        </div>
     `;
 
     // Listar pilotos por equipe com seus IDs
@@ -393,7 +392,7 @@ function renderTransferPanel() {
         html += `</p>`;
     });
 
-    html += `</div></div>`;
+    html += `</div>`;
 
     panel.innerHTML = html;
 }
@@ -529,3 +528,4 @@ function openRiderProfile(riderId, categoryKey = activeCategory) {
         console.warn(`[UI] Falha ao renderizar perfil do piloto: ${error.message}`);
     }
 }
+
