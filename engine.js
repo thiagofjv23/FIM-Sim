@@ -804,6 +804,17 @@ window.addEventListener('DOMContentLoaded', () => {
                 initializeRealEcosystem();
                 return;
             }
+// Invalida saves antigos que não têm o grid Moto3 completo (26 pilotos reais)
+const hasNewArchitecture = ...;
+const hasMoto3Complete = parsed.ecosystem &&
+                         parsed.ecosystem.moto3 &&
+                         parsed.ecosystem.moto3.length >= 26;
+
+const hasMoto3AllReal = hasMoto3Complete &&
+                        parsed.ecosystem.moto3.filter(r => r.isReal).length >= 26;
+
+if (!hasNewArchitecture || !hasMoto3Complete || !hasMoto3AllReal) {
+    console.warn("[Sistema] Save desatualizado detectado (Moto3 incompleta ou com regens). Reconstruindo V3.2...");
 
             currentYear = parsed.currentYear;
             currentRound = parsed.currentRound;
