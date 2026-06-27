@@ -198,6 +198,7 @@ function generateRiderId() {
 const categoriesConfig = {
     motogp: {
         name: "MotoGP™ Elite World Class",
+        minAge: 18, maxAge: 50,
         paisesPermitidos: ["Mundial"],
         teams: [
             { id: 't_mgp_ducati', name: 'Ducati Lenovo Team', manufacturer: 'Ducati', bikePerformance: 98, mechanicCompetence: 95, reputation: 99, aiPersonality: 'resultados_imediatos', academyLink: 'ducati', nationalBias: null, budget: 45, targetPosition: 1, morale: 90 },
@@ -215,6 +216,7 @@ const categoriesConfig = {
     },
     moto2: {
         name: "Moto2™ World Championship",
+        minAge: 18, maxAge: 50,
         paisesPermitidos: ["Mundial"],
         teams: [
             { id: 't_m2_pramac', name: 'BLU CRU Pramac Yamaha Moto2', manufacturer: 'Yamaha', bikePerformance: 88, mechanicCompetence: 85, reputation: 88, aiPersonality: 'caca_talentos', academyLink: 'yamaha_blucru', nationalBias: null, budget: 5, targetPosition: 5, morale: 80 },
@@ -235,6 +237,7 @@ const categoriesConfig = {
     // ── MOTO3 2026 — 13 EQUIPES REAIS ────────────────────────────────────────
     moto3: {
         name: "Moto3™ World Championship",
+        minAge: 18, maxAge: 28,
         paisesPermitidos: ["Mundial"],
         teams: [
             { id: 't_m3_sic58',   name: 'SIC58 Squadra Corse',              manufacturer: 'Honda',  bikePerformance: 87, mechanicCompetence: 86, reputation: 86, aiPersonality: 'conservadora',        academyLink: null,         nationalBias: ['🇮🇹'],               budget: 3, targetPosition: 6,  morale: 80 },
@@ -254,6 +257,7 @@ const categoriesConfig = {
     },
     moto3_junior: {
         name: "FIM JuniorGP™ Moto3",
+        minAge: 16, maxAge: 25,
         paisesPermitidos: ["Mundial"],
         teams: [
             { id: 't_jgp_aspar', name: 'Aspar Junior Team', manufacturer: 'KTM', bikePerformance: 85, mechanicCompetence: 80, reputation: 85, aiPersonality: 'caca_talentos', academyLink: 'aspar', nationalBias: ['🇪🇸'], budget: 2, targetPosition: 1, morale: 85 },
@@ -271,6 +275,7 @@ const categoriesConfig = {
     },
     rookies_cup: {
         name: "Red Bull MotoGP™ Rookies Cup",
+        minAge: 15, maxAge: 19,
         paisesPermitidos: ["Mundial"],
         teams: Array.from({length: 11}, (_, i) => ({
             id: `t_rkc_${i+1}`, name: `Rookies Team ${String.fromCharCode(65+i)}`, manufacturer: 'KTM',
@@ -281,6 +286,7 @@ const categoriesConfig = {
     },
     moto4_latin: {
         name: "Moto4™ Latin Cup",
+        minAge: 14, maxAge: 21,
         paisesPermitidos: ["🇧🇷", "🇨🇴", "🇦🇷", "🇨🇱"],
         teams: [
             { id: 't_m4l_yamaha', name: 'Yamaha IMS', manufacturer: 'Yamaha', bikePerformance: 65, mechanicCompetence: 65, reputation: 65, aiPersonality: 'resultados_imediatos', academyLink: 'yamaha_blucru', nationalBias: ['🇧🇷'], budget: 0.8, targetPosition: 2, morale: 80 },
@@ -298,6 +304,7 @@ const categoriesConfig = {
     },
     moto4_asia: {
         name: "Idemitsu Moto4 Asia Cup",
+        minAge: 14, maxAge: 21,
         paisesPermitidos: ["🇯🇵", "🇮🇩", "🇲🇾", "🇹🇭", "🇦🇺", "🇵🇭", "🇶🇦", "🇮🇳", "🇳🇿"],
         teams: [
             { id: 't_m4a_astra', name: 'Astra Honda Racing', manufacturer: 'Honda', bikePerformance: 72, mechanicCompetence: 70, reputation: 75, aiPersonality: 'caca_talentos', academyLink: 'astra', nationalBias: ['🇮🇩'], budget: 1.5, targetPosition: 2, morale: 85 },
@@ -313,6 +320,7 @@ const categoriesConfig = {
     },
     moto4_british: {
         name: "Moto4™ British Cup",
+        minAge: 14, maxAge: 21,
         paisesPermitidos: ["🇬🇧", "🇮🇪"],
         teams: [
             { id: 't_m4b_1', name: 'VisionTrack UK', manufacturer: 'Honda', bikePerformance: 65, mechanicCompetence: 65, reputation: 60, aiPersonality: 'resultados_imediatos', academyLink: 'visiontrack', nationalBias: ['🇬🇧'], budget: 0.8, targetPosition: 2, morale: 80 },
@@ -330,6 +338,7 @@ const categoriesConfig = {
     },
     moto4_northern: {
         name: "Moto4™ Northern Cup",
+        minAge: 14, maxAge: 21,
         paisesPermitidos: ["🇩🇪", "🇳🇱", "🇨🇿", "🇦🇹", "🇨🇦"],
         teams: [
             { id: 't_m4n_1', name: 'ADAC Sachsen', manufacturer: 'KTM', bikePerformance: 66, mechanicCompetence: 66, reputation: 62, aiPersonality: 'caca_talentos', academyLink: 'adac', nationalBias: ['🇩🇪'], budget: 0.8, targetPosition: 2, morale: 80 },
@@ -347,6 +356,7 @@ const categoriesConfig = {
     },
     moto4_european: {
         name: "Moto4™ European Cup",
+        minAge: 14, maxAge: 21,
         paisesPermitidos: ["🇪🇸", "🇮🇹", "🇫🇷", "🇵🇹"],
         teams: [
             { id: 't_m4e_1', name: 'Cuna de Campeones', manufacturer: 'Honda', bikePerformance: 68, mechanicCompetence: 68, reputation: 68, aiPersonality: 'caca_talentos', academyLink: 'cuna', nationalBias: ['🇪🇸'], budget: 0.8, targetPosition: 2, morale: 80 },
@@ -582,10 +592,12 @@ function inicializarGridsVazios() {
                     rider.manufacturer = teamObj.manufacturer;
                     rider.seat = seatNum;
 
-                    if (catKey === 'moto2') { rider.speed += 36; rider.age = Math.max(rider.age, 19); }
-                    else if (catKey === 'moto3') { rider.speed += 32; rider.age = Math.max(rider.age, 17); }
-                    else if (catKey === 'moto3_junior') { rider.speed += 20; rider.age = Math.max(rider.age, 15); }
-                    else if (catKey === 'rookies_cup' || catKey.includes('moto4')) { rider.speed += 16; rider.age = Math.min(rider.age, 15); }
+                    const { minAge, maxAge } = config;
+                    if (catKey === 'moto2') { rider.speed += 36; }
+                    else if (catKey === 'moto3') { rider.speed += 32; }
+                    else if (catKey === 'moto3_junior') { rider.speed += 20; }
+                    else if (catKey === 'rookies_cup' || catKey.includes('moto4')) { rider.speed += 16; }
+                    rider.age = Math.min(Math.max(rider.age, minAge), maxAge);
                 }
 
                 // Financial fields — calculated after rider object is ready
@@ -816,9 +828,8 @@ window.addEventListener('DOMContentLoaded', () => {
                 currentRound        = parsed.currentRound || 0;
                 activeCategory      = parsed.activeCategory || 'motogp';
                 ecosystem           = parsed.ecosystem;
-                const _catMinAge = { motogp: 18, moto2: 16, moto3: 14, moto3_junior: 13, rookies_cup: 12 };
                 for (const cat in ecosystem) {
-                    const minAge = _catMinAge[cat] || 12;
+                    const minAge = (categoriesConfig[cat] && categoriesConfig[cat].minAge) || 12;
                     ecosystem[cat].forEach(r => { if (!r.age) r.age = minAge; });
                 }
                 lastRaceData        = parsed.lastRaceData || null;
