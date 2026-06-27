@@ -375,6 +375,9 @@ function renderTransferPanel() {
             <p style="margin: 8px 0 0 0; color: #d1d5db;">Temporada: <strong>${currentYear}</strong></p>
             <p style="margin: 8px 0 0 0; color: #d1d5db;">Categoria: <strong>${categoriesConfig[activeCategory].name}</strong></p>
     `;
+    // ... resto do seu loop de grupos de equipes original
+}
+
 
     // Listar pilotos por equipe com seus IDs
     const teamGroups = {};
