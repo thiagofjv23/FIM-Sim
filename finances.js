@@ -1,9 +1,8 @@
 // ==========================================================================
-// ROAD TO MOTOGP™ - SISTEMA FINANCEIRO V1.0
+// ROAD TO MOTOGP™ - SISTEMA FINANCEIRO V1.0 (CORRIGIDO)
 // Salários, Prize Money, Patrocínios, Pay Drivers, Transferências
 // ==========================================================================
 
-// Garante que teamFinancesState existe mesmo se engine.js não carregou
 if (typeof teamFinancesState === 'undefined') { var teamFinancesState = {}; }
 
 // ── FATORES DE SALÁRIO POR CATEGORIA (M€/ano) ─────────────────────────────
@@ -28,10 +27,8 @@ const PRIZE_MULTIPLIERS = {
     moto4_british: 0.008, moto4_northern: 0.008, moto4_european: 0.008
 };
 
-// ── PONTOS POR POSIÇÃO (sistema MotoGP padrão) ────────────────────────────
 const POINTS_TABLE = [25, 20, 16, 13, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 
-// Fallback local para totalRoundsPerSeason (evita dependência de escopo entre scripts)
 function _getRounds() {
     return (typeof totalRoundsPerSeason !== 'undefined') ? totalRoundsPerSeason : 10;
 }
@@ -49,12 +46,11 @@ const SPONSOR_POOL_SECONDARY = [
 ];
 
 // ==========================================================================
-// CÁLCULO DE SALÁRIO E VALOR DE MERCADO (CORRIGIDO)
+// CÁLCULO DE SALÁRIO E VALOR DE MERCADO
 // ==========================================================================
 function calculateRiderSalary(rider, catKey) {
     const factor = SALARY_FACTORS[catKey] || SALARY_FACTORS['moto4_european'];
 
-    // Pay driver: regen com lineage alto mas velocidade baixa em categorias menores
     if (factor.allowPayDriver && !rider.isReal && rider.lineage > 55 && rider.speed < 76) {
         return parseFloat((-(rider.lineage * 0.003)).toFixed(3));
     }
@@ -64,10 +60,16 @@ function calculateRiderSalary(rider, catKey) {
     return parseFloat(salary.toFixed(3));
 }
 
-// ==========================================================================
-// PRIZE MONEY
-// ==========================================================================
+function calculateMarketValue(rider, catKey) {
+    const factor = SALARY_FACTORS[catKey] || SALARY_FACTORS['moto4_european'];
+    const composite = rider.speed * 0.55 + rider.potential * 0.45;
+    const value = Math.max(0.01, (composite - 60) * factor.scale * 15);
+    return parseFloat(value.toFixed(2));
+}
 
+// ==========================================================================
+// PRIZE MONEY & PATROCÍNIOS
+// ==========================================================================
 function getPrizeMoney(position, catKey) {
     const multiplier = PRIZE_MULTIPLIERS[catKey] || 0.008;
     const idx = position - 1;
@@ -75,13 +77,8 @@ function getPrizeMoney(position, catKey) {
     return parseFloat((base * multiplier).toFixed(4));
 }
 
-// ==========================================================================
-// GERAÇÃO DE PATROCINADORES
-// ==========================================================================
-
 function generateSponsorsForTeam(team, usedSponsorNames) {
     const sponsors = [];
-
     function pickUnique(pool) {
         let attempts = 0;
         while (attempts < 40) {
@@ -96,8 +93,6 @@ function generateSponsorsForTeam(team, usedSponsorNames) {
     }
 
     const budget = team.budget;
-
-    // Title sponsor para equipes com orçamento > 2
     if (budget >= 2) {
         const name = pickUnique(SPONSOR_POOL_TITLE);
         if (name) {
@@ -105,8 +100,6 @@ function generateSponsorsForTeam(team, usedSponsorNames) {
             sponsors.push({ name, type: 'title', annualValue: annual, perRace: parseFloat((annual / _getRounds()).toFixed(4)) });
         }
     }
-
-    // Sponsor secundário para orçamento > 0.5
     if (budget >= 0.5) {
         const name = pickUnique(SPONSOR_POOL_SECONDARY);
         if (name) {
@@ -114,8 +107,6 @@ function generateSponsorsForTeam(team, usedSponsorNames) {
             sponsors.push({ name, type: 'secondary', annualValue: annual, perRace: parseFloat((annual / _getRounds()).toFixed(4)) });
         }
     }
-
-    // Terceiro sponsor para equipes grandes (budget > 8)
     if (budget >= 8) {
         const name = pickUnique(SPONSOR_POOL_SECONDARY);
         if (name) {
@@ -123,14 +114,12 @@ function generateSponsorsForTeam(team, usedSponsorNames) {
             sponsors.push({ name, type: 'secondary', annualValue: annual, perRace: parseFloat((annual / _getRounds()).toFixed(4)) });
         }
     }
-
     return sponsors;
 }
 
 // ==========================================================================
-// INICIALIZAÇÃO DO ESTADO FINANCEIRO
+// OPERAÇÕES FINANCEIRAS DE FLUXO
 // ==========================================================================
-
 function initTeamFinances() {
     teamFinancesState = {};
     const usedSponsorNames = new Set();
@@ -152,10 +141,6 @@ function initTeamFinances() {
     }
 }
 
-// ==========================================================================
-// REGISTRO DE TRANSAÇÃO
-// ==========================================================================
-
 function recordTransaction(teamId, type, amount, description) {
     const fs = teamFinancesState[teamId];
     if (!fs) return;
@@ -164,17 +149,12 @@ function recordTransaction(teamId, type, amount, description) {
     if (fs.transactions.length > 60) fs.transactions.pop();
 }
 
-// ==========================================================================
-// PROCESSAMENTO FINANCEIRO PÓS-CORRIDA
-// ==========================================================================
-
 function processRaceFinances(finisherIds, catKey) {
     const grid = ecosystem[catKey];
     if (!grid) return;
 
     const teamsInCategory = new Set(grid.map(r => r.teamId).filter(Boolean));
 
-    // 1. Renda de sponsors por corrida para cada equipe da categoria
     for (const teamId of teamsInCategory) {
         const fs = teamFinancesState[teamId];
         if (!fs || !fs.sponsors.length) continue;
@@ -186,7 +166,6 @@ function processRaceFinances(finisherIds, catKey) {
         }
     }
 
-    // 2. Salário / pay driver por corrida
     for (const rider of grid) {
         if (!rider.teamId || rider.salary == null) continue;
         const salaryPerRound = parseFloat((rider.salary / _getRounds()).toFixed(5));
@@ -202,7 +181,6 @@ function processRaceFinances(finisherIds, catKey) {
         if (fs) fs.riderCosts = parseFloat((fs.riderCosts + salaryPerRound).toFixed(5));
     }
 
-    // 3. Prize money por posição final
     finisherIds.forEach((riderId, index) => {
         const rider = grid.find(r => r.riderId === riderId);
         if (!rider || !rider.teamId) return;
@@ -215,10 +193,6 @@ function processRaceFinances(finisherIds, catKey) {
     });
 }
 
-// ==========================================================================
-// TRANSFERÊNCIAS
-// ==========================================================================
-
 function getTransferOptions(riderId) {
     const grid = ecosystem[activeCategory];
     if (!grid) return null;
@@ -227,7 +201,6 @@ function getTransferOptions(riderId) {
     if (!rider) return null;
 
     const availableTransfers = [];
-
     for (const team of categoriesConfig[activeCategory].teams) {
         const teamRiders = grid.filter(r => r.teamId === team.id);
         const occupiedSeats = new Set(teamRiders.map(r => r.seat));
@@ -244,13 +217,7 @@ function getTransferOptions(riderId) {
             });
         }
     }
-
-    return {
-        rider,
-        currentTeam: rider.team,
-        currentSeat: rider.seat,
-        availableTransfers
-    };
+    return { rider, currentTeam: rider.team, currentSeat: rider.seat, availableTransfers };
 }
 
 function executeRiderTransfer(riderId, targetTeamId, targetSeat) {
@@ -265,16 +232,12 @@ function executeRiderTransfer(riderId, targetTeamId, targetSeat) {
     return success;
 }
 
-// ==========================================================================
-// RESUMO FINANCEIRO
-// ==========================================================================
-
 function getTeamFinancialSummary(teamId) {
     return teamFinancesState[teamId] || null;
 }
 
 // ==========================================================================
-// FORMATAÇÃO DE VALORES (CORRIGIDO COM CRASES)
+// FORMATAÇÃO DE STRINGS COM CRASES (CORRIGIDO)
 // ==========================================================================
 function formatMoney(value) {
     const abs = Math.abs(value);
@@ -291,93 +254,84 @@ function formatBalance(value) {
 }
 
 // ==========================================================================
-// UI: ABA FINANÇAS
+// RENDERIZAÇÃO DAS INTERFACES FINANCEIRAS
 // ==========================================================================
-
 function renderFinancesTab() {
     createCategorySelectors('catTabsFinancas');
-
     const container = document.getElementById('financasContent');
     if (!container) return;
 
     try {
-    // Safety: initialize if state was never populated
-    if (Object.keys(teamFinancesState).length === 0) {
-        initTeamFinances();
-    }
+        if (Object.keys(teamFinancesState).length === 0) initTeamFinances();
 
-    const grid    = ecosystem[activeCategory] || [];
-    const config  = categoriesConfig[activeCategory];
-    if (!config) { container.innerHTML = '<p style="color:#9ca3af">Categoria indisponível.</p>'; return; }
+        const grid = ecosystem[activeCategory] || [];
+        const config = categoriesConfig[activeCategory];
+        if (!config) { container.innerHTML = '<p style="color:#9ca3af">Categoria indisponível.</p>'; return; }
 
-    const sortedTeams = [...config.teams].sort((a, b) => {
-        const bA = teamFinancesState[a.id]?.balance ?? a.budget;
-        const bB = teamFinancesState[b.id]?.balance ?? b.budget;
-        return bB - bA;
-    });
+        const sortedTeams = [...config.teams].sort((a, b) => {
+            const bA = teamFinancesState[a.id]?.balance ?? a.budget;
+            const bB = teamFinancesState[b.id]?.balance ?? b.budget;
+            return bB - bA;
+        });
 
-    let html = `
-        <div class="table-res">
-        <table>
-            <thead>
-                <tr>
-                    <th style="width:27%">Equipe</th>
-                    <th style="width:13%;text-align:center">Saldo</th>
-                    <th style="width:10%;text-align:center">Base</th>
-                    <th style="width:13%;text-align:center">Patrocínios</th>
-                    <th style="width:13%;text-align:center">Prize Money</th>
-                    <th style="width:14%;text-align:center">Salários/ano</th>
-                    <th style="width:10%;text-align:center">Detalhe</th>
-                </tr>
-            </thead>
-            <tbody>
-    `;
-
-    for (const team of sortedTeams) {
-        const fs = teamFinancesState[team.id] || {};
-        const teamRiders = grid.filter(r => r.teamId === team.id);
-        const totalSalary = teamRiders.reduce((s, r) => s + (r.salary || 0), 0);
-        const bal = fs.balance ?? team.budget;
-        const rowBg = bal < 0 ? 'background:rgba(239,68,68,0.08);' : '';
-
-        html += `
-            <tr style="${rowBg}">
-                <td style="font-weight:600;padding:8px 6px">${team.name}</td>
-                <td style="text-align:center">${formatBalance(bal)}</td>
-                <td style="text-align:center;color:#9ca3af">€${team.budget}M</td>
-                <td style="text-align:center;color:#10b981">€${(fs.sponsorIncome || 0).toFixed(2)}M</td>
-                <td style="text-align:center;color:#fbbf24">€${(fs.prizeMoney || 0).toFixed(2)}M</td>
-                <td style="text-align:center;color:${totalSalary < 0 ? '#10b981' : '#f87171'}">
-                    ${totalSalary < 0 ? '+' : ''}€${Math.abs(totalSalary).toFixed(2)}M
-                </td>
-                <td style="text-align:center">
-                    <button onclick="openTeamFinanceModal('${team.id}','${activeCategory}')"
-                        style="background:#374151;border:1px solid #4b5563;color:white;border-radius:4px;padding:2px 10px;cursor:pointer;font-size:0.82em">
-                        💰
-                    </button>
-                </td>
-            </tr>
+        let html = `
+            <div class="table-res">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:27%">Equipe</th>
+                        <th style="width:13%;text-align:center">Saldo</th>
+                        <th style="width:10%;text-align:center">Base</th>
+                        <th style="width:13%;text-align:center">Patrocínios</th>
+                        <th style="width:13%;text-align:center">Prize Money</th>
+                        <th style="width:14%;text-align:center">Salários/ano</th>
+                        <th style="width:10%;text-align:center">Detalhe</th>
+                    </tr>
+                </thead>
+                <tbody>
         `;
-    }
 
-    html += '</tbody></table></div>';
+        for (const team of sortedTeams) {
+            const fs = teamFinancesState[team.id] || {};
+            const teamRiders = grid.filter(r => r.teamId === team.id);
+            const totalSalary = teamRiders.reduce((s, r) => s + (r.salary || 0), 0);
+            const bal = fs.balance ?? team.budget;
+            const rowBg = bal < 0 ? 'background:rgba(239,68,68,0.08);' : '';
+
+            html += `
+                <tr style="${rowBg}">
+                    <td style="font-weight:600;padding:8px 6px">${team.name}</td>
+                    <td style="text-align:center">${formatBalance(bal)}</td>
+                    <td style="text-align:center;color:#9ca3af">€${team.budget}M</td>
+                    <td style="text-align:center;color:#10b981">€${(fs.sponsorIncome || 0).toFixed(2)}M</td>
+                    <td style="text-align:center;color:#fbbf24">€${(fs.prizeMoney || 0).toFixed(2)}M</td>
+                    <td style="text-align:center;color:${totalSalary < 0 ? '#10b981' : '#f87171'}">
+                        ${totalSalary < 0 ? '+' : ''}€${Math.abs(totalSalary).toFixed(2)}M
+                    </td>
+                    <td style="text-align:center">
+                        <button onclick="openTeamFinanceModal('${team.id}','${activeCategory}')"
+                            style="background:#374151;border:1px solid #4b5563;color:white;border-radius:4px;padding:2px 10px;cursor:pointer;font-size:0.82em">
+                            💰
+                        </button>
+                    </td>
+                </tr>
+            `;
+        }
+
+        html += '</tbody></table></div>';
         container.innerHTML = html;
     } catch(e) {
         console.error('[renderFinancesTab]', e);
-        if (container) container.innerHTML = `<p style="color:#ef4444;padding:12px">Erro ao carregar finanças: ${e.message}</p>`;
+        container.innerHTML = `<p style="color:#ef4444;padding:12px">Erro ao carregar finanças: ${e.message}</p>`;
     }
 }
-
-// ==========================================================================
-// UI: MODAL FINANCEIRO DE EQUIPE
-// ==========================================================================
 
 function openTeamFinanceModal(teamId, catKey) {
     const fs = teamFinancesState[teamId];
     if (!fs) return;
 
-    const team    = categoriesConfig[catKey]?.teams.find(t => t.id === teamId);
-    const riders  = (ecosystem[catKey] || []).filter(r => r.teamId === teamId);
+    const team = categoriesConfig[catKey]?.teams.find(t => t.id === teamId);
+    const riders = (ecosystem[catKey] || []).filter(r => r.teamId === teamId);
 
     const existing = document.getElementById('modal-finance-team');
     if (existing) existing.remove();
@@ -429,7 +383,6 @@ function openTeamFinanceModal(teamId, catKey) {
                 <h2 style="margin:0;color:#fbbf24">💰 ${team?.name || teamId}</h2>
                 <button onclick="document.getElementById('modal-finance-team').remove()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;line-height:1">&times;</button>
             </div>
-
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px">
                 <div style="background:#111827;border-radius:6px;padding:10px;text-align:center">
                     <div style="font-size:0.72em;color:#9ca3af;text-transform:uppercase;margin-bottom:4px">Saldo Atual</div>
@@ -444,28 +397,18 @@ function openTeamFinanceModal(teamId, catKey) {
                     <div style="font-size:1.1em;font-weight:bold;color:#10b981">€${(fs.sponsorIncome || 0).toFixed(2)}M</div>
                 </div>
             </div>
-
             <h4 style="color:#fbbf24;margin:0 0 8px">Patrocinadores</h4>
             <div class="table-res" style="margin-bottom:16px">
-                <table><thead><tr>
-                    <th>Nome</th><th style="text-align:center">Tipo</th>
-                    <th style="text-align:center">Valor Anual</th><th style="text-align:center">Por Etapa</th>
-                </tr></thead><tbody>${sponsorRows}</tbody></table>
+                <table><thead><tr><th>Nome</th><th style="text-align:center">Tipo</th><th style="text-align:center">Valor Anual</th><th style="text-align:center">Por Etapa</th></tr></thead><tbody>${sponsorRows}</tbody></table>
             </div>
-
             <h4 style="color:#fbbf24;margin:0 0 8px">Pilotos & Contratos</h4>
             <div class="table-res" style="margin-bottom:16px">
-                <table><thead><tr>
-                    <th>Piloto</th><th style="text-align:center">Status</th>
-                    <th style="text-align:center">Salário</th><th style="text-align:center">Contrato</th>
-                </tr></thead><tbody>${riderRows}</tbody></table>
+                <table><thead><tr><th>Piloto</th><th style="text-align:center">Status</th><th style="text-align:center">Salário</th><th style="text-align:center">Contrato</th></tr></thead><tbody>${riderRows}</tbody></table>
             </div>
-
             <h4 style="color:#fbbf24;margin:0 0 8px">Últimas Transações</h4>
             <div style="background:#111827;border-radius:6px;padding:10px">${txLog}</div>
         </div>
     `;
-
     document.body.appendChild(modal);
     modal.onclick = e => { if (e.target === modal) modal.remove(); };
 }
