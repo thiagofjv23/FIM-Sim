@@ -20,7 +20,7 @@ function logEvent(text, type) {
     if(!consoleEl) return;
     const item = document.createElement('div');
     item.className = `log-line ${type || ''}`;
-    item.innerText = `[${currentYear}] ${text}`;
+    item.innerHTML = `[${currentYear}] ${text}`;
     consoleEl.appendChild(item);
     consoleEl.scrollTop = consoleEl.scrollHeight;
 }
@@ -60,37 +60,37 @@ function refreshUI() {
     renderStandingsTab();
     renderGaragesTab();
     renderTransferPanel();
+    if (typeof renderFinancesTab === 'function') renderFinancesTab();
 }
 
 // EXIBE OS DETALHES DA ÚLTIMA CORRIDA BASEADO NA ABA ATIVA
 function renderRaceResultWidget() {
     const panel = document.getElementById('raceResultPanel');
-    
-    // Valida se há dados salvos e se a categoria atual possui registros mapeados
-    if (!lastRaceData || !lastRaceData[activeCategory]) {
+    if (!panel) return;
+
+    if (!lastRaceData || lastRaceData.catKey !== activeCategory) {
         panel.style.display = 'none';
         return;
     }
 
-    // Isola os dados exclusivos da categoria que o usuário está visualizando
-    const activeRaceData = lastRaceData[activeCategory];
-
     panel.style.display = 'block';
-    document.getElementById('txtRaceRound').innerText = `Etapa ${activeRaceData.roundNum} - ${categoriesConfig[activeCategory].name}`;
-    
-    document.getElementById('podium-p1').innerText = activeRaceData.podium[0]?.display || 'N/A';
-    document.getElementById('podium-p2').innerText = activeRaceData.podium[1]?.display || 'N/A';
-    document.getElementById('podium-p3').innerText = activeRaceData.podium[2]?.display || 'N/A';
+    document.getElementById('txtRaceRound').innerText = `Etapa ${lastRaceData.round}/${totalRoundsPerSeason} - ${categoriesConfig[activeCategory].name}`;
+
+    const p1 = lastRaceData.finishers[0];
+    const p2 = lastRaceData.finishers[1];
+    const p3 = lastRaceData.finishers[2];
+    document.getElementById('podium-p1').innerText = p1 ? `${p1.flag} ${p1.name}` : 'N/A';
+    document.getElementById('podium-p2').innerText = p2 ? `${p2.flag} ${p2.name}` : 'N/A';
+    document.getElementById('podium-p3').innerText = p3 ? `${p3.flag} ${p3.name}` : 'N/A';
 
     const dnfList = document.getElementById('dnfList');
     dnfList.innerHTML = '';
-    
-    if (activeRaceData.dnfs.length === 0) {
-        dnfList.innerHTML = '<li>🎉 Nenhum abandono registrado! Grid completo cruzou a linha.</li>';
+    if (!lastRaceData.dnfs || lastRaceData.dnfs.length === 0) {
+        dnfList.innerHTML = '<li>Nenhum abandono registrado. Grid completo cruzou a linha.</li>';
     } else {
-        activeRaceData.dnfs.forEach(item => {
+        lastRaceData.dnfs.forEach(item => {
             const li = document.createElement('li');
-            li.innerHTML = `<strong>${item.flag} ${item.name}</strong> - Motivo: <span style="color:#ef4444">${item.reason}</span>`;
+            li.innerHTML = `<strong>${item.flag} ${item.name}</strong> - <span style="color:#9ca3af">${item.team}</span>`;
             dnfList.appendChild(li);
         });
     }
@@ -246,14 +246,21 @@ function openTransferModal(riderId) {
     const currentSeat = transferOptions.currentSeat;
     const availableTransfers = transferOptions.availableTransfers;
 
+    const salaryVal = rider.salary || 0;
+    const isPayDriver = salaryVal < 0;
+    const salaryLabel = isPayDriver
+        ? `<span style="color:#34d399;">💰 Pay Driver: +${Math.abs(salaryVal).toFixed(3)}M€/ano (equipe recebe)</span>`
+        : `<span style="color:#fbbf24;">Salário: ${salaryVal.toFixed(3)}M€/ano</span>`;
+    const contractLabel = rider.contractEndYear ? `Contrato até ${rider.contractEndYear}` : '';
+
     let html = `
         <h2 style="margin-top: 0; color: #fbbf24;">📋 Transferência de Piloto</h2>
         <div style="margin-bottom: 20px; padding: 12px; background: #374151; border-radius: 6px;">
-            <p><strong>${rider.flag} ${rider.name}</strong></p>
+            <p style="margin:0 0 4px 0;"><strong>${rider.flag} ${rider.name}</strong>${isPayDriver ? ' <span style="background:#065f46;color:#6ee7b7;padding:2px 6px;border-radius:4px;font-size:0.8em;">PAY DRIVER</span>' : ''}</p>
             <p style="margin: 0; color: #9ca3af;">
                 Equipe Atual: <strong>${currentTeam}</strong> - Assento <strong>${currentSeat}</strong>
             </p>
-            <p style="margin: 0; color: #9ca3af;">ID do Piloto: <strong>${rider.riderId}</strong></p>
+            <p style="margin: 4px 0 0 0; font-size: 0.9em;">${salaryLabel}${contractLabel ? ` &nbsp;·&nbsp; <span style="color:#9ca3af;">${contractLabel}</span>` : ''}</p>
         </div>
     `;
 
@@ -266,11 +273,15 @@ function openTransferModal(riderId) {
         availableTransfers.forEach(teamOption => {
             teamOption.availableSeats.forEach(seat => {
                 const btnId = `transfer-btn-${riderId}-${teamOption.teamId}-${seat}`;
+                const tfState = teamFinancesState[teamOption.teamId];
+                const balanceInfo = tfState
+                    ? `<span style="font-size:0.8em;font-weight:normal;opacity:0.85;"> · Saldo: ${tfState.balance >= 0 ? '<span style="color:#6ee7b7;">' : '<span style="color:#f87171;">'}${tfState.balance.toFixed(2)}M€</span></span>`
+                    : '';
                 html += `
-                    <button 
+                    <button
                         id="${btnId}"
                         class="btn-transfer"
-                        onclick="confirmTransfer(${riderId}, ${teamOption.teamId}, ${seat})"
+                        onclick="confirmTransfer(${riderId}, '${teamOption.teamId}', ${seat})"
                         style="
                             padding: 12px;
                             background: #10b981;
@@ -285,7 +296,7 @@ function openTransferModal(riderId) {
                         onmouseover="this.style.background='#059669'"
                         onmouseout="this.style.background='#10b981'"
                     >
-                        ✔ ${teamOption.teamName} - Assento ${seat}
+                        ✔ ${teamOption.teamName} - Assento ${seat}${balanceInfo}
                     </button>
                 `;
             });
@@ -393,6 +404,7 @@ function initUI() {
     if (typeof createCategorySelectors === "function") {
         createCategorySelectors('catTabsCamp');
         createCategorySelectors('catTabsGarages');
+        createCategorySelectors('catTabsFinancas');
     }
 }
 

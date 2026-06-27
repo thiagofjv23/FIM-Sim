@@ -15,6 +15,7 @@ let ecosystem = {
     motogp: [], moto2: [], moto3: [], moto3_junior: [], rookies_cup: [],
     moto4_latin: [], moto4_asia: [], moto4_british: [], moto4_northern: [], moto4_european: []
 };
+let teamFinancesState = {};
 
 // ==========================================================================
 // BANCO DE DADOS DE PAÍSES — NOMES POPULACIONAIS COMUNS
@@ -587,6 +588,17 @@ function inicializarGridsVazios() {
                     else if (catKey === 'rookies_cup' || catKey.includes('moto4')) { rider.speed += 16; rider.age = Math.min(rider.age, 15); }
                 }
 
+                // Financial fields — calculated after rider object is ready
+                if (typeof calculateRiderSalary === 'function') {
+                    rider.salary = calculateRiderSalary(rider, catKey);
+                    rider.marketValue = calculateMarketValue(rider, catKey);
+                } else {
+                    rider.salary = 0;
+                    rider.marketValue = 0;
+                }
+                rider.contractEndYear = currentYear + Math.floor(Math.random() * 3) + 1;
+                rider.stats = rider.stats || { wins: 0, podiums: 0, poles: 0, races: 0, dnfs: 0 };
+
                 ecosystem[catKey].push(rider);
             }
         }
@@ -648,6 +660,96 @@ function transferRider(riderId, newTeamId, newSeat, category = 'motogp') {
 }
 
 // ==========================================================================
+// SIMULAÇÃO DE CORRIDA
+// ==========================================================================
+
+function triggerSimulation() {
+    const catKey = activeCategory;
+    const grid = ecosystem[catKey];
+    if (!grid || grid.length === 0) {
+        if (typeof logEvent === 'function') logEvent("⚠️ Nenhum piloto na categoria ativa.", "warn");
+        return;
+    }
+
+    // Temporada completa → virar o ano
+    if (currentRound >= totalRoundsPerSeason) {
+        currentYear++;
+        currentRound = 0;
+        // Resetar pontos de todos os pilotos
+        for (const cat in ecosystem) {
+            ecosystem[cat].forEach(r => { r.points = 0; r.currentRaceScore = 0; });
+        }
+        if (typeof logEvent === 'function') logEvent(`🏆 Temporada ${currentYear - 1} encerrada! Começando ${currentYear}.`, "sys");
+        saveLocalStorage();
+        if (typeof refreshUI === 'function') refreshUI();
+        if (document.getElementById('yearIndicator')) document.getElementById('yearIndicator').textContent = `Temporada ${currentYear}`;
+        return;
+    }
+
+    currentRound++;
+    const round = currentRound;
+
+    // Gerar scores de corrida com aleatoriedade
+    const raceEntries = grid.map(rider => {
+        const base = rider.speed * 0.55 + rider.consistency * 0.30 + rider.potential * 0.10;
+        const luck = (Math.random() - 0.48) * 22;
+        return { rider, score: base + luck };
+    });
+
+    // Determinar DNFs (~10% chance por piloto, mínimo 1 máx 4)
+    const dnfCandidates = [...raceEntries].sort(() => Math.random() - 0.5);
+    const dnfCount = Math.min(4, Math.max(0, Math.floor(Math.random() * grid.length * 0.12)));
+    const dnfSet = new Set(dnfCandidates.slice(0, dnfCount).map(e => e.rider.riderId));
+
+    const finishers = raceEntries
+        .filter(e => !dnfSet.has(e.rider.riderId))
+        .sort((a, b) => b.score - a.score);
+
+    const dnfRiders = raceEntries.filter(e => dnfSet.has(e.rider.riderId));
+
+    // Atribuir pontos
+    finishers.forEach((entry, idx) => {
+        const pts = POINTS_TABLE[idx] || 0;
+        entry.rider.points = (entry.rider.points || 0) + pts;
+        entry.rider.currentRaceScore = pts;
+        if (entry.rider.stats) {
+            entry.rider.stats.races++;
+            if (idx === 0) { entry.rider.stats.wins++; entry.rider.stats.podiums++; }
+            else if (idx === 1 || idx === 2) entry.rider.stats.podiums++;
+        }
+    });
+    dnfRiders.forEach(entry => {
+        entry.rider.currentRaceScore = 0;
+        if (entry.rider.stats) { entry.rider.stats.races++; entry.rider.stats.dnfs++; }
+    });
+
+    // Classificação de equipes (acumulada)
+    const teamPts = {};
+    grid.forEach(r => { teamPts[r.teamId] = (teamPts[r.teamId] || 0) + (r.points || 0); });
+
+    lastRaceData = {
+        round,
+        catKey,
+        finishers: finishers.map(e => ({ riderId: e.rider.riderId, name: e.rider.name, teamId: e.rider.teamId, team: e.rider.team, flag: e.rider.flag })),
+        dnfs: dnfRiders.map(e => ({ riderId: e.rider.riderId, name: e.rider.name, team: e.rider.team, flag: e.rider.flag })),
+        teamPoints: teamPts
+    };
+
+    // Finanças
+    const finisherIds = finishers.map(e => e.rider.riderId);
+    if (typeof processRaceFinances === 'function') processRaceFinances(finisherIds, catKey);
+
+    // Mensagem de vitória no log
+    const winner = finishers[0]?.rider;
+    if (winner && typeof logEvent === 'function') {
+        logEvent(`🏁 Etapa ${round}/${totalRoundsPerSeason} (${catKey.toUpperCase()}): <strong>${winner.flag} ${winner.name}</strong> vence!`, "race");
+    }
+
+    saveLocalStorage();
+    if (typeof refreshUI === 'function') refreshUI();
+}
+
+// ==========================================================================
 // BOOTSTRAP E ARMAZENAMENTO DE SESSÃO
 // ==========================================================================
 
@@ -655,7 +757,8 @@ function saveLocalStorage() {
     const dataToSave = {
         currentYear, currentRound, activeCategory, ecosystem, lastRaceData,
         uniqueNames: Array.from(uniqueNamesRegistry),
-        nextRiderId: nextRiderId
+        nextRiderId: nextRiderId,
+        teamFinancesState
     };
     localStorage.setItem('motogp_sim_save', JSON.stringify(dataToSave));
 }
@@ -667,6 +770,8 @@ function initializeRealEcosystem() {
     currentRound = 0;
     currentYear = 2026;
     lastRaceData = null;
+    teamFinancesState = {};
+    if (typeof initTeamFinances === 'function') initTeamFinances();
 
     saveLocalStorage();
 
@@ -707,6 +812,11 @@ window.addEventListener('DOMContentLoaded', () => {
             lastRaceData = parsed.lastRaceData || null;
             uniqueNamesRegistry = new Set(parsed.uniqueNames || []);
             nextRiderId = parsed.nextRiderId || 1000;
+            if (parsed.teamFinancesState && Object.keys(parsed.teamFinancesState).length > 0) {
+                teamFinancesState = parsed.teamFinancesState;
+            } else if (typeof initTeamFinances === 'function') {
+                initTeamFinances();
+            }
         } catch(e) {
             initializeRealEcosystem();
         }
