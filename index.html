@@ -15,6 +15,7 @@
             <button class="nav-btn active" onclick="switchTab('inicio')">🏠 Início</button>
             <button class="nav-btn" onclick="switchTab('campeonatos')">🏁 Campeonatos</button>
             <button class="nav-btn" onclick="switchTab('pilotos-equipes')">👤 Pilotos e Equipes</button>
+            <button class="nav-btn" onclick="switchTab('financas')">💰 Finanças</button>
         </div>
         <div class="timeline-badge" id="yearIndicator">Temporada 2026</div>
     </nav>
@@ -99,6 +100,15 @@
             </div>
         </section>
 
+        <!-- SEÇÃO 4: FINANÇAS -->
+        <section id="tab-financas" class="tab-content">
+            <div class="category-tabs" id="catTabsFinancas"></div>
+            <div class="panel-box">
+                <div class="panel-header">Finanças das Equipes</div>
+                <div id="financasContent"></div>
+            </div>
+        </section>
+
         <!-- SEÇÃO 3: PILOTOS E EQUIPES (GARAGENS E CONTRATOS) -->
         <section id="tab-pilotos-equipes" class="tab-content">
             <div class="category-tabs" id="catTabsGarages"></div>
@@ -124,6 +134,7 @@
     <!-- CARREGAMENTO ORDENADO DOS SCRIPTS COMPARTILHADOS -->
     <script src="database.js"></script>
     <script src="engine.js"></script>
+    <script src="finances.js"></script>
     <script src="ui.js"></script>
 </body>
 </html>
