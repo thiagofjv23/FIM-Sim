@@ -739,7 +739,13 @@ function _triggerSimulationCore() {
 
         // Distribuir Finanças e Prize Money para as equipes dessa categoria
         const finisherIds = finishers.map(e => e.rider.riderId);
-        if (typeof processRaceFinances === 'function') processRaceFinances(finisherIds, catKey);
+        if (typeof processRaceFinances === 'function') {
+            try {
+                processRaceFinances(finisherIds, catKey);
+            } catch(e) {
+                console.warn('[Finanças] Erro ao processar finanças da etapa:', e.message);
+            }
+        }
 
         // Disparar Log de vitória
         const winner = finishers[0]?.rider;

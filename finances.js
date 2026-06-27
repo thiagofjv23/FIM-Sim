@@ -3,7 +3,6 @@
 // Salários, Prize Money, Patrocínios, Pay Drivers, Transferências
 // ==========================================================================
 
-if (typeof teamFinancesState === 'undefined') { var teamFinancesState = {}; }
 
 // ── FATORES DE SALÁRIO POR CATEGORIA (M€/ano) ─────────────────────────────
 const SALARY_FACTORS = {
@@ -157,7 +156,7 @@ function processRaceFinances(finisherIds, catKey) {
 
     for (const teamId of teamsInCategory) {
         const fs = teamFinancesState[teamId];
-        if (!fs || !fs.sponsors.length) continue;
+        if (!fs || !fs.sponsors || !fs.sponsors.length) continue;
 
         const sponsorTotal = fs.sponsors.reduce((sum, sp) => sum + sp.perRace, 0);
         if (sponsorTotal > 0) {
