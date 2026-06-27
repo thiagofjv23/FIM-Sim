@@ -1,3 +1,5 @@
+let selectedHistoryRound = null;
+
 // CONTROLE DE NAVEGAÇÃO INTERNA (SINGLE PAGE APPLICATION)
 function switchTab(tabId) {
     document.querySelectorAll('.tab-content').forEach(element => {
@@ -37,6 +39,7 @@ function createCategorySelectors(containerId) {
         btn.innerText = categoriesConfig[key].name;
         btn.onclick = () => {
             activeCategory = key;
+            selectedHistoryRound = null;
             refreshUI(); // Atualiza a renderização focando na nova categoria selecionada
         };
         container.appendChild(btn);
@@ -157,6 +160,67 @@ function renderStandingsTab() {
         `;
         teamsBody.appendChild(tr);
     });
+
+    renderRaceHistoryPanel();
+}
+
+function renderRaceHistoryPanel() {
+    const section = document.getElementById('raceHistorySection');
+    if (!section) return;
+
+    const rounds = (raceHistory || [])
+        .filter(r => r.cat === activeCategory && r.year === currentYear)
+        .sort((a, b) => a.round - b.round);
+
+    if (rounds.length === 0) {
+        section.innerHTML = '';
+        return;
+    }
+
+    if (selectedHistoryRound === null || !rounds.find(r => r.round === selectedHistoryRound)) {
+        selectedHistoryRound = rounds[rounds.length - 1].round;
+    }
+
+    const entry = rounds.find(r => r.round === selectedHistoryRound);
+
+    const btns = rounds.map(r => `
+        <button class="tab-btn ${r.round === selectedHistoryRound ? 'active' : ''}"
+            onclick="selectedHistoryRound = ${r.round}; renderRaceHistoryPanel();">
+            Etapa ${r.round}
+        </button>
+    `).join('');
+
+    const rows = entry ? entry.results.map(r => `
+        <tr>
+            <td class="text-center font-weight-bold">${r.pos}º</td>
+            <td>${r.flag} <strong>${r.name}</strong><br><small style="color:#6b7280">${r.team}</small></td>
+            <td class="text-center font-mono" style="color:#94a3b8">0:00.000</td>
+            <td class="text-center font-mono text-accent">${r.pts} pts</td>
+        </tr>
+    `).join('') : '';
+
+    const dnfRows = entry && entry.dnfs.length > 0
+        ? entry.dnfs.map(d => `<li>${d.flag} ${d.name} <small style="color:#6b7280">(${d.team})</small></li>`).join('')
+        : '';
+
+    section.innerHTML = `
+        <div class="panel-box" style="margin-top:1.5rem">
+            <div class="panel-header">📋 Resultados por Etapa — Temporada ${currentYear}</div>
+            <div class="category-tabs" style="margin-bottom:1rem">${btns}</div>
+            <div class="table-res">
+                <table>
+                    <thead><tr>
+                        <th style="width:10%" class="text-center">Pos</th>
+                        <th style="width:55%">Piloto</th>
+                        <th style="width:20%" class="text-center">Tempo</th>
+                        <th style="width:15%" class="text-center">Pts</th>
+                    </tr></thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+            ${dnfRows ? `<div class="dnf-box"><h4>⚠️ DNF</h4><ul>${dnfRows}</ul></div>` : ''}
+        </div>
+    `;
 }
 
 // MAPEA OS BOXES OFICIAIS ATIVOS

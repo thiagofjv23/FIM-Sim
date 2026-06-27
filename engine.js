@@ -9,6 +9,7 @@ const totalRoundsPerSeason = 10;
 let activeCategory = 'motogp';
 let uniqueNamesRegistry = new Set();
 let lastRaceData = null;
+let raceHistory = [];
 
 // Máquina de Estados Global (The Single Source of Truth)
 let ecosystem = {
@@ -802,6 +803,7 @@ function _triggerSimulationCore() {
     if (currentRound >= totalRoundsPerSeason) {
         currentYear++;
         currentRound = 0;
+        raceHistory = [];
 
         // Incrementar idade (grid + free agents)
         for (const cat in ecosystem)
@@ -883,6 +885,27 @@ function _triggerSimulationCore() {
             logEvent(`🏁 Etapa ${round}/${totalRoundsPerSeason} (${catKey.toUpperCase()}): <strong>${winner.flag} ${winner.name}</strong> vence!`, "race");
         }
 
+        // Guardar resultado no histórico para todas as categorias
+        raceHistory.push({
+            year: currentYear,
+            round,
+            cat: catKey,
+            results: finishers.map((e, idx) => ({
+                pos: idx + 1,
+                riderId: e.rider.riderId,
+                name: e.rider.name,
+                flag: e.rider.flag,
+                team: e.rider.team,
+                pts: RACE_POINTS[idx] || 0
+            })),
+            dnfs: dnfRiders.map(e => ({
+                riderId: e.rider.riderId,
+                name: e.rider.name,
+                flag: e.rider.flag,
+                team: e.rider.team
+            }))
+        });
+
         // Separar o resultado apenas da aba que o usuário está vendo para renderizar o Widget do Pódio
         if (catKey === activeCategory) {
             activeCategoryResult = {
@@ -914,7 +937,8 @@ function saveLocalStorage() {
         nextRiderId: nextRiderId,
         teamFinancesState,
         freeAgents,
-        lastYearTransfers
+        lastYearTransfers,
+        raceHistory
     };
     localStorage.setItem('motogp_sim_save', JSON.stringify(dataToSave));
 }
@@ -927,6 +951,7 @@ function initializeRealEcosystem() {
     currentYear = 2026;
     lastRaceData = null;
     lastYearTransfers = [];
+    raceHistory = [];
     teamFinancesState = {};
     freeAgents.splice(0);
     freeAgents.push(
@@ -971,6 +996,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     parsed.freeAgents.forEach(r => freeAgents.push(r));
                 }
                 lastYearTransfers = parsed.lastYearTransfers || [];
+                raceHistory = parsed.raceHistory || [];
             } else {
                 initializeRealEcosystem();
             }
