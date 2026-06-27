@@ -3,6 +3,9 @@
 // Salários, Prize Money, Patrocínios, Pay Drivers, Transferências
 // ==========================================================================
 
+// Garante que teamFinancesState existe mesmo se engine.js não carregou
+if (typeof teamFinancesState === 'undefined') { var teamFinancesState = {}; }
+
 // ── FATORES DE SALÁRIO POR CATEGORIA (M€/ano) ─────────────────────────────
 const SALARY_FACTORS = {
     motogp:         { base: 0.30, scale: 0.30, allowPayDriver: false },
@@ -27,6 +30,11 @@ const PRIZE_MULTIPLIERS = {
 
 // ── PONTOS POR POSIÇÃO (sistema MotoGP padrão) ────────────────────────────
 const POINTS_TABLE = [25, 20, 16, 13, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+
+// Fallback local para totalRoundsPerSeason (evita dependência de escopo entre scripts)
+function _getRounds() {
+    return (typeof totalRoundsPerSeason !== 'undefined') ? totalRoundsPerSeason : 10;
+}
 
 // ── POOL DE NOMES DE PATROCINADORES ───────────────────────────────────────
 const SPONSOR_POOL_TITLE = [
@@ -102,7 +110,7 @@ function generateSponsorsForTeam(team, usedSponsorNames) {
         const name = pickUnique(SPONSOR_POOL_TITLE);
         if (name) {
             const annual = parseFloat((budget * 0.35 + Math.random() * budget * 0.15).toFixed(2));
-            sponsors.push({ name, type: 'title', annualValue: annual, perRace: parseFloat((annual / totalRoundsPerSeason).toFixed(4)) });
+            sponsors.push({ name, type: 'title', annualValue: annual, perRace: parseFloat((annual / _getRounds()).toFixed(4)) });
         }
     }
 
@@ -111,7 +119,7 @@ function generateSponsorsForTeam(team, usedSponsorNames) {
         const name = pickUnique(SPONSOR_POOL_SECONDARY);
         if (name) {
             const annual = parseFloat((budget * 0.12 + Math.random() * budget * 0.06).toFixed(2));
-            sponsors.push({ name, type: 'secondary', annualValue: annual, perRace: parseFloat((annual / totalRoundsPerSeason).toFixed(4)) });
+            sponsors.push({ name, type: 'secondary', annualValue: annual, perRace: parseFloat((annual / _getRounds()).toFixed(4)) });
         }
     }
 
@@ -120,7 +128,7 @@ function generateSponsorsForTeam(team, usedSponsorNames) {
         const name = pickUnique(SPONSOR_POOL_SECONDARY);
         if (name) {
             const annual = parseFloat((budget * 0.06 + Math.random() * budget * 0.04).toFixed(2));
-            sponsors.push({ name, type: 'secondary', annualValue: annual, perRace: parseFloat((annual / totalRoundsPerSeason).toFixed(4)) });
+            sponsors.push({ name, type: 'secondary', annualValue: annual, perRace: parseFloat((annual / _getRounds()).toFixed(4)) });
         }
     }
 
@@ -189,7 +197,7 @@ function processRaceFinances(finisherIds, catKey) {
     // 2. Salário / pay driver por corrida
     for (const rider of grid) {
         if (!rider.teamId || rider.salary == null) continue;
-        const salaryPerRound = parseFloat((rider.salary / totalRoundsPerSeason).toFixed(5));
+        const salaryPerRound = parseFloat((rider.salary / _getRounds()).toFixed(5));
         if (salaryPerRound === 0) continue;
 
         const amount = -salaryPerRound;
@@ -240,7 +248,7 @@ function getTransferOptions(riderId) {
                 teamName:          team.name,
                 availableSeats,
                 teamBalance:       fs ? parseFloat(fs.balance.toFixed(2)) : team.budget,
-                riderSalaryPerRound: parseFloat(((rider.salary || 0) / totalRoundsPerSeason).toFixed(3))
+                riderSalaryPerRound: parseFloat(((rider.salary || 0) / _getRounds()).toFixed(3))
             });
         }
     }
@@ -301,6 +309,12 @@ function renderFinancesTab() {
     const container = document.getElementById('financasContent');
     if (!container) return;
 
+    try {
+    // Safety: initialize if state was never populated
+    if (Object.keys(teamFinancesState).length === 0) {
+        initTeamFinances();
+    }
+
     const grid    = ecosystem[activeCategory] || [];
     const config  = categoriesConfig[activeCategory];
     if (!config) { container.innerHTML = '<p style="color:#9ca3af">Categoria indisponível.</p>'; return; }
@@ -356,7 +370,11 @@ function renderFinancesTab() {
     }
 
     html += '</tbody></table></div>';
-    container.innerHTML = html;
+        container.innerHTML = html;
+    } catch(e) {
+        console.error('[renderFinancesTab]', e);
+        if (container) container.innerHTML = `<p style="color:#ef4444;padding:12px">Erro ao carregar finanças: ${e.message}</p>`;
+    }
 }
 
 // ==========================================================================

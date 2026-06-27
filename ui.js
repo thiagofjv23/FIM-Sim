@@ -400,6 +400,10 @@ function renderTransferPanel() {
 
 // INICIALIZADOR COMPATÍVEL
 function initUI() {
+    // Ensure financial state is initialized if not already done
+    if (typeof initTeamFinances === 'function' && typeof teamFinancesState !== 'undefined' && Object.keys(teamFinancesState).length === 0) {
+        initTeamFinances();
+    }
     switchTab('inicio');
     if (typeof createCategorySelectors === "function") {
         createCategorySelectors('catTabsCamp');

@@ -664,6 +664,16 @@ function transferRider(riderId, newTeamId, newSeat, category = 'motogp') {
 // ==========================================================================
 
 function triggerSimulation() {
+    try {
+        _triggerSimulationCore();
+    } catch(err) {
+        console.error('[triggerSimulation] Erro:', err);
+        if (typeof logEvent === 'function') logEvent(`⚠️ Erro na simulação: ${err.message}`, 'warn');
+    }
+}
+
+function _triggerSimulationCore() {
+    const RACE_POINTS = [25, 20, 16, 13, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
     const catKey = activeCategory;
     const grid = ecosystem[catKey];
     if (!grid || grid.length === 0) {
@@ -709,7 +719,7 @@ function triggerSimulation() {
 
     // Atribuir pontos
     finishers.forEach((entry, idx) => {
-        const pts = POINTS_TABLE[idx] || 0;
+        const pts = RACE_POINTS[idx] || 0;
         entry.rider.points = (entry.rider.points || 0) + pts;
         entry.rider.currentRaceScore = pts;
         if (entry.rider.stats) {
