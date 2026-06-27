@@ -789,6 +789,9 @@ function initializeRealEcosystem() {
     if (typeof logEvent === "function") logEvent("✔ Banco de Dados V3.2 (Moto3 2026 — 13 equipes / 26 pilotos reais) carregado com sucesso!", "sys");
 }
 
+// ==========================================================================
+// CORREÇÃO DO BOOTSTRAP (Substitua o final do seu engine.js por isso)
+// ==========================================================================
 window.addEventListener('DOMContentLoaded', () => {
     const saved = localStorage.getItem('motogp_sim_save');
     if (saved) {
@@ -796,7 +799,6 @@ window.addEventListener('DOMContentLoaded', () => {
             const parsed = JSON.parse(saved);
 
             // Trava de Segurança Defensiva V3.2
-            // Invalida saves antigos que não têm o grid Moto3 completo (26 pilotos reais)
             const hasNewArchitecture = parsed.ecosystem &&
                                        parsed.ecosystem.motogp &&
                                        parsed.ecosystem.motogp[0] &&
@@ -810,22 +812,12 @@ window.addEventListener('DOMContentLoaded', () => {
                                     parsed.ecosystem.moto3.filter(r => r.isReal).length >= 26;
 
             if (!hasNewArchitecture || !hasMoto3Complete || !hasMoto3AllReal) {
-                console.warn("[Sistema] Save desatualizado detectado (Moto3 incompleta ou com regens). Reconstruindo V3.2...");
+                console.warn("[Sistema] Save desatualizado detectado. Reconstruindo V3.2...");
                 initializeRealEcosystem();
                 return;
             }
-// Invalida saves antigos que não têm o grid Moto3 completo (26 pilotos reais)
-const hasNewArchitecture = ...;
-const hasMoto3Complete = parsed.ecosystem &&
-                         parsed.ecosystem.moto3 &&
-                         parsed.ecosystem.moto3.length >= 26;
 
-const hasMoto3AllReal = hasMoto3Complete &&
-                        parsed.ecosystem.moto3.filter(r => r.isReal).length >= 26;
-
-if (!hasNewArchitecture || !hasMoto3Complete || !hasMoto3AllReal) {
-    console.warn("[Sistema] Save desatualizado detectado (Moto3 incompleta ou com regens). Reconstruindo V3.2...");
-
+            // Se passou na validação, carrega os estados salvos
             currentYear = parsed.currentYear;
             currentRound = parsed.currentRound;
             activeCategory = parsed.activeCategory || 'motogp';
@@ -833,15 +825,18 @@ if (!hasNewArchitecture || !hasMoto3Complete || !hasMoto3AllReal) {
             lastRaceData = parsed.lastRaceData || null;
             uniqueNamesRegistry = new Set(parsed.uniqueNames || []);
             nextRiderId = parsed.nextRiderId || 1000;
+            
             if (parsed.teamFinancesState && Object.keys(parsed.teamFinancesState).length > 0) {
                 teamFinancesState = parsed.teamFinancesState;
             } else if (typeof initTeamFinances === 'function') {
                 initTeamFinances();
             }
         } catch(e) {
+            console.error("[Sistema] Erro ao ler save. Resetando...", e);
             initializeRealEcosystem();
         }
     } else {
         initializeRealEcosystem();
     }
 });
+
