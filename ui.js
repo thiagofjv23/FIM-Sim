@@ -61,6 +61,7 @@ function refreshUI() {
     renderGaragesTab();
     renderTransferPanel();
     if (typeof renderFinancesTab === 'function') renderFinancesTab();
+    renderTransfersTab();
 }
 
 // EXIBE OS DETALHES DA ÚLTIMA CORRIDA BASEADO NA ABA ATIVA
@@ -527,5 +528,86 @@ function openRiderProfile(riderId, categoryKey = activeCategory) {
     } catch (error) {
         console.warn(`[UI] Falha ao renderizar perfil do piloto: ${error.message}`);
     }
+}
+
+function renderTransfersTab() {
+    createCategorySelectors('catTabsTransfers');
+
+    const header = document.getElementById('transfersHeader');
+    const content = document.getElementById('transfersContent');
+    if (!header || !content) return;
+
+    const transfers = (typeof lastYearTransfers !== 'undefined') ? lastYearTransfers : [];
+
+    if (!transfers || transfers.length === 0) {
+        header.textContent = 'Mercado de Transferências';
+        content.innerHTML = '<p style="color:var(--text-secondary);padding:1rem;">Nenhuma transferência registrada nesta temporada.</p>';
+        return;
+    }
+
+    const filtered = transfers.filter(t => t.cat === activeCategory);
+    const saidas   = filtered.filter(t => t.type === 'saida');
+    const entradas = filtered.filter(t => t.type === 'entrada');
+
+    header.textContent = `Mercado — Temporada ${currentYear - 1} → ${currentYear}  |  📤 ${saidas.length} saídas  |  📥 ${entradas.length} contratações`;
+
+    const riderBadge = (r) => r.isReal
+        ? `<span style="font-size:0.65rem;background:var(--accent);color:#000;border-radius:3px;padding:1px 4px;margin-left:4px;">REAL</span>`
+        : '';
+
+    const rowsSaidas = saidas.length
+        ? saidas.map(t => `
+            <tr>
+                <td>${t.rider.flag} ${t.rider.name}${riderBadge(t.rider)}</td>
+                <td class="text-center">${t.rider.age}</td>
+                <td>${t.motivo}</td>
+            </tr>`).join('')
+        : `<tr><td colspan="3" style="color:var(--text-secondary);text-align:center;">Sem saídas nesta categoria</td></tr>`;
+
+    const rowsEntradas = entradas.length
+        ? entradas.map(t => {
+            const newBadge = !t.rider.isReal
+                ? `<span style="font-size:0.65rem;background:#2a6e2a;color:#aaffaa;border-radius:3px;padding:1px 4px;margin-left:4px;">NOVO</span>`
+                : '';
+            return `
+            <tr>
+                <td>${t.rider.flag} ${t.rider.name}${newBadge}${riderBadge(t.rider)}</td>
+                <td class="text-center">${t.rider.age}</td>
+                <td>${t.team}</td>
+                <td class="text-center">${t.seat}</td>
+            </tr>`;
+          }).join('')
+        : `<tr><td colspan="4" style="color:var(--text-secondary);text-align:center;">Sem contratações nesta categoria</td></tr>`;
+
+    content.innerHTML = `
+        <div class="grid-layout">
+            <div>
+                <div class="panel-header" style="font-size:0.9rem;">📤 Saídas / Free Agents</div>
+                <div class="table-res">
+                    <table>
+                        <thead><tr>
+                            <th style="width:50%">Piloto</th>
+                            <th style="width:10%" class="text-center">Idade</th>
+                            <th style="width:40%">Motivo</th>
+                        </tr></thead>
+                        <tbody>${rowsSaidas}</tbody>
+                    </table>
+                </div>
+            </div>
+            <div>
+                <div class="panel-header" style="font-size:0.9rem;">📥 Contratações</div>
+                <div class="table-res">
+                    <table>
+                        <thead><tr>
+                            <th style="width:40%">Piloto</th>
+                            <th style="width:10%" class="text-center">Idade</th>
+                            <th style="width:40%">Equipe</th>
+                            <th style="width:10%" class="text-center">Assento</th>
+                        </tr></thead>
+                        <tbody>${rowsEntradas}</tbody>
+                    </table>
+                </div>
+            </div>
+        </div>`;
 }
 
