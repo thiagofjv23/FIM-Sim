@@ -662,6 +662,15 @@ function transferRider(riderId, newTeamId, newSeat, category = 'motogp') {
 // ==========================================================================
 // SIMULAÇÃO DE CORRIDA - CORREÇÃO GLOBAL
 // ==========================================================================
+function triggerSimulation() {
+    try {
+        _triggerSimulationCore();
+    } catch (err) {
+        console.error('[triggerSimulation] Erro:', err);
+        if (typeof logEvent === 'function') logEvent(`⚠️ Erro na simulação: ${err.message}`, 'warn');
+    }
+}
+
 function _triggerSimulationCore() {
     const RACE_POINTS = [25, 20, 16, 13, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 
