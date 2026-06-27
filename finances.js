@@ -49,9 +49,8 @@ const SPONSOR_POOL_SECONDARY = [
 ];
 
 // ==========================================================================
-// CÁLCULO DE SALÁRIO E VALOR DE MERCADO
+// CÁLCULO DE SALÁRIO E VALOR DE MERCADO (CORRIGIDO)
 // ==========================================================================
-
 function calculateRiderSalary(rider, catKey) {
     const factor = SALARY_FACTORS[catKey] || SALARY_FACTORS['moto4_european'];
 
@@ -63,13 +62,6 @@ function calculateRiderSalary(rider, catKey) {
     const speedAboveBase = Math.max(0, rider.speed - 70);
     const salary = factor.base + speedAboveBase * factor.scale;
     return parseFloat(salary.toFixed(3));
-}
-
-function calculateMarketValue(rider, catKey) {
-    const factor = SALARY_FACTORS[catKey] || SALARY_FACTORS['moto4_european'];
-    const composite = rider.speed * 0.55 + rider.potential * 0.45;
-    const value = Math.max(0.01, (composite - 60) * factor.scale * 15);
-    return parseFloat(value.toFixed(2));
 }
 
 // ==========================================================================
@@ -282,9 +274,8 @@ function getTeamFinancialSummary(teamId) {
 }
 
 // ==========================================================================
-// FORMATAÇÃO DE VALORES
+// FORMATAÇÃO DE VALORES (CORRIGIDO COM CRASES)
 // ==========================================================================
-
 function formatMoney(value) {
     const abs = Math.abs(value);
     const sign = value < 0 ? '-' : '+';
