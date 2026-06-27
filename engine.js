@@ -794,51 +794,23 @@ window.addEventListener('DOMContentLoaded', () => {
     if (saved) {
         try {
             const parsed = JSON.parse(saved);
-
-            // Trava de Segurança Defensiva V3.2
-            // Invalida saves antigos que não têm o grid Moto3 completo (26 pilotos reais)
-            const hasNewArchitecture = parsed.ecosystem &&
-                                       parsed.ecosystem.motogp &&
-                                       parsed.ecosystem.motogp[0] &&
-                                       parsed.ecosystem.motogp[0].consistency !== undefined;
-
-            const hasMoto3Complete = parsed.ecosystem &&
-                                     parsed.ecosystem.moto3 &&
-                                     parsed.ecosystem.moto3.length >= 26;
-
-            const hasMoto3AllReal = hasMoto3Complete &&
-                                    parsed.ecosystem.moto3.filter(r => r.isReal).length >= 26;
-
-            if (!hasNewArchitecture || !hasMoto3Complete || !hasMoto3AllReal) {
-                console.warn("[Sistema] Save desatualizado detectado (Moto3 incompleta ou com regens). Reconstruindo V3.2...");
+            if (parsed.ecosystem && parsed.currentYear) {
+                currentYear         = parsed.currentYear;
+                currentRound        = parsed.currentRound || 0;
+                activeCategory      = parsed.activeCategory || 'motogp';
+                ecosystem           = parsed.ecosystem;
+                lastRaceData        = parsed.lastRaceData || null;
+                uniqueNamesRegistry = new Set(parsed.uniqueNames || []);
+                nextRiderId         = parsed.nextRiderId || 1000;
+                if (parsed.teamFinancesState && Object.keys(parsed.teamFinancesState).length > 0) {
+                    teamFinancesState = parsed.teamFinancesState;
+                } else if (typeof initTeamFinances === 'function') {
+                    initTeamFinances();
+                }
+            } else {
                 initializeRealEcosystem();
-                return;
             }
-// Invalida saves antigos que não têm o grid Moto3 completo (26 pilotos reais)
-const hasNewArchitecture = ...;
-const hasMoto3Complete = parsed.ecosystem &&
-                         parsed.ecosystem.moto3 &&
-                         parsed.ecosystem.moto3.length >= 26;
-
-const hasMoto3AllReal = hasMoto3Complete &&
-                        parsed.ecosystem.moto3.filter(r => r.isReal).length >= 26;
-
-if (!hasNewArchitecture || !hasMoto3Complete || !hasMoto3AllReal) {
-    console.warn("[Sistema] Save desatualizado detectado (Moto3 incompleta ou com regens). Reconstruindo V3.2...");
-
-            currentYear = parsed.currentYear;
-            currentRound = parsed.currentRound;
-            activeCategory = parsed.activeCategory || 'motogp';
-            ecosystem = parsed.ecosystem;
-            lastRaceData = parsed.lastRaceData || null;
-            uniqueNamesRegistry = new Set(parsed.uniqueNames || []);
-            nextRiderId = parsed.nextRiderId || 1000;
-            if (parsed.teamFinancesState && Object.keys(parsed.teamFinancesState).length > 0) {
-                teamFinancesState = parsed.teamFinancesState;
-            } else if (typeof initTeamFinances === 'function') {
-                initTeamFinances();
-            }
-        } catch(e) {
+        } catch (e) {
             initializeRealEcosystem();
         }
     } else {
