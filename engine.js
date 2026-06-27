@@ -683,6 +683,87 @@ function triggerSimulation() {
     }
 }
 
+function runYearEndTransfers() {
+    // Passo 1: liberar riders acima de maxAge ou com contrato vencido
+    for (const cat in ecosystem) {
+        const maxAge = (categoriesConfig[cat] && categoriesConfig[cat].maxAge) || Infinity;
+        ecosystem[cat] = ecosystem[cat].filter(r => {
+            const overAge  = r.age > maxAge;
+            const expired  = r.contractEndYear && r.contractEndYear < currentYear;
+            if (overAge || expired) {
+                r.teamId = null; r.team = null; r.seat = 0;
+                r.points = 0; r.currentRaceScore = 0;
+                freeAgents.push(r);
+                const motivo = overAge ? `${r.age}a > limite ${maxAge}` : `contrato vencido ${r.contractEndYear}`;
+                if (typeof logEvent === 'function')
+                    logEvent(`📤 ${r.flag} ${r.name} → Free Agent (${motivo})`, 'sys');
+                return false;
+            }
+            return true;
+        });
+    }
+
+    // Passo 2: preencher assentos vazios em cada categoria
+    for (const cat in ecosystem) {
+        const config   = categoriesConfig[cat];
+        const { minAge, maxAge } = config;
+        const grid     = ecosystem[cat];
+
+        for (const teamObj of config.teams) {
+            for (let seatNum = 1; seatNum <= 2; seatNum++) {
+                const occupied = grid.some(r => r.teamId === teamObj.id && r.seat === seatNum);
+                if (occupied) continue;
+
+                let pool = freeAgents.filter(r => !r.teamId && r.age >= minAge && r.age <= maxAge);
+
+                if (teamObj.nationalBias && teamObj.nationalBias.length) {
+                    const biased = pool.filter(r => teamObj.nationalBias.includes(r.flag));
+                    if (biased.length) pool = biased;
+                }
+
+                if (teamObj.aiPersonality === 'caca_talentos') {
+                    pool.sort((a, b) => b.potential - a.potential);
+                } else if (teamObj.aiPersonality === 'conservadora') {
+                    pool.sort((a, b) => ((b.speed + b.consistency) / 2) - ((a.speed + a.consistency) / 2));
+                } else {
+                    pool.sort((a, b) => b.speed - a.speed);
+                }
+
+                let chosen = pool[0];
+
+                // Sem candidatos na faixa etária → gerar novo jovem para repor o pipeline
+                if (!chosen) {
+                    const newbie = generateFictionalNewbie(config.paisesPermitidos);
+                    newbie.age = minAge;
+                    if (typeof calculateRiderSalary === 'function') {
+                        newbie.salary      = calculateRiderSalary(newbie, cat);
+                        newbie.marketValue = calculateMarketValue(newbie, cat);
+                    }
+                    newbie.stats = { wins: 0, podiums: 0, poles: 0, races: 0, dnfs: 0 };
+                    chosen = newbie;
+                }
+
+                chosen.teamId          = teamObj.id;
+                chosen.team            = teamObj.name;
+                chosen.manufacturer    = teamObj.manufacturer;
+                chosen.seat            = seatNum;
+                chosen.points          = 0;
+                chosen.currentRaceScore = 0;
+                chosen.contractEndYear  = currentYear + Math.floor(Math.random() * 3) + 1;
+                if (typeof calculateRiderSalary === 'function')
+                    chosen.salary = calculateRiderSalary(chosen, cat);
+
+                const idxInFA = freeAgents.indexOf(chosen);
+                if (idxInFA !== -1) freeAgents.splice(idxInFA, 1);
+                grid.push(chosen);
+
+                if (typeof logEvent === 'function')
+                    logEvent(`📥 ${chosen.flag} ${chosen.name} contratado por ${teamObj.name} (${cat.toUpperCase()}, assento ${seatNum})`, 'sys');
+            }
+        }
+    }
+}
+
 function _triggerSimulationCore() {
     const RACE_POINTS = [25, 20, 16, 13, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 
@@ -690,9 +771,15 @@ function _triggerSimulationCore() {
     if (currentRound >= totalRoundsPerSeason) {
         currentYear++;
         currentRound = 0;
-        for (const cat in ecosystem) {
+
+        // Incrementar idade (grid + free agents)
+        for (const cat in ecosystem)
             ecosystem[cat].forEach(r => { r.points = 0; r.currentRaceScore = 0; r.age = (r.age || 0) + 1; });
-        }
+        freeAgents.forEach(r => { r.age = (r.age || 0) + 1; });
+
+        // Mercado de transferências
+        runYearEndTransfers();
+
         if (typeof logEvent === 'function') logEvent(`🏆 Temporada ${currentYear - 1} encerrada! Começando ${currentYear}.`, "sys");
         saveLocalStorage();
         if (typeof refreshUI === 'function') refreshUI();
@@ -794,7 +881,8 @@ function saveLocalStorage() {
         currentYear, currentRound, activeCategory, ecosystem, lastRaceData,
         uniqueNames: Array.from(uniqueNamesRegistry),
         nextRiderId: nextRiderId,
-        teamFinancesState
+        teamFinancesState,
+        freeAgents
     };
     localStorage.setItem('motogp_sim_save', JSON.stringify(dataToSave));
 }
@@ -807,6 +895,11 @@ function initializeRealEcosystem() {
     currentYear = 2026;
     lastRaceData = null;
     teamFinancesState = {};
+    freeAgents.splice(0);
+    freeAgents.push(
+        { riderId: generateRiderId(), name: 'Miguel Oliveira', flag: '🇵🇹', age: 31, speed: 85, potential: 86, consistency: 84, isReal: true, teamId: null, seat: 0, points: 0, currentRaceScore: 0 },
+        { riderId: generateRiderId(), name: 'Somkiat Chantra', flag: '🇹🇭', age: 27, speed: 79, potential: 85, consistency: 75, isReal: true, teamId: null, seat: 0, points: 0, currentRaceScore: 0 }
+    );
     if (typeof initTeamFinances === 'function') initTeamFinances();
 
     saveLocalStorage();
@@ -839,6 +932,10 @@ window.addEventListener('DOMContentLoaded', () => {
                     teamFinancesState = parsed.teamFinancesState;
                 } else if (typeof initTeamFinances === 'function') {
                     initTeamFinances();
+                }
+                if (parsed.freeAgents && Array.isArray(parsed.freeAgents)) {
+                    freeAgents.splice(0);
+                    parsed.freeAgents.forEach(r => freeAgents.push(r));
                 }
             } else {
                 initializeRealEcosystem();
