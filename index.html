@@ -16,6 +16,7 @@
             <button class="nav-btn" onclick="switchTab('campeonatos')">🏁 Campeonatos</button>
             <button class="nav-btn" onclick="switchTab('pilotos-equipes')">👤 Pilotos e Equipes</button>
             <button class="nav-btn" onclick="switchTab('financas')">💰 Finanças</button>
+            <button class="nav-btn" onclick="switchTab('transferencias')">🔄 Transferências</button>
         </div>
         <div class="timeline-badge" id="yearIndicator">Temporada 2026</div>
     </nav>
@@ -127,6 +128,14 @@
                         <tbody id="garageTableBody"></tbody>
                     </table>
                 </div>
+            </div>
+        </section>
+        <!-- SEÇÃO 5: TRANSFERÊNCIAS -->
+        <section id="tab-transferencias" class="tab-content">
+            <div class="category-tabs" id="catTabsTransfers"></div>
+            <div class="panel-box">
+                <div class="panel-header" id="transfersHeader">Mercado de Transferências</div>
+                <div id="transfersContent"></div>
             </div>
         </section>
     </div>

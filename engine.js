@@ -16,6 +16,7 @@ let ecosystem = {
     moto4_latin: [], moto4_asia: [], moto4_british: [], moto4_northern: [], moto4_european: []
 };
 let teamFinancesState = {};
+let lastYearTransfers = [];
 
 // ==========================================================================
 // BANCO DE DADOS DE PAÍSES — NOMES POPULACIONAIS COMUNS
@@ -684,6 +685,8 @@ function triggerSimulation() {
 }
 
 function runYearEndTransfers() {
+    lastYearTransfers = [];
+
     // Passo 1: liberar riders acima de maxAge ou com contrato vencido
     for (const cat in ecosystem) {
         const maxAge = (categoriesConfig[cat] && categoriesConfig[cat].maxAge) || Infinity;
@@ -693,8 +696,9 @@ function runYearEndTransfers() {
             if (overAge || expired) {
                 r.teamId = null; r.team = null; r.seat = 0;
                 r.points = 0; r.currentRaceScore = 0;
-                freeAgents.push(r);
                 const motivo = overAge ? `${r.age}a > limite ${maxAge}` : `contrato vencido ${r.contractEndYear}`;
+                lastYearTransfers.push({ type: 'saida', rider: { name: r.name, flag: r.flag, age: r.age, isReal: r.isReal }, cat, motivo });
+                freeAgents.push(r);
                 if (typeof logEvent === 'function')
                     logEvent(`📤 ${r.flag} ${r.name} → Free Agent (${motivo})`, 'sys');
                 return false;
@@ -756,6 +760,8 @@ function runYearEndTransfers() {
                 const idxInFA = freeAgents.indexOf(chosen);
                 if (idxInFA !== -1) freeAgents.splice(idxInFA, 1);
                 grid.push(chosen);
+
+                lastYearTransfers.push({ type: 'entrada', rider: { name: chosen.name, flag: chosen.flag, age: chosen.age, isReal: chosen.isReal }, cat, team: teamObj.name, seat: seatNum });
 
                 if (typeof logEvent === 'function')
                     logEvent(`📥 ${chosen.flag} ${chosen.name} contratado por ${teamObj.name} (${cat.toUpperCase()}, assento ${seatNum})`, 'sys');
@@ -882,7 +888,8 @@ function saveLocalStorage() {
         uniqueNames: Array.from(uniqueNamesRegistry),
         nextRiderId: nextRiderId,
         teamFinancesState,
-        freeAgents
+        freeAgents,
+        lastYearTransfers
     };
     localStorage.setItem('motogp_sim_save', JSON.stringify(dataToSave));
 }
@@ -894,6 +901,7 @@ function initializeRealEcosystem() {
     currentRound = 0;
     currentYear = 2026;
     lastRaceData = null;
+    lastYearTransfers = [];
     teamFinancesState = {};
     freeAgents.splice(0);
     freeAgents.push(
@@ -937,6 +945,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     freeAgents.splice(0);
                     parsed.freeAgents.forEach(r => freeAgents.push(r));
                 }
+                lastYearTransfers = parsed.lastYearTransfers || [];
             } else {
                 initializeRealEcosystem();
             }
