@@ -816,6 +816,11 @@ window.addEventListener('DOMContentLoaded', () => {
                 currentRound        = parsed.currentRound || 0;
                 activeCategory      = parsed.activeCategory || 'motogp';
                 ecosystem           = parsed.ecosystem;
+                const _catMinAge = { motogp: 18, moto2: 16, moto3: 14, moto3_junior: 13, rookies_cup: 12 };
+                for (const cat in ecosystem) {
+                    const minAge = _catMinAge[cat] || 12;
+                    ecosystem[cat].forEach(r => { if (!r.age) r.age = minAge; });
+                }
                 lastRaceData        = parsed.lastRaceData || null;
                 uniqueNamesRegistry = new Set(parsed.uniqueNames || []);
                 nextRiderId         = parsed.nextRiderId || 1000;
