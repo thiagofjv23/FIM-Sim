@@ -204,16 +204,16 @@ const categoriesConfig = {
         paisesPermitidos: ["Mundial"],
         teams: [
             { id: 't_mgp_ducati', name: 'Ducati Lenovo Team', manufacturer: 'Ducati', bikePerformance: 98, mechanicCompetence: 95, reputation: 99, aiPersonality: 'resultados_imediatos', academyLink: 'ducati', nationalBias: null, budget: 45, targetPosition: 1, morale: 90 },
-            { id: 't_mgp_pramac', name: 'Prima Pramac Yamaha', manufacturer: 'Yamaha', bikePerformance: 88, mechanicCompetence: 90, reputation: 90, aiPersonality: 'resultados_imediatos', academyLink: 'yamaha_blucru', nationalBias: null, budget: 25, targetPosition: 5, morale: 80 },
+            { id: 't_mgp_pramac', name: 'Prima Pramac Yamaha MotoGP', manufacturer: 'Yamaha', bikePerformance: 88, mechanicCompetence: 90, reputation: 90, aiPersonality: 'resultados_imediatos', academyLink: 'yamaha_blucru', nationalBias: null, budget: 25, targetPosition: 5, morale: 80 },
             { id: 't_mgp_aprilia', name: 'Aprilia Racing', manufacturer: 'Aprilia', bikePerformance: 92, mechanicCompetence: 88, reputation: 92, aiPersonality: 'conservadora', academyLink: 'aprilia', nationalBias: ['🇮🇹'], budget: 30, targetPosition: 3, morale: 85 },
-            { id: 't_mgp_ktm', name: 'Red Bull KTM Factory', manufacturer: 'KTM', bikePerformance: 94, mechanicCompetence: 92, reputation: 94, aiPersonality: 'caca_talentos', academyLink: 'ktm', nationalBias: null, budget: 35, targetPosition: 2, morale: 88 },
-            { id: 't_mgp_yamaha', name: 'Monster Energy Yamaha', manufacturer: 'Yamaha', bikePerformance: 89, mechanicCompetence: 94, reputation: 96, aiPersonality: 'resultados_imediatos', academyLink: 'yamaha_blucru', nationalBias: null, budget: 40, targetPosition: 4, morale: 80 },
+            { id: 't_mgp_ktm', name: 'Red Bull KTM Factory Racing', manufacturer: 'KTM', bikePerformance: 94, mechanicCompetence: 92, reputation: 94, aiPersonality: 'caca_talentos', academyLink: 'ktm', nationalBias: null, budget: 35, targetPosition: 2, morale: 88 },
+            { id: 't_mgp_yamaha', name: 'Monster Energy Yamaha MotoGP', manufacturer: 'Yamaha', bikePerformance: 89, mechanicCompetence: 94, reputation: 96, aiPersonality: 'resultados_imediatos', academyLink: 'yamaha_blucru', nationalBias: null, budget: 40, targetPosition: 4, morale: 80 },
             { id: 't_mgp_hrc', name: 'Honda HRC Castrol', manufacturer: 'Honda', bikePerformance: 84, mechanicCompetence: 89, reputation: 95, aiPersonality: 'conservadora', academyLink: 'honda', nationalBias: null, budget: 40, targetPosition: 7, morale: 75 },
-            { id: 't_mgp_gresini', name: 'Gresini Racing MotoGP', manufacturer: 'Ducati', bikePerformance: 96, mechanicCompetence: 85, reputation: 88, aiPersonality: 'caca_talentos', academyLink: 'ducati', nationalBias: ['🇮🇹', '🇪🇸'], budget: 15, targetPosition: 6, morale: 90 },
-            { id: 't_mgp_vr46', name: 'Pertamina Enduro VR46', manufacturer: 'Ducati', bikePerformance: 95, mechanicCompetence: 87, reputation: 89, aiPersonality: 'caca_talentos', academyLink: 'vr46', nationalBias: ['🇮🇹'], budget: 18, targetPosition: 6, morale: 85 },
-            { id: 't_mgp_lcr', name: 'Castrol Honda LCR', manufacturer: 'Honda', bikePerformance: 83, mechanicCompetence: 85, reputation: 82, aiPersonality: 'conservadora', academyLink: 'honda', nationalBias: null, budget: 12, targetPosition: 9, morale: 80 },
+            { id: 't_mgp_gresini', name: 'BK8 Gresini Racing MotoGP', manufacturer: 'Ducati', bikePerformance: 96, mechanicCompetence: 85, reputation: 88, aiPersonality: 'caca_talentos', academyLink: 'ducati', nationalBias: ['🇮🇹', '🇪🇸'], budget: 15, targetPosition: 6, morale: 90 },
+            { id: 't_mgp_vr46', name: 'Pertamina Enduro VR46 Racing Team', manufacturer: 'Ducati', bikePerformance: 95, mechanicCompetence: 87, reputation: 89, aiPersonality: 'caca_talentos', academyLink: 'vr46', nationalBias: ['🇮🇹'], budget: 18, targetPosition: 6, morale: 85 },
+            { id: 't_mgp_lcr', name: 'CASTROL Honda LCR', manufacturer: 'Honda', bikePerformance: 83, mechanicCompetence: 85, reputation: 82, aiPersonality: 'conservadora', academyLink: 'honda', nationalBias: null, budget: 12, targetPosition: 9, morale: 80 },
             { id: 't_mgp_tech3', name: 'Red Bull KTM Tech3', manufacturer: 'KTM', bikePerformance: 93, mechanicCompetence: 86, reputation: 86, aiPersonality: 'caca_talentos', academyLink: 'ktm', nationalBias: null, budget: 20, targetPosition: 8, morale: 88 },
-            { id: 't_mgp_trackhouse', name: 'Trackhouse MotoGP', manufacturer: 'Aprilia', bikePerformance: 91, mechanicCompetence: 84, reputation: 85, aiPersonality: 'resultados_imediatos', academyLink: 'aprilia', nationalBias: ['🇺🇸'], budget: 18, targetPosition: 8, morale: 82 }
+            { id: 't_mgp_trackhouse', name: 'SuperFile Trackhouse MotoGP Team', manufacturer: 'Aprilia', bikePerformance: 91, mechanicCompetence: 84, reputation: 85, aiPersonality: 'resultados_imediatos', academyLink: 'aprilia', nationalBias: ['🇺🇸'], budget: 18, targetPosition: 8, morale: 82 }
         ]
     },
     moto2: {
@@ -222,18 +222,19 @@ const categoriesConfig = {
         paisesPermitidos: ["Mundial"],
         teams: [
             { id: 't_m2_pramac', name: 'BLU CRU Pramac Yamaha Moto2', manufacturer: 'Yamaha', bikePerformance: 88, mechanicCompetence: 85, reputation: 88, aiPersonality: 'caca_talentos', academyLink: 'yamaha_blucru', nationalBias: null, budget: 5, targetPosition: 5, morale: 80 },
-            { id: 't_m2_aspar', name: 'CFMOTO Aspar Team', manufacturer: 'CFMoto', bikePerformance: 92, mechanicCompetence: 90, reputation: 92, aiPersonality: 'caca_talentos', academyLink: 'aspar', nationalBias: ['🇪🇸'], budget: 7, targetPosition: 2, morale: 90 },
-            { id: 't_m2_marcvds', name: 'ELF Marc VDS Racing', manufacturer: 'Kalex', bikePerformance: 90, mechanicCompetence: 92, reputation: 94, aiPersonality: 'resultados_imediatos', academyLink: null, nationalBias: null, budget: 8, targetPosition: 3, morale: 85 },
+            { id: 't_m2_aspar', name: 'CFMOTO Azul Marino Aspar Team', manufacturer: 'CFMoto', bikePerformance: 92, mechanicCompetence: 90, reputation: 92, aiPersonality: 'caca_talentos', academyLink: 'aspar', nationalBias: ['🇪🇸'], budget: 7, targetPosition: 2, morale: 90 },
+            { id: 't_m2_marcvds', name: 'ELF Marc VDS Racing Team', manufacturer: 'Kalex', bikePerformance: 90, mechanicCompetence: 92, reputation: 94, aiPersonality: 'resultados_imediatos', academyLink: null, nationalBias: null, budget: 8, targetPosition: 3, morale: 85 },
             { id: 't_m2_honda', name: 'Idemitsu Honda Team Asia', manufacturer: 'Kalex', bikePerformance: 85, mechanicCompetence: 84, reputation: 85, aiPersonality: 'conservadora', academyLink: 'honda_asia', nationalBias: ['🇯🇵', '🇮🇩', '🇹🇭'], budget: 6, targetPosition: 7, morale: 80 },
-            { id: 't_m2_gresini', name: 'Italjet Gresini Moto2', manufacturer: 'Kalex', bikePerformance: 89, mechanicCompetence: 86, reputation: 87, aiPersonality: 'resultados_imediatos', academyLink: 'ducati', nationalBias: ['🇮🇹'], budget: 5, targetPosition: 4, morale: 85 },
+            { id: 't_m2_gresini', name: 'ITALJET Gresini Moto2', manufacturer: 'Kalex', bikePerformance: 89, mechanicCompetence: 86, reputation: 87, aiPersonality: 'resultados_imediatos', academyLink: 'ducati', nationalBias: ['🇮🇹'], budget: 5, targetPosition: 4, morale: 85 },
             { id: 't_m2_italtrans', name: 'Italtrans Racing Team', manufacturer: 'Kalex', bikePerformance: 86, mechanicCompetence: 87, reputation: 86, aiPersonality: 'conservadora', academyLink: null, nationalBias: ['🇮🇹'], budget: 4, targetPosition: 8, morale: 80 },
-            { id: 't_m2_intact', name: 'Liqui Moly Intact GP', manufacturer: 'Kalex', bikePerformance: 88, mechanicCompetence: 89, reputation: 89, aiPersonality: 'resultados_imediatos', academyLink: null, nationalBias: ['🇩🇪'], budget: 6, targetPosition: 6, morale: 85 },
-            { id: 't_m2_rw', name: 'RW Racing GP', manufacturer: 'Kalex', bikePerformance: 84, mechanicCompetence: 83, reputation: 80, aiPersonality: 'caca_talentos', academyLink: null, nationalBias: ['🇳🇱'], budget: 3, targetPosition: 10, morale: 80 },
-            { id: 't_m2_american', name: 'American Racing Team', manufacturer: 'Kalex', bikePerformance: 87, mechanicCompetence: 85, reputation: 84, aiPersonality: 'conservadora', academyLink: null, nationalBias: ['🇺🇸'], budget: 5, targetPosition: 8, morale: 82 },
-            { id: 't_m2_msi', name: 'QJMotor-Frinsa-MSI', manufacturer: 'Boscoscuro', bikePerformance: 94, mechanicCompetence: 88, reputation: 90, aiPersonality: 'caca_talentos', academyLink: 'msi', nationalBias: ['🇪🇸'], budget: 8, targetPosition: 1, morale: 95 },
+            { id: 't_m2_intact', name: 'Liqui Moly Dynavolt Intact GP', manufacturer: 'Kalex', bikePerformance: 88, mechanicCompetence: 89, reputation: 89, aiPersonality: 'resultados_imediatos', academyLink: null, nationalBias: ['🇩🇪'], budget: 6, targetPosition: 6, morale: 85 },
+            { id: 't_m2_rw', name: 'Momoven Idrofoglia RW Racing Team', manufacturer: 'Kalex', bikePerformance: 84, mechanicCompetence: 83, reputation: 80, aiPersonality: 'caca_talentos', academyLink: null, nationalBias: ['🇳🇱'], budget: 3, targetPosition: 10, morale: 80 },
+            { id: 't_m2_american', name: 'OnlyFans American Racing Team', manufacturer: 'Kalex', bikePerformance: 87, mechanicCompetence: 85, reputation: 84, aiPersonality: 'conservadora', academyLink: null, nationalBias: ['🇺🇸'], budget: 5, targetPosition: 8, morale: 82 },
+            { id: 't_m2_msi', name: 'QJMOTOR - Xeramic - MSI', manufacturer: 'Boscoscuro', bikePerformance: 94, mechanicCompetence: 88, reputation: 90, aiPersonality: 'caca_talentos', academyLink: 'msi', nationalBias: ['🇪🇸'], budget: 8, targetPosition: 1, morale: 95 },
             { id: 't_m2_ajo', name: 'Red Bull KTM Ajo', manufacturer: 'Kalex', bikePerformance: 93, mechanicCompetence: 94, reputation: 95, aiPersonality: 'caca_talentos', academyLink: 'ktm', nationalBias: null, budget: 10, targetPosition: 1, morale: 92 },
-            { id: 't_m2_fantic', name: 'Fantic Racing Lino Sonego', manufacturer: 'Kalex', bikePerformance: 87, mechanicCompetence: 85, reputation: 83, aiPersonality: 'resultados_imediatos', academyLink: 'vr46', nationalBias: ['🇮🇹'], budget: 4, targetPosition: 7, morale: 80 },
-            { id: 't_m2_speedrs', name: 'SpeedRS Team', manufacturer: 'Kalex', bikePerformance: 85, mechanicCompetence: 84, reputation: 81, aiPersonality: 'conservadora', academyLink: null, nationalBias: null, budget: 3, targetPosition: 9, morale: 75 }
+            { id: 't_m2_fantic', name: 'REDS Fantic Racing', manufacturer: 'Kalex', bikePerformance: 87, mechanicCompetence: 85, reputation: 83, aiPersonality: 'resultados_imediatos', academyLink: 'vr46', nationalBias: ['🇮🇹'], budget: 4, targetPosition: 7, morale: 80 },
+            { id: 't_m2_speedrs', name: 'HDR SpeedRS Team', manufacturer: 'Kalex', bikePerformance: 85, mechanicCompetence: 84, reputation: 81, aiPersonality: 'conservadora', academyLink: null, nationalBias: null, budget: 3, targetPosition: 9, morale: 75 },
+            { id: 't_m2_klint', name: 'KLINT Racing Team', manufacturer: 'Kalex', bikePerformance: 83, mechanicCompetence: 82, reputation: 79, aiPersonality: 'caca_talentos', academyLink: null, nationalBias: ['🇪🇸'], budget: 3, targetPosition: 11, morale: 78 }
         ]
     },
     // ── MOTO3 2026 — 13 EQUIPES REAIS ────────────────────────────────────────
@@ -381,56 +382,83 @@ const categoriesConfig = {
 // ==========================================================================
 const historicalSeeds = {
     motogp: [
-        { name: "Francesco Bagnaia", flag: "🇮🇹", age: 29, speed: 96, potential: 96, consistency: 94, isReal: true },
-        { name: "Jorge Martín", flag: "🇪🇸", age: 28, speed: 95, potential: 96, consistency: 89, isReal: true },
-        { name: "Marc Márquez", flag: "🇪🇸", age: 33, speed: 95, potential: 95, consistency: 85, isReal: true },
-        { name: "Pedro Acosta", flag: "🇪🇸", age: 22, speed: 91, potential: 98, consistency: 82, isReal: true },
-        { name: "Enea Bastianini", flag: "🇮🇹", age: 29, speed: 91, potential: 92, consistency: 86, isReal: true },
-        { name: "Fabio Quartararo", flag: "🇫🇷", age: 27, speed: 92, potential: 94, consistency: 88, isReal: true },
-        { name: "Brad Binder", flag: "🇿🇦", age: 31, speed: 90, potential: 90, consistency: 90, isReal: true },
-        { name: "Marco Bezzecchi", flag: "🇮🇹", age: 28, speed: 90, potential: 92, consistency: 83, isReal: true },
-        { name: "Maverick Viñales", flag: "🇪🇸", age: 31, speed: 89, potential: 89, consistency: 80, isReal: true },
-        { name: "Toprak Razgatlıoğlu", flag: "🇹🇷", age: 30, speed: 89, potential: 91, consistency: 88, isReal: true },
-        { name: "Álex Márquez", flag: "🇪🇸", age: 30, speed: 88, potential: 88, consistency: 84, isReal: true },
-        { name: "Fermín Aldeguer", flag: "🇪🇸", age: 21, speed: 86, potential: 94, consistency: 78, isReal: true },
-        { name: "Fabio Di Giannantonio", flag: "🇮🇹", age: 28, speed: 88, potential: 89, consistency: 85, isReal: true },
-        { name: "Franco Morbidelli", flag: "🇮🇹", age: 32, speed: 87, potential: 87, consistency: 82, isReal: true },
-        { name: "Luca Marini", flag: "🇮🇹", age: 29, speed: 87, potential: 88, consistency: 91, isReal: true },
-        { name: "Álex Rins", flag: "🇪🇸", age: 31, speed: 88, potential: 88, consistency: 81, isReal: true },
-        { name: "Raúl Fernández", flag: "🇪🇸", age: 26, speed: 86, potential: 89, consistency: 80, isReal: true },
-        { name: "Joan Mir", flag: "🇪🇸", age: 29, speed: 86, potential: 87, consistency: 83, isReal: true },
-        { name: "Jack Miller", flag: "🇦🇺", age: 31, speed: 86, potential: 86, consistency: 78, isReal: true },
-        { name: "Johann Zarco", flag: "🇫🇷", age: 36, speed: 85, potential: 85, consistency: 86, isReal: true },
-        { name: "Ai Ogura", flag: "🇯🇵", age: 25, speed: 85, potential: 90, consistency: 88, isReal: true },
-        { name: "Diogo Moreira", flag: "🇧🇷", age: 22, speed: 84, potential: 91, consistency: 82, isReal: true }
+        // Ducati Lenovo Team
+        { name: "Marc Márquez",           flag: "🇪🇸", age: 33, speed: 95, potential: 95, consistency: 85, isReal: true },
+        { name: "Francesco Bagnaia",      flag: "🇮🇹", age: 29, speed: 96, potential: 96, consistency: 94, isReal: true },
+        // Prima Pramac Yamaha MotoGP
+        { name: "Toprak Razgatlıoğlu",   flag: "🇹🇷", age: 29, speed: 89, potential: 91, consistency: 88, isReal: true },
+        { name: "Jack Miller",            flag: "🇦🇺", age: 31, speed: 86, potential: 86, consistency: 78, isReal: true },
+        // Aprilia Racing
+        { name: "Marco Bezzecchi",        flag: "🇮🇹", age: 27, speed: 90, potential: 92, consistency: 83, isReal: true },
+        { name: "Jorge Martín",           flag: "🇪🇸", age: 27, speed: 95, potential: 96, consistency: 89, isReal: true },
+        // Red Bull KTM Factory Racing
+        { name: "Brad Binder",            flag: "🇿🇦", age: 30, speed: 90, potential: 90, consistency: 90, isReal: true },
+        { name: "Pedro Acosta",           flag: "🇪🇸", age: 21, speed: 91, potential: 98, consistency: 82, isReal: true },
+        // Monster Energy Yamaha MotoGP
+        { name: "Fabio Quartararo",       flag: "🇫🇷", age: 26, speed: 92, potential: 94, consistency: 88, isReal: true },
+        { name: "Álex Rins",              flag: "🇪🇸", age: 30, speed: 88, potential: 88, consistency: 81, isReal: true },
+        // Honda HRC Castrol
+        { name: "Luca Marini",            flag: "🇮🇹", age: 28, speed: 87, potential: 88, consistency: 91, isReal: true },
+        { name: "Joan Mir",               flag: "🇪🇸", age: 28, speed: 86, potential: 87, consistency: 83, isReal: true },
+        // BK8 Gresini Racing MotoGP
+        { name: "Fermín Aldeguer",        flag: "🇪🇸", age: 21, speed: 86, potential: 94, consistency: 78, isReal: true },
+        { name: "Álex Márquez",           flag: "🇪🇸", age: 29, speed: 88, potential: 88, consistency: 84, isReal: true },
+        // Pertamina Enduro VR46 Racing Team
+        { name: "Franco Morbidelli",      flag: "🇮🇹", age: 31, speed: 87, potential: 87, consistency: 82, isReal: true },
+        { name: "Fabio Di Giannantonio",  flag: "🇮🇹", age: 27, speed: 88, potential: 89, consistency: 85, isReal: true },
+        // CASTROL Honda LCR
+        { name: "Johann Zarco",           flag: "🇫🇷", age: 35, speed: 85, potential: 85, consistency: 86, isReal: true },
+        { name: "Diogo Moreira",          flag: "🇧🇷", age: 22, speed: 84, potential: 91, consistency: 82, isReal: true },
+        // Red Bull KTM Tech3
+        { name: "Maverick Viñales",       flag: "🇪🇸", age: 31, speed: 89, potential: 89, consistency: 80, isReal: true },
+        { name: "Enea Bastianini",        flag: "🇮🇹", age: 28, speed: 91, potential: 92, consistency: 86, isReal: true },
+        // SuperFile Trackhouse MotoGP Team
+        { name: "Raúl Fernández",         flag: "🇪🇸", age: 24, speed: 86, potential: 89, consistency: 80, isReal: true },
+        { name: "Ai Ogura",               flag: "🇯🇵", age: 24, speed: 85, potential: 90, consistency: 88, isReal: true }
     ],
     moto2: [
-        { name: "Izan Guevara", flag: "🇪🇸", age: 22, speed: 81, potential: 86, consistency: 80, isReal: true },
-        { name: "Alberto Ferrández", flag: "🇪🇸", age: 20, speed: 76, potential: 88, consistency: 75, isReal: true },
-        { name: "David Alonso", flag: "🇨🇴", age: 20, speed: 84, potential: 94, consistency: 85, isReal: true },
-        { name: "Daniel Holgado", flag: "🇪🇸", age: 21, speed: 82, potential: 88, consistency: 82, isReal: true },
-        { name: "Arón Canet", flag: "🇪🇸", age: 26, speed: 85, potential: 86, consistency: 80, isReal: true },
-        { name: "Deniz Öncü", flag: "🇹🇷", age: 22, speed: 85, potential: 85, consistency: 78, isReal: true },
-        { name: "Mario Aji", flag: "🇮🇩", age: 22, speed: 79, potential: 82, consistency: 81, isReal: true },
-        { name: "Taiyo Furusato", flag: "🇯🇵", age: 20, speed: 80, potential: 85, consistency: 76, isReal: true },
-        { name: "Sergio García", flag: "🇪🇸", age: 23, speed: 84, potential: 89, consistency: 86, isReal: true },
-        { name: "Alonso López", flag: "🇪🇸", age: 24, speed: 85, potential: 88, consistency: 81, isReal: true },
-        { name: "Daniel Muñoz", flag: "🇪🇸", age: 19, speed: 79, potential: 84, consistency: 77, isReal: true },
-        { name: "Adrián Huertas", flag: "🇪🇸", age: 22, speed: 79, potential: 86, consistency: 80, isReal: true },
-        { name: "Manuel González", flag: "🇪🇸", age: 24, speed: 87, potential: 90, consistency: 88, isReal: true },
-        { name: "Senna Agius", flag: "🇦🇺", age: 21, speed: 86, potential: 89, consistency: 82, isReal: true },
-        { name: "Ayumu Sasaki", flag: "🇯🇵", age: 25, speed: 81, potential: 84, consistency: 85, isReal: true },
-        { name: "Zonta van den Goorbergh", flag: "🇳🇱", age: 20, speed: 80, potential: 84, consistency: 79, isReal: true },
-        { name: "Filip Salač", flag: "🇨🇿", age: 24, speed: 84, potential: 84, consistency: 83, isReal: true },
-        { name: "Joe Roberts", flag: "🇺🇸", age: 29, speed: 83, potential: 84, consistency: 82, isReal: true },
-        { name: "Iván Ortolá", flag: "🇪🇸", age: 21, speed: 82, potential: 88, consistency: 81, isReal: true },
-        { name: "Ángel Piqueras", flag: "🇪🇸", age: 19, speed: 80, potential: 90, consistency: 78, isReal: true },
-        { name: "Collin Veijer", flag: "🇳🇱", age: 21, speed: 84, potential: 92, consistency: 87, isReal: true },
-        { name: "José Antonio Rueda", flag: "🇪🇸", age: 20, speed: 83, potential: 89, consistency: 84, isReal: true },
-        { name: "Barry Baltus", flag: "🇧🇪", age: 21, speed: 84, potential: 84, consistency: 80, isReal: true },
-        { name: "Tony Arbolino", flag: "🇮🇹", age: 25, speed: 84, potential: 86, consistency: 83, isReal: true },
-        { name: "Celestino Vietti", flag: "🇮🇹", age: 24, speed: 85, potential: 88, consistency: 84, isReal: true },
-        { name: "Luca Lunetta", flag: "🇮🇹", age: 20, speed: 76, potential: 86, consistency: 75, isReal: true }
+        // BLU CRU Pramac Yamaha Moto2
+        { name: "Izan Guevara",              flag: "🇪🇸", age: 22, speed: 81, potential: 86, consistency: 80, isReal: true },
+        { name: "Alberto Ferrández",         flag: "🇪🇸", age: 21, speed: 76, potential: 88, consistency: 75, isReal: true },
+        // CFMOTO Azul Marino Aspar Team
+        { name: "David Alonso",              flag: "🇨🇴", age: 21, speed: 84, potential: 94, consistency: 85, isReal: true },
+        { name: "Daniel Holgado",            flag: "🇪🇸", age: 22, speed: 82, potential: 88, consistency: 82, isReal: true },
+        // ELF Marc VDS Racing Team
+        { name: "Arón Canet",               flag: "🇪🇸", age: 26, speed: 85, potential: 86, consistency: 80, isReal: true },
+        { name: "Deniz Öncü",               flag: "🇹🇷", age: 22, speed: 85, potential: 85, consistency: 78, isReal: true },
+        // Idemitsu Honda Team Asia
+        { name: "Mario Aji",                 flag: "🇮🇩", age: 23, speed: 79, potential: 82, consistency: 81, isReal: true },
+        { name: "Taiyo Furusato",            flag: "🇯🇵", age: 21, speed: 80, potential: 85, consistency: 76, isReal: true },
+        // ITALJET Gresini Moto2
+        { name: "Sergio García",             flag: "🇪🇸", age: 24, speed: 84, potential: 89, consistency: 86, isReal: true },
+        { name: "Alonso López",              flag: "🇪🇸", age: 25, speed: 85, potential: 88, consistency: 81, isReal: true },
+        // Italtrans Racing Team
+        { name: "Daniel Muñoz",              flag: "🇨🇴", age: 20, speed: 79, potential: 84, consistency: 77, isReal: true },
+        { name: "Adrián Huertas",            flag: "🇪🇸", age: 23, speed: 79, potential: 86, consistency: 80, isReal: true },
+        // Liqui Moly Dynavolt Intact GP
+        { name: "Manuel González",           flag: "🇪🇸", age: 25, speed: 87, potential: 90, consistency: 88, isReal: true },
+        { name: "Senna Agius",               flag: "🇦🇺", age: 22, speed: 86, potential: 89, consistency: 82, isReal: true },
+        // Momoven Idrofoglia RW Racing Team
+        { name: "Ayumu Sasaki",              flag: "🇯🇵", age: 25, speed: 81, potential: 84, consistency: 85, isReal: true },
+        { name: "Zonta van den Goorbergh",   flag: "🇳🇱", age: 21, speed: 80, potential: 84, consistency: 79, isReal: true },
+        // OnlyFans American Racing Team
+        { name: "Filip Salač",               flag: "🇨🇿", age: 25, speed: 84, potential: 84, consistency: 83, isReal: true },
+        { name: "Joe Roberts",               flag: "🇺🇸", age: 30, speed: 83, potential: 84, consistency: 82, isReal: true },
+        // QJMOTOR - Xeramic - MSI
+        { name: "Iván Ortolá",              flag: "🇪🇸", age: 22, speed: 82, potential: 88, consistency: 81, isReal: true },
+        { name: "Ángel Piqueras",           flag: "🇪🇸", age: 20, speed: 80, potential: 90, consistency: 78, isReal: true },
+        // Red Bull KTM Ajo
+        { name: "Collin Veijer",             flag: "🇳🇱", age: 22, speed: 84, potential: 92, consistency: 87, isReal: true },
+        { name: "José Antonio Rueda",        flag: "🇪🇸", age: 21, speed: 83, potential: 89, consistency: 84, isReal: true },
+        // REDS Fantic Racing
+        { name: "Barry Baltus",              flag: "🇧🇪", age: 22, speed: 84, potential: 84, consistency: 80, isReal: true },
+        { name: "Tony Arbolino",             flag: "🇮🇹", age: 26, speed: 84, potential: 86, consistency: 83, isReal: true },
+        // HDR SpeedRS Team
+        { name: "Celestino Vietti",          flag: "🇮🇹", age: 25, speed: 85, potential: 88, consistency: 84, isReal: true },
+        { name: "Luca Lunetta",              flag: "🇮🇹", age: 21, speed: 76, potential: 86, consistency: 75, isReal: true },
+        // KLINT Racing Team
+        { name: "Alex Escrig",               flag: "🇪🇸", age: 22, speed: 80, potential: 87, consistency: 78, isReal: true },
+        { name: "Xabi Zurutuza",             flag: "🇪🇸", age: 22, speed: 79, potential: 85, consistency: 77, isReal: true }
     ],
     // ── MOTO3 2026 — 26 PILOTOS REAIS EM ORDEM DE EQUIPE ─────────────────────
     // Ordem espelha categoriesConfig.moto3.teams (2 pilotos por time)
