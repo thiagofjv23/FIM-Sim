@@ -241,8 +241,7 @@ function renderGaragesTab() {
         teamHeader.innerHTML = `<td colspan="5">⚡ ${teamObj.name}</td>`;
         body.appendChild(teamHeader);
 
-        // O filtro agora compara r.team com teamObj.name
-        const teammates = riders.filter(r => r.team === teamObj.name);
+        const teammates = riders.filter(r => r.teamId === teamObj.id);
         teammates.forEach(r => {
             const tr = document.createElement('tr');
             const tag = r.isReal ? '' : '<span class="fictional-tag">Regen</span>';

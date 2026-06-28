@@ -1009,7 +1009,15 @@ window.addEventListener('DOMContentLoaded', () => {
                 ecosystem           = parsed.ecosystem;
                 for (const cat in ecosystem) {
                     const minAge = (categoriesConfig[cat] && categoriesConfig[cat].minAge) || 12;
-                    ecosystem[cat].forEach(r => { if (!r.age) r.age = minAge; });
+                    const teamMap = {};
+                    if (categoriesConfig[cat]) {
+                        categoriesConfig[cat].teams.forEach(t => { teamMap[t.id] = t.name; });
+                    }
+                    ecosystem[cat].forEach(r => {
+                        if (!r.age) r.age = minAge;
+                        // Sync team name from config so renamed sponsors don't hide pilots
+                        if (r.teamId && teamMap[r.teamId]) r.team = teamMap[r.teamId];
+                    });
                 }
                 lastRaceData        = parsed.lastRaceData || null;
                 uniqueNamesRegistry = new Set(parsed.uniqueNames || []);
