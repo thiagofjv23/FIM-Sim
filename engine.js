@@ -280,7 +280,7 @@ const categoriesConfig = {
         name: "Red Bull MotoGP™ Rookies Cup",
         minAge: 15, maxAge: 19,
         paisesPermitidos: ["Mundial"],
-        teams: Array.from({length: 11}, (_, i) => ({
+        teams: Array.from({length: 13}, (_, i) => ({
             id: `t_rkc_${i+1}`, name: `Rookies Team ${String.fromCharCode(65+i)}`, manufacturer: 'KTM',
             bikePerformance: 70, mechanicCompetence: 70, reputation: 70,
             aiPersonality: 'draft_centralizado', academyLink: 'ktm', nationalBias: null,
@@ -505,9 +505,49 @@ const historicalSeeds = {
     ],
     // ── MOTO3 JUNIOR — pilotos promovidos removidos, vagas viram regens ───────
     moto3_junior: [],
-    // ── ROOKIES CUP — Perrone e Rammerstorfer promovidos à Moto3 ─────────────
+    // ── ROOKIES CUP 2026 — 26 PILOTOS REAIS, 13 DUPLAS ──────────────────────
+    // Ordem espelha categoriesConfig.rookies_cup.teams (2 pilotos por slot)
+    // Ratings derivados da tabela de pontos de 2026 (líder = Beñat Fernández, 148 pts)
     rookies_cup: [
-        { name: 'Carter Thompson', flag: '🇦🇺', age: 18, speed: 61, potential: 83, consistency: 72, isReal: true }
+        // Team A
+        { name: 'Beñat Fernández',      flag: '🇪🇸', age: 18, speed: 74, potential: 84, consistency: 78, isReal: true },
+        { name: 'Ryota Ogiwara',        flag: '🇯🇵', age: 17, speed: 72, potential: 88, consistency: 74, isReal: true },
+        // Team B
+        { name: 'Fernando Bujosa',      flag: '🇪🇸', age: 16, speed: 71, potential: 87, consistency: 73, isReal: true },
+        { name: 'Kiattisak Singhapong', flag: '🇹🇭', age: 17, speed: 70, potential: 86, consistency: 72, isReal: true },
+        // Team C
+        { name: 'David González',       flag: '🇪🇸', age: 18, speed: 70, potential: 81, consistency: 71, isReal: true },
+        { name: 'Kiandra Ramadhipa',    flag: '🇮🇩', age: 16, speed: 69, potential: 87, consistency: 70, isReal: true },
+        // Team D
+        { name: 'Kristian Daniel Jr.',  flag: '🇦🇺', age: 17, speed: 69, potential: 84, consistency: 70, isReal: true },
+        { name: 'Travis Borg',          flag: '🇦🇺', age: 16, speed: 68, potential: 84, consistency: 69, isReal: true },
+        // Team E
+        { name: 'Carlos Cano',          flag: '🇪🇸', age: 16, speed: 67, potential: 85, consistency: 68, isReal: true },
+        { name: 'Fynn Kratochwil',      flag: '🇩🇪', age: 16, speed: 67, potential: 85, consistency: 67, isReal: true },
+        // Team F
+        { name: 'Sullivan Mounsey',     flag: '🇬🇧', age: 18, speed: 67, potential: 80, consistency: 68, isReal: true },
+        { name: 'Yaroslav Karpushin',   flag: '🇷🇺', age: 17, speed: 66, potential: 83, consistency: 67, isReal: true },
+        // Team G
+        { name: 'Guillem Planques',     flag: '🇪🇸', age: 18, speed: 65, potential: 79, consistency: 66, isReal: true },
+        { name: 'Mateo Marulanda',      flag: '🇨🇴', age: 15, speed: 65, potential: 89, consistency: 65, isReal: true },
+        // Team H
+        { name: 'Giulio Pugliese',      flag: '🇮🇹', age: 16, speed: 65, potential: 83, consistency: 65, isReal: true },
+        { name: 'Kerman Tinez',         flag: '🇪🇸', age: 16, speed: 63, potential: 82, consistency: 63, isReal: true },
+        // Team I
+        { name: 'David Da Costa',       flag: '🇵🇹', age: 17, speed: 62, potential: 81, consistency: 63, isReal: true },
+        { name: 'Ethan Sparks',         flag: '🇬🇧', age: 17, speed: 62, potential: 80, consistency: 62, isReal: true },
+        // Team J
+        { name: 'Luca Agostinelli',     flag: '🇮🇹', age: 17, speed: 61, potential: 81, consistency: 60, isReal: true },
+        { name: 'Alfonsi Daquigan',     flag: '🇵🇭', age: 16, speed: 61, potential: 81, consistency: 60, isReal: true },
+        // Team K
+        { name: 'Christian Borrelli',   flag: '🇮🇹', age: 16, speed: 60, potential: 82, consistency: 59, isReal: true },
+        { name: 'Tibor Varga',          flag: '🇭🇺', age: 18, speed: 59, potential: 78, consistency: 58, isReal: true },
+        // Team L
+        { name: 'Jurrien van Crugten',  flag: '🇳🇱', age: 17, speed: 58, potential: 80, consistency: 57, isReal: true },
+        { name: 'Archie Schmidt',       flag: '🇦🇺', age: 16, speed: 57, potential: 82, consistency: 55, isReal: true },
+        // Team M
+        { name: 'Alejandra Fernández',  flag: '🇪🇸', age: 15, speed: 56, potential: 86, consistency: 55, isReal: true },
+        { name: 'Afonso Almeida',       flag: '🇵🇹', age: 16, speed: 57, potential: 86, consistency: 55, isReal: true },
     ],
     moto4_asia: [
         // Veda Pratama e Zen Mitani removidos (promovidos à Moto3)
@@ -991,7 +1031,7 @@ function initializeRealEcosystem() {
     saveLocalStorage();
 
     if (typeof initUI === "function") initUI();
-    if (typeof logEvent === "function") logEvent("✔ Banco de Dados V3.2 (Moto3 2026 — 13 equipes / 26 pilotos reais) carregado com sucesso!", "sys");
+    if (typeof logEvent === "function") logEvent("✔ Banco de Dados V3.3 (Rookies Cup 2026 — 26 pilotos reais) carregado com sucesso!", "sys");
 }
 
 // ==========================================================================
