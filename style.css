@@ -1,13 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=Roboto+Condensed:wght@400;700;900&display=swap');
+
 :root {
-    --bg-main: #08090f;
-    --bg-card: #111422;
-    --bg-nav: #161a2e;
-    --border: #222842;
+    --bg-main: #0d0d0d;
+    --bg-card: #1a1a1a;
+    --bg-nav: #111111;
+    --border: #2e2e2e;
     --text-primary: #f1f5f9;
-    --text-secondary: #94a3b8;
-    --accent: #8b5cf6;
-    --accent-hover: #7c3aed;
-    --success: #10b981;
+    --text-secondary: #7a7a7a;
+    --accent: #E50014;
+    --accent-hover: #b8000f;
+    --success: #E50014;
     --warning: #f59e0b;
 }
 
@@ -15,7 +17,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
 }
 
 body {
@@ -30,26 +32,27 @@ body {
     padding-top: 80px;
 }
 
+/* Overlay reduzido para a imagem de fundo respirar */
 body::before {
     content: '';
     position: fixed;
     inset: 0;
-    background: rgba(8, 9, 15, 0.78);
+    background: rgba(0, 0, 0, 0.55);
     z-index: -1;
     pointer-events: none;
 }
 
-/* NAVBAR FIXA SUPERIOR */
+/* ── NAVBAR ── */
 .navbar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 65px;
-    background: rgba(22, 26, 46, 0.82);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 2px solid var(--border);
+    background: rgba(10, 10, 10, 0.93);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -58,131 +61,189 @@ body::before {
 }
 
 .nav-brand {
+    font-family: 'Roboto Condensed', 'Inter', sans-serif;
     font-weight: 900;
-    font-size: 1.3rem;
-    letter-spacing: -0.02em;
+    font-size: 1.25rem;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    background: linear-gradient(135deg, #fff 50%, var(--text-secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: white;
 }
 
 .nav-links {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.1rem;
 }
 
+/* Indicador de aba ativa por sublinhado vermelho */
 .nav-btn {
     background: transparent;
     border: none;
+    border-bottom: 2px solid transparent;
     color: var(--text-secondary);
-    padding: 0.5rem 1.2rem;
-    font-size: 0.95rem;
-    font-weight: 700;
+    padding: 0.55rem 1.1rem;
+    font-size: 0.83rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
     cursor: pointer;
-    border-radius: 4px;
-    transition: all 0.2s;
+    transition: color 0.15s, border-color 0.15s;
 }
 
-.nav-btn:hover, .nav-btn.active {
-    background-color: var(--border);
+.nav-btn:hover {
     color: white;
+    border-bottom-color: rgba(255, 255, 255, 0.25);
+}
+
+.nav-btn.active {
+    color: white;
+    border-bottom-color: var(--accent);
 }
 
 .timeline-badge {
-    background: #1e1b4b;
-    border: 1px solid #4338ca;
-    color: #c7d2fe;
-    padding: 0.4rem 1.2rem;
-    font-weight: 800;
-    border-radius: 20px;
-    font-size: 0.85rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    padding: 0.35rem 0.9rem;
+    font-weight: 700;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
 }
 
-/* CONTAINER CENTRAL */
+/* ── CONTAINER ── */
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 1.5rem;
 }
 
-/* CONTROL PANELS */
+/* ── BOTÕES ── */
 .control-panel {
     display: flex;
-    gap: 1rem;
+    gap: 0.75rem;
     margin-bottom: 1.5rem;
 }
 
 .btn {
-    border: none;
-    padding: 0.8rem 1.5rem;
+    border: 1px solid transparent;
+    padding: 0.75rem 1.8rem;
+    font-family: 'Inter', sans-serif;
     font-weight: 700;
-    border-radius: 6px;
+    font-size: 0.78rem;
+    border-radius: 4px;
     text-transform: uppercase;
+    letter-spacing: 0.07em;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 
-.btn-init { background-color: #334155; color: white; }
-.btn-sim { background-color: var(--success); color: white; }
-.btn-year-end { background-color: var(--accent); color: white; }
-.btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
-
-/* SISTEMA SPA - ALTERNÂNCIA DE ABAS */
-.tab-content {
-    display: none;
+/* Botão secundário — ghost, não compete com a CTA */
+.btn-init {
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.18);
+    color: rgba(255, 255, 255, 0.55);
 }
-.tab-content.active {
-    display: block;
+.btn-init:hover {
+    border-color: rgba(255, 255, 255, 0.45);
+    color: white;
 }
 
-/* CATEGORIES FILTER TABS (DESKTOP PADRÃO) */
+/* CTA principal — vermelho MotoGP sólido */
+.btn-sim {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: white;
+}
+.btn-sim:hover {
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
+}
+
+.btn-year-end {
+    background-color: #222;
+    border-color: var(--border);
+    color: white;
+}
+.btn-year-end:hover {
+    background-color: #2e2e2e;
+}
+
+/* ── SPA ── */
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ── FILTROS DE CATEGORIA ── */
 .category-tabs {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.4rem;
     margin-bottom: 1rem;
+    flex-wrap: wrap;
 }
 
 .tab-btn {
-    background: var(--bg-card);
+    background: transparent;
     border: 1px solid var(--border);
     color: var(--text-secondary);
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
+    padding: 0.38rem 0.85rem;
+    font-size: 0.76rem;
     font-weight: 600;
     border-radius: 4px;
+    letter-spacing: 0.04em;
     cursor: pointer;
+    transition: all 0.15s;
+}
+
+.tab-btn:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: white;
 }
 
 .tab-btn.active {
     background-color: var(--accent);
-    color: white;
     border-color: var(--accent);
+    color: white;
 }
 
-/* CARDS / PAINÉIS */
+/* ── CARDS / PANELS ── */
 .panel-box {
-    background: rgba(17, 20, 34, 0.85);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    background: rgba(26, 26, 26, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 6px;
     padding: 1.2rem;
     margin-bottom: 1.5rem;
 }
 
+/* Barra vermelha lateral como marcador de seção */
 .panel-header {
-    font-size: 1.1rem;
-    font-weight: 800;
+    font-family: 'Roboto Condensed', 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
     text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-secondary);
     margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--border);
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+.panel-header::before {
+    content: '';
+    display: block;
+    width: 3px;
+    height: 14px;
+    background: var(--accent);
+    flex-shrink: 0;
+    border-radius: 2px;
 }
 
 .text-accent { color: var(--warning); }
 
-/* GRID LAYOUTS */
+/* ── GRID ── */
 .grid-layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -190,19 +251,33 @@ body::before {
 }
 @media (max-width: 850px) { .grid-layout { grid-template-columns: 1fr; } }
 
-/* TABELAS SCANNABLE */
+/* ── TABELAS ── */
 .table-res { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; }
-th { color: var(--text-secondary); padding: 0.6rem; font-size: 0.75rem; text-transform: uppercase; border-bottom: 2px solid var(--border); }
-td { padding: 0.7rem 0.6rem; border-bottom: 1px solid rgba(34, 40, 66, 0.5); }
+table { width: 100%; border-collapse: collapse; font-size: 0.83rem; text-align: left; }
+th {
+    color: var(--text-secondary);
+    padding: 0.5rem 0.6rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    border-bottom: 1px solid var(--border);
+}
+td {
+    padding: 0.65rem 0.6rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
 
 tr.team-row-head {
-    background-color: rgba(255, 255, 255, 0.02);
-    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.025);
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
     color: var(--text-secondary);
 }
 
-/* PODIUM WIDGET */
+/* ── PÓDIO ── */
 .podium-container {
     display: flex;
     justify-content: center;
@@ -213,82 +288,129 @@ tr.team-row-head {
 }
 
 .podium-step {
-    background: var(--border);
-    border-radius: 6px 6px 0 0;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 4px 4px 0 0;
     padding: 0.5rem;
     text-align: center;
     width: 130px;
     font-weight: bold;
 }
 
-.step-1 { height: 110px; border: 2px solid #ffd700; background: linear-gradient(180deg, #2e2600, var(--bg-card)); }
-.step-2 { height: 85px; border: 2px solid #cbd5e1; }
-.step-3 { height: 65px; border: 2px solid #b45309; }
+.step-1 { height: 110px; border: 1px solid #ffd700; background: linear-gradient(180deg, rgba(46,38,0,0.55), rgba(20,20,20,0.95)); }
+.step-2 { height: 85px; border: 1px solid rgba(203,213,225,0.45); }
+.step-3 { height: 65px; border: 1px solid rgba(180,83,9,0.6); }
 .podium-pos { font-size: 1.3rem; margin-bottom: 0.2rem; }
-.podium-name { font-size: 0.8rem; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.podium-name { font-size: 0.78rem; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* DNF & LOGS */
-.dnf-box { background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2); padding: 0.8rem; border-radius: 6px; }
-.dnf-box h4 { font-size: 0.85rem; margin-bottom: 0.4rem; color: #fca5a5; }
+/* ── DNF & MURAL DO PADDOCK ── */
+.dnf-box {
+    background: rgba(229, 0, 20, 0.04);
+    border: 1px solid rgba(229, 0, 20, 0.15);
+    padding: 0.8rem;
+    border-radius: 4px;
+    margin-top: 1rem;
+}
+.dnf-box h4 {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    color: rgba(229, 0, 20, 0.75);
+}
 .dnf-box ul { list-style: none; font-size: 0.8rem; }
+.dnf-box li { padding: 0.2rem 0; color: var(--text-secondary); }
 
-.log-console { max-height: 180px; overflow-y: auto; font-family: monospace; font-size: 0.8rem; line-height: 1.6; background: rgba(8, 9, 15, 0.6); border-radius: 4px; padding: 0.3rem; }
-.log-line { padding: 0.2rem 0.5rem; margin-bottom: 0.2rem; border-left: 3px solid #475569; background: rgba(0,0,0,0.1); }
-.log-line.sys { border-left-color: var(--accent); color: #c7d2fe; }
+/* Mural limpo: sem bordas laterais, separado apenas por espaçamento */
+.log-console {
+    max-height: 200px;
+    overflow-y: auto;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.79rem;
+    line-height: 1.75;
+    padding: 0.1rem 0;
+}
 
-/* BADGES */
-.stat-badge { font-family: monospace; font-weight: bold; background: rgba(0,0,0,0.3); padding: 2px 5px; border-radius: 4px; }
-.fictional-tag { font-size: 0.65rem; background: #312e81; color: #c7d2fe; padding: 1px 4px; border-radius: 3px; font-weight: bold; margin-left: 4px; }
+.log-line {
+    padding: 0.28rem 0.4rem;
+    color: var(--text-secondary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+.log-line:last-child { border-bottom: none; }
+
+/* Notícia de sistema — destaque em branco, sem barra lateral */
+.log-line.sys {
+    color: white;
+    font-weight: 600;
+}
+
+/* ── BADGES ── */
+.stat-badge {
+    font-family: 'Roboto Condensed', monospace;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.07);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.86em;
+}
+
+.fictional-tag {
+    font-size: 0.6rem;
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--text-secondary);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-left: 5px;
+}
+
 .text-center { text-align: center; }
-.font-mono { font-family: monospace; }
+.font-mono { font-family: 'Roboto Condensed', monospace; }
 
 
 /* ==========================================================================
-   MEDIA QUERIES - CAMADA REATIVA MOBILE-FRIENDLY (< 600px)
+   MOBILE (< 600px)
    ========================================================================== */
 @media (max-width: 600px) {
     body {
-        padding-top: 115px; /* Abre espaço vertical extra para acomodar a nova barra responsiva */
+        padding-top: 115px;
     }
 
-    /* 1. Otimização Adaptativa da Barra de Navegação */
     .navbar {
         flex-direction: column;
         height: auto;
         padding: 0.6rem 1rem;
-        gap: 0.5rem;
+        gap: 0.4rem;
     }
 
-    .nav-brand {
-        font-size: 1.1rem;
-    }
+    .nav-brand { font-size: 1.1rem; }
 
-    /* Cria a esteira horizontal rolável para os botões da SPA */
     .nav-links {
         width: 100%;
         display: block;
         white-space: nowrap;
         overflow-x: auto;
-        padding-bottom: 6px;
-        -webkit-overflow-scrolling: touch; /* Rolagem por toque ultra-suave em aparelhos iOS */
+        padding-bottom: 4px;
+        -webkit-overflow-scrolling: touch;
         text-align: center;
     }
 
     .nav-btn {
         display: inline-block;
         padding: 0.4rem 0.8rem;
-        font-size: 0.85rem;
+        font-size: 0.8rem;
     }
 
     .timeline-badge {
         position: absolute;
         top: 8px;
         right: 12px;
-        font-size: 0.75rem;
-        padding: 0.2rem 0.6rem;
+        font-size: 0.68rem;
+        padding: 0.2rem 0.5rem;
     }
 
-    /* 2. Reorganização dos Controles e Abas de Categoria */
     .control-panel {
         flex-direction: column;
         gap: 0.5rem;
@@ -296,83 +418,57 @@ tr.team-row-head {
 
     .control-panel .btn {
         width: 100%;
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         padding: 0.7rem;
     }
 
-    /* Transforma os botões de campeonato na matriz estável de 2 colunas */
     .category-tabs {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        gap: 8px;
     }
 
     .category-tabs .tab-btn {
         width: 100%;
         text-align: center;
-        padding: 0.6rem 0.4rem;
-        font-size: 0.8rem;
+        padding: 0.5rem 0.3rem;
+        font-size: 0.73rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
 
-    /* 3. Compactação Inteligente de Tabelas */
-    table {
-        font-size: 0.8rem; /* Reduz levemente para garantir leitura sem quebras laterais */
-    }
+    table { font-size: 0.77rem; }
+    th { padding: 0.4rem; font-size: 0.66rem; }
+    td { padding: 0.4rem 0.3rem; }
+    .pilot-title { font-size: 0.8rem; }
+    .sub-desc { font-size: 0.7rem; }
 
-    th {
-        padding: 0.4rem;
-        font-size: 0.7rem;
-    }
-
-    td {
-        padding: 0.45rem 0.3rem; /* Encolhe padding de linha para compactar dados em telas estreitas */
-    }
-
-    .pilot-title {
-        font-size: 0.8rem;
-    }
-
-    .sub-desc {
-        font-size: 0.7rem;
-    }
-
-    /* Ajuste extra de segurança para o Widget do Pódio */
-    .podium-container {
-        gap: 0.4rem;
-        height: 100px;
-    }
-
-    .podium-step {
-        width: 32%;
-    }
-
-    .podium-name {
-        font-size: 0.7rem;
-    }
+    .podium-container { gap: 0.4rem; height: 100px; }
+    .podium-step { width: 32%; }
+    .podium-name { font-size: 0.7rem; }
 }
 
+
 /* ==========================================================================
-   WIDGET: PERFIL DO PILOTO (MOTO GP STYLE)
+   WIDGET: PERFIL DO PILOTO
    ========================================================================== */
 .profile-modal-content {
-    background: linear-gradient(180deg, #161a2e 0%, var(--bg-main) 100%);
+    background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 8px;
     padding: 0;
-    max-width: 450px; /* Layout mobile-first como na imagem */
+    max-width: 450px;
     width: 100%;
     color: white;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
     overflow: hidden;
 }
 
 .profile-header {
     text-align: center;
     padding: 2rem 1rem 1rem;
-    background: radial-gradient(circle at top, rgba(139, 92, 246, 0.15), transparent 70%);
+    background: radial-gradient(circle at top, rgba(229, 0, 20, 0.08), transparent 70%);
     border-bottom: 1px solid var(--border);
 }
 
@@ -383,16 +479,17 @@ tr.team-row-head {
     font-size: 1.5rem;
     font-weight: 900;
     padding: 0.2rem 0.8rem;
-    border-radius: 6px;
-    transform: skewX(-10deg);
+    border-radius: 4px;
+    transform: skewX(-8deg);
     margin-bottom: 0.5rem;
 }
 
 .profile-name {
+    font-family: 'Roboto Condensed', 'Inter', sans-serif;
     font-size: 1.8rem;
     font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: -0.05em;
+    letter-spacing: 0.02em;
     line-height: 1.1;
     margin-bottom: 1rem;
 }
@@ -406,12 +503,16 @@ tr.team-row-head {
 
 .profile-tab {
     background: transparent;
-    border: 1px solid var(--text-secondary);
+    border: 1px solid var(--border);
     color: var(--text-secondary);
-    border-radius: 20px;
+    border-radius: 4px;
     padding: 0.3rem 1rem;
-    font-size: 0.8rem;
-    font-weight: bold;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
 }
 .profile-tab.active {
     background: white;
@@ -422,22 +523,22 @@ tr.team-row-head {
 .stats-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 8px;
     padding: 1rem;
 }
 
 .stat-card {
-    background: #1c1f2e; /* Tom escuro levemente mais claro que o fundo */
-    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 6px;
     padding: 1rem;
-    border: 1px solid rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
 }
 
 .stat-label {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     color: var(--text-secondary);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.1em;
     margin-bottom: 0.5rem;
     display: flex;
     align-items: center;
@@ -449,26 +550,28 @@ tr.team-row-head {
     display: block;
     width: 2px;
     height: 10px;
-    background: white;
+    background: var(--accent);
 }
 
 .stat-value {
+    font-family: 'Roboto Condensed', monospace;
     font-size: 1.8rem;
     font-weight: 900;
-    font-family: monospace;
 }
 
 .teammate-card {
     margin: 0 1rem 1rem;
-    background: #1c1f2e;
-    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
     padding: 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
-    border: 1px solid rgba(255,255,255,0.05);
-    transition: background 0.2s;
+    border: 1px solid var(--border);
+    transition: background 0.15s, border-color 0.15s;
 }
-.teammate-card:hover { background: #2a2d3e; }
-
+.teammate-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+}
