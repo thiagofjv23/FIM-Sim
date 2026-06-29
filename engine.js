@@ -864,6 +864,12 @@ function runYearEndTransfers() {
     }
 }
 
+function getCategoryWeights(categoryKey) {
+    if (categoryKey === 'motogp')      return { bike: 0.50, rider: 0.40, rng: 0.10 };
+    if (categoryKey === 'rookies_cup') return { bike: 0.00, rider: 0.90, rng: 0.10 };
+    return { bike: 0.35, rider: 0.55, rng: 0.10 }; // Moto2, Moto3, Moto4
+}
+
 function _triggerSimulationCore() {
     const RACE_POINTS = [25, 20, 16, 13, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 
@@ -899,39 +905,61 @@ function _triggerSimulationCore() {
         const grid = ecosystem[catKey];
         if (!grid || grid.length === 0) continue;
 
-        // Gerar scores de corrida com aleatoriedade
-        const raceEntries = grid.map(rider => {
-            const base = rider.speed * 0.55 + rider.consistency * 0.30 + rider.potential * 0.10;
-            const luck = (Math.random() - 0.48) * 22;
-            return { rider, score: base + luck };
+        // ── FASE 1: DNF + RACE SCORE ─────────────────────────────────────────
+        const weights = getCategoryWeights(catKey);
+        const finishers = [];
+        const dnfRiders = [];
+
+        grid.forEach(rider => {
+            if (!rider.stats) rider.stats = { wins: 0, podiums: 0, poles: 0, races: 0, dnfs: 0 };
+            rider.stats.races++;
+
+            const teamData = findTeamById(rider.teamId, catKey);
+            const bikePerf = teamData ? teamData.bikePerformance : 60;
+            let mechComp   = teamData ? teamData.mechanicCompetence : 60;
+            const morale   = teamData ? teamData.morale : 80;
+
+            if (morale < 70) mechComp -= 5;
+            if (morale >= 90) mechComp += 5;
+
+            const rngCrash      = Math.floor(Math.random() * 100) + 1;
+            const rngMechanical = Math.floor(Math.random() * 100) + 1;
+
+            // Motos difíceis aumentam risco de queda; consistência é o escudo primário
+            const bikeDifficulty = Math.max(0, (100 - bikePerf) / 3);
+            const crashThreshold = Math.max(5, (100 - rider.consistency) + bikeDifficulty);
+
+            if (rngCrash <= crashThreshold) {
+                rider.stats.dnfs++;
+                rider.currentRaceScore = 0;
+                dnfRiders.push({ rider });
+                return;
+            }
+            if (rngMechanical <= 3) {
+                rider.stats.dnfs++;
+                rider.currentRaceScore = 0;
+                dnfRiders.push({ rider });
+                return;
+            }
+
+            const dayFormRNG  = (Math.random() * 15) - 5;
+            const activeSpeed = rider.speed + dayFormRNG;
+            const finalScore  = (activeSpeed * weights.rider) + (bikePerf * weights.bike) + (Math.random() * 100 * weights.rng);
+            rider.currentRaceScore = finalScore;
+            finishers.push({ rider, score: finalScore });
         });
 
-        // Determinar DNFs (Abandonos)
-        const dnfCandidates = [...raceEntries].sort(() => Math.random() - 0.5);
-        const dnfCount = Math.min(4, Math.max(0, Math.floor(Math.random() * grid.length * 0.12)));
-        const dnfSet = new Set(dnfCandidates.slice(0, dnfCount).map(e => e.rider.riderId));
+        finishers.sort((a, b) => b.score - a.score);
 
-        const finishers = raceEntries
-            .filter(e => !dnfSet.has(e.rider.riderId))
-            .sort((a, b) => b.score - a.score);
-
-        const dnfRiders = raceEntries.filter(e => dnfSet.has(e.rider.riderId));
-
-        // Atribuir pontos para a categoria que está sendo rodada no loop
+        // ── FASE 2: PONTUAÇÃO + ESTATÍSTICAS ────────────────────────────────
         finishers.forEach((entry, idx) => {
             const pts = RACE_POINTS[idx] || 0;
             entry.rider.points = (entry.rider.points || 0) + pts;
             entry.rider.currentRaceScore = pts;
             if (entry.rider.stats) {
-                entry.rider.stats.races++;
                 if (idx === 0) { entry.rider.stats.wins++; entry.rider.stats.podiums++; }
                 else if (idx === 1 || idx === 2) entry.rider.stats.podiums++;
             }
-        });
-        
-        dnfRiders.forEach(entry => {
-            entry.rider.currentRaceScore = 0;
-            if (entry.rider.stats) { entry.rider.stats.races++; entry.rider.stats.dnfs++; }
         });
 
         const teamPts = {};
