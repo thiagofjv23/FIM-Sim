@@ -814,6 +814,11 @@ function runYearEndTransfers() {
 
                 let pool = freeAgents.filter(r => !r.teamId && r.age >= minAge && r.age <= maxAge);
 
+                // Categorias regionais: restringir ao países permitidos (hard rule)
+                if (config.paisesPermitidos && !config.paisesPermitidos.includes('Mundial')) {
+                    pool = pool.filter(r => config.paisesPermitidos.includes(r.flag));
+                }
+
                 if (teamObj.nationalBias && teamObj.nationalBias.length) {
                     const biased = pool.filter(r => teamObj.nationalBias.includes(r.flag));
                     if (biased.length) pool = biased;
