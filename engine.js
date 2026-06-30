@@ -879,6 +879,7 @@ function runYearEndTransfers() {
                 if (r.lastSeasonPos && r.lastSeasonCat === cat &&
                     r.lastSeasonPos > teamObj.targetPosition + 8) {
                     r.previousTeam = r.team;
+                    r.justReleasedByTeamId = r.teamId;
                     r.teamId = null; r.team = null; r.seat = 0;
                     r.points = 0; r.currentRaceScore = 0;
                     const motivo = `rescisão por desempenho (P${r.lastSeasonPos}, meta P${teamObj.targetPosition})`;
@@ -912,6 +913,7 @@ function runYearEndTransfers() {
                         // Piloto recusa renovação e vai ao mercado
                         r.yearsWithTeam = 0;
                         r.previousTeam = r.team;
+                        r.justReleasedByTeamId = r.teamId;
                         r.teamId = null; r.team = null; r.seat = 0;
                         r.points = 0; r.currentRaceScore = 0;
                         toRelease.push(r);
@@ -937,6 +939,7 @@ function runYearEndTransfers() {
             const expired  = r.contractEndYear && r.contractEndYear < currentYear;
             if (overAge || expired) {
                 r.previousTeam = r.team;
+                r.justReleasedByTeamId = r.teamId;
                 r.teamId = null; r.team = null; r.seat = 0;
                 r.points = 0; r.currentRaceScore = 0;
                 const motivo = overAge ? `${r.age}a > limite ${maxAge}` : `contrato vencido ${r.contractEndYear}`;
@@ -975,9 +978,13 @@ function runYearEndTransfers() {
 
                 pool.sort((a, b) => calcHireScore(b, teamObj) - calcHireScore(a, teamObj));
 
+                // Excluir riders recém-liberados por esta mesma equipe (evita auto-transferência)
+                const poolNoSelf = pool.filter(r => r.justReleasedByTeamId !== teamObj.id);
+                const searchPool = poolNoSelf.length > 0 ? poolNoSelf : pool;
+
                 // Piloto tem agência: tenta candidatos em ordem até alguém aceitar
                 let chosen = null;
-                for (const candidate of pool) {
+                for (const candidate of searchPool) {
                     if (riderAcceptsOffer(candidate, teamObj, cat, false)) {
                         chosen = candidate;
                         break;
@@ -987,8 +994,8 @@ function runYearEndTransfers() {
                     }
                 }
 
-                // Fallback: se nenhum aceitou, forçar o melhor candidato (sem opções)
-                if (!chosen && pool.length > 0) chosen = pool[0];
+                // Fallback: se nenhum aceitou, forçar o melhor candidato
+                if (!chosen && searchPool.length > 0) chosen = searchPool[0];
 
                 // Sem candidatos na faixa etária → gerar novo jovem para repor o pipeline
                 if (!chosen) {
@@ -1024,6 +1031,9 @@ function runYearEndTransfers() {
             }
         }
     }
+
+    // Limpar flag temporário de ciclo de transferência
+    freeAgents.forEach(r => { delete r.justReleasedByTeamId; });
 }
 
 function getCategoryWeights(categoryKey) {
