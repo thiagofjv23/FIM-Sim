@@ -754,13 +754,34 @@ function triggerSimulation() {
 }
 
 function triggerFullSeason() {
-    try {
-        const startYear = currentYear;
-        do { _triggerSimulationCore(); } while (currentYear === startYear);
-    } catch (err) {
-        console.error('[triggerFullSeason] Erro:', err);
-        if (typeof logEvent === 'function') logEvent(`⚠️ Erro na simulação de temporada: ${err.message}`, 'warn');
+    const btn = document.getElementById('btnSeason');
+    const btnSim = document.getElementById('btnSim');
+    if (btn) btn.disabled = true;
+    if (btnSim) btnSim.disabled = true;
+
+    const startYear = currentYear;
+    if (typeof logEvent === 'function') logEvent(`⏩ Simulando temporada ${startYear} completa...`, 'sys');
+
+    function runNext() {
+        try {
+            if (currentYear === startYear) {
+                _triggerSimulationCore();
+                setTimeout(runNext, 0);
+            } else {
+                if (btn) btn.disabled = false;
+                if (btnSim) btnSim.disabled = false;
+                if (typeof logEvent === 'function') logEvent(`🏆 Temporada ${startYear} concluída! Entrando em ${currentYear}.`, 'sys');
+                if (typeof refreshUI === 'function') refreshUI();
+            }
+        } catch (err) {
+            console.error('[triggerFullSeason] Erro:', err);
+            if (typeof logEvent === 'function') logEvent(`⚠️ Erro: ${err.message}`, 'warn');
+            if (btn) btn.disabled = false;
+            if (btnSim) btnSim.disabled = false;
+        }
     }
+
+    setTimeout(runNext, 0);
 }
 
 function shouldRenew(rider, teamObj) {
