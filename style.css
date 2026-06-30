@@ -159,6 +159,18 @@ body::before {
     border-color: var(--accent-hover);
 }
 
+/* Botão de temporada completa — vermelho outline */
+.btn-season {
+    background-color: transparent;
+    border-color: var(--accent);
+    color: var(--accent);
+}
+.btn-season:hover {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: white;
+}
+
 .btn-year-end {
     background-color: #222;
     border-color: var(--border);

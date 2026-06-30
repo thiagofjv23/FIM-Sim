@@ -753,6 +753,16 @@ function triggerSimulation() {
     }
 }
 
+function triggerFullSeason() {
+    try {
+        const startYear = currentYear;
+        do { _triggerSimulationCore(); } while (currentYear === startYear);
+    } catch (err) {
+        console.error('[triggerFullSeason] Erro:', err);
+        if (typeof logEvent === 'function') logEvent(`⚠️ Erro na simulação de temporada: ${err.message}`, 'warn');
+    }
+}
+
 function shouldRenew(rider, teamObj) {
     if (teamObj.aiPersonality === 'caca_talentos')        return rider.potential >= 82;
     if (teamObj.aiPersonality === 'conservadora')         return (rider.speed + rider.consistency) / 2 >= 70;
