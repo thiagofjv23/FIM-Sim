@@ -6,6 +6,7 @@
 let currentYear = 2026;
 let currentRound = 0;
 const totalRoundsPerSeason = 10;
+const CAT_RANK = { motogp: 3, moto2: 2, moto3: 1 };
 let activeCategory = 'motogp';
 let uniqueNamesRegistry = new Set();
 let lastRaceData = null;
@@ -833,6 +834,34 @@ function calcHireScore(rider, teamObj) {
     return rider.speed * 0.45 + rider.potential * 0.30 + perfScore * 0.25;
 }
 
+function riderAcceptsOffer(rider, teamObj, offerCat, isRenewal) {
+    const currentCatRank = CAT_RANK[rider.lastSeasonCat] || 1;
+    const offerCatRank   = CAT_RANK[offerCat] || 1;
+    const loyaltyBonus   = isRenewal && (rider.yearsWithTeam || 0) >= 2;
+
+    // Recusa rebaixamento de categoria se estava no top 50% da temporada passada
+    if (offerCatRank < currentCatRank && rider.lastSeasonTotal) {
+        const topHalf = rider.lastSeasonPos <= rider.lastSeasonTotal / 2;
+        if (topHalf && !loyaltyBonus) return false;
+    }
+
+    // Pilotos de elite rejeitam equipes de fundo de grid
+    const riderTier = (rider.speed + rider.potential) / 2;
+    if (riderTier > 85 && (teamObj.reputation || 50) < 35 && !loyaltyBonus) return false;
+
+    // Jovem talento com alto potencial recusa equipes mediocres com 35% de chance
+    if (!isRenewal && rider.potential >= 82 && (rider.age || 99) <= 22) {
+        if ((teamObj.reputation || 50) < 50 && Math.random() < 0.35) return false;
+    }
+
+    // Piso salarial: recusa se marketValue excede muito o budget por assento
+    if (!isRenewal && rider.marketValue && teamObj.budget) {
+        if (rider.marketValue > (teamObj.budget / 2) * 2.5) return false;
+    }
+
+    return true;
+}
+
 function runYearEndTransfers() {
     lastYearTransfers = [];
 
@@ -866,18 +895,37 @@ function runYearEndTransfers() {
 
     // Passo 0-B: renovar contratos expirados para quem a equipe quer manter
     for (const cat in ecosystem) {
+        const toRelease = [];
         ecosystem[cat].forEach(r => {
             if (r.contractEndYear && r.contractEndYear < currentYear) {
                 const teamObj = categoriesConfig[cat].teams.find(t => t.id === r.teamId);
                 if (!teamObj) return;
                 if (shouldRenew(r, teamObj)) {
-                    const years = Math.floor(Math.random() * 2) + 1;
-                    r.contractEndYear = currentYear + years;
-                    lastYearTransfers.push({ type: 'renovacao', rider: { name: r.name, flag: r.flag, age: r.age, isReal: r.isReal }, cat, team: r.team, years });
-                    if (typeof logEvent === 'function')
-                        logEvent(`🔄 ${r.flag} ${r.name} renovou com ${r.team} (+${years} ano${years > 1 ? 's' : ''})`, 'sys');
+                    if (riderAcceptsOffer(r, teamObj, cat, true)) {
+                        const years = Math.floor(Math.random() * 2) + 1;
+                        r.contractEndYear = currentYear + years;
+                        r.yearsWithTeam = (r.yearsWithTeam || 0) + 1;
+                        lastYearTransfers.push({ type: 'renovacao', rider: { name: r.name, flag: r.flag, age: r.age, isReal: r.isReal }, cat, team: r.team, years });
+                        if (typeof logEvent === 'function')
+                            logEvent(`🔄 ${r.flag} ${r.name} renovou com ${r.team} (+${years} ano${years > 1 ? 's' : ''})`, 'sys');
+                    } else {
+                        // Piloto recusa renovação e vai ao mercado
+                        r.yearsWithTeam = 0;
+                        r.previousTeam = r.team;
+                        r.teamId = null; r.team = null; r.seat = 0;
+                        r.points = 0; r.currentRaceScore = 0;
+                        toRelease.push(r);
+                        lastYearTransfers.push({ type: 'saida', rider: { name: r.name, flag: r.flag, age: r.age, isReal: r.isReal }, cat, motivo: 'recusou renovação' });
+                        if (typeof logEvent === 'function')
+                            logEvent(`🚶 ${r.flag} ${r.name} recusou renovação e entra no mercado livre`, 'warn');
+                    }
                 }
             }
+        });
+        toRelease.forEach(r => {
+            const idx = ecosystem[cat].indexOf(r);
+            if (idx !== -1) ecosystem[cat].splice(idx, 1);
+            freeAgents.push(r);
         });
     }
 
@@ -927,7 +975,20 @@ function runYearEndTransfers() {
 
                 pool.sort((a, b) => calcHireScore(b, teamObj) - calcHireScore(a, teamObj));
 
-                let chosen = pool[0];
+                // Piloto tem agência: tenta candidatos em ordem até alguém aceitar
+                let chosen = null;
+                for (const candidate of pool) {
+                    if (riderAcceptsOffer(candidate, teamObj, cat, false)) {
+                        chosen = candidate;
+                        break;
+                    } else {
+                        if (typeof logEvent === 'function')
+                            logEvent(`🚫 ${candidate.flag} ${candidate.name} recusou proposta de ${teamObj.name}`, 'sys');
+                    }
+                }
+
+                // Fallback: se nenhum aceitou, forçar o melhor candidato (sem opções)
+                if (!chosen && pool.length > 0) chosen = pool[0];
 
                 // Sem candidatos na faixa etária → gerar novo jovem para repor o pipeline
                 if (!chosen) {
@@ -941,6 +1002,7 @@ function runYearEndTransfers() {
                     chosen = newbie;
                 }
 
+                chosen.yearsWithTeam   = chosen.teamId === teamObj.id ? (chosen.yearsWithTeam || 0) + 1 : 1;
                 chosen.teamId          = teamObj.id;
                 chosen.team            = teamObj.name;
                 chosen.manufacturer    = teamObj.manufacturer;
@@ -1209,8 +1271,8 @@ function initializeRealEcosystem() {
     teamFinancesState = {};
     freeAgents.splice(0);
     freeAgents.push(
-        { riderId: generateRiderId(), name: 'Miguel Oliveira', flag: '🇵🇹', age: 31, speed: 85, potential: 86, consistency: 84, isReal: true, teamId: null, seat: 0, points: 0, currentRaceScore: 0 },
-        { riderId: generateRiderId(), name: 'Somkiat Chantra', flag: '🇹🇭', age: 27, speed: 79, potential: 85, consistency: 75, isReal: true, teamId: null, seat: 0, points: 0, currentRaceScore: 0 }
+        { riderId: generateRiderId(), name: 'Miguel Oliveira', flag: '🇵🇹', age: 31, speed: 85, potential: 86, consistency: 84, isReal: true, teamId: null, seat: 0, points: 0, currentRaceScore: 0, yearsWithTeam: 0 },
+        { riderId: generateRiderId(), name: 'Somkiat Chantra', flag: '🇹🇭', age: 27, speed: 79, potential: 85, consistency: 75, isReal: true, teamId: null, seat: 0, points: 0, currentRaceScore: 0, yearsWithTeam: 0 }
     );
     if (typeof initTeamFinances === 'function') initTeamFinances();
 
@@ -1241,6 +1303,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     }
                     ecosystem[cat].forEach(r => {
                         if (!r.age) r.age = minAge;
+                        if (r.yearsWithTeam === undefined) r.yearsWithTeam = 0;
                         // Sync team name from config so renamed sponsors don't hide pilots
                         if (r.teamId && teamMap[r.teamId]) r.team = teamMap[r.teamId];
                     });
@@ -1255,7 +1318,10 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
                 if (parsed.freeAgents && Array.isArray(parsed.freeAgents)) {
                     freeAgents.splice(0);
-                    parsed.freeAgents.forEach(r => freeAgents.push(r));
+                    parsed.freeAgents.forEach(r => {
+                        if (r.yearsWithTeam === undefined) r.yearsWithTeam = 0;
+                        freeAgents.push(r);
+                    });
                 }
                 lastYearTransfers = parsed.lastYearTransfers || [];
                 raceHistory = parsed.raceHistory || [];
