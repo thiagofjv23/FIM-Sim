@@ -10,6 +10,7 @@ let activeCategory = 'motogp';
 let uniqueNamesRegistry = new Set();
 let lastRaceData = null;
 let raceHistory = [];
+let seasonArchive = [];
 
 // Máquina de Estados Global (The Single Source of Truth)
 let ecosystem = {
@@ -917,6 +918,28 @@ function _triggerSimulationCore() {
 
     // 1. Temporada completa → virar o ano e resetar todos
     if (currentRound >= totalRoundsPerSeason) {
+        // Snapshot da classificação final antes do reset
+        const yearSnapshot = { year: currentYear, standings: {} };
+        for (const cat in ecosystem) {
+            const sorted = [...ecosystem[cat]].sort((a, b) => b.points - a.points);
+            if (sorted.length && sorted[0].stats) {
+                if (!sorted[0].stats.titles) sorted[0].stats.titles = 0;
+                sorted[0].stats.titles++;
+            }
+            yearSnapshot.standings[cat] = sorted.map((r, idx) => ({
+                pos: idx + 1,
+                riderId: r.riderId,
+                name: r.name,
+                flag: r.flag,
+                team: r.team || '',
+                points: r.points,
+                wins: r.stats ? r.stats.wins : 0,
+                podiums: r.stats ? r.stats.podiums : 0,
+                dnfs: r.stats ? r.stats.dnfs : 0
+            }));
+        }
+        seasonArchive.push(yearSnapshot);
+
         currentYear++;
         currentRound = 0;
         raceHistory = [];
@@ -1076,7 +1099,8 @@ function saveLocalStorage() {
         teamFinancesState,
         freeAgents,
         lastYearTransfers,
-        raceHistory
+        raceHistory,
+        seasonArchive
     };
     localStorage.setItem('motogp_sim_save', JSON.stringify(dataToSave));
 }
@@ -1090,6 +1114,7 @@ function initializeRealEcosystem() {
     lastRaceData = null;
     lastYearTransfers = [];
     raceHistory = [];
+    seasonArchive = [];
     teamFinancesState = {};
     freeAgents.splice(0);
     freeAgents.push(
@@ -1143,6 +1168,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
                 lastYearTransfers = parsed.lastYearTransfers || [];
                 raceHistory = parsed.raceHistory || [];
+                seasonArchive = parsed.seasonArchive || [];
             } else {
                 initializeRealEcosystem();
             }

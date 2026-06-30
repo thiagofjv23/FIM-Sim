@@ -1,4 +1,5 @@
 let selectedHistoryRound = null;
+let selectedHistoryYear = null;
 
 // CONTROLE DE NAVEGAÇÃO INTERNA (SINGLE PAGE APPLICATION)
 function switchTab(tabId) {
@@ -40,7 +41,8 @@ function createCategorySelectors(containerId) {
         btn.onclick = () => {
             activeCategory = key;
             selectedHistoryRound = null;
-            refreshUI(); // Atualiza a renderização focando na nova categoria selecionada
+            selectedHistoryYear = null;
+            refreshUI();
         };
         container.appendChild(btn);
     }
@@ -65,6 +67,7 @@ function refreshUI() {
     renderTransferPanel();
     if (typeof renderFinancesTab === 'function') renderFinancesTab();
     renderTransfersTab();
+    renderHistoricoTab();
 }
 
 // EXIBE OS DETALHES DA ÚLTIMA CORRIDA BASEADO NA ABA ATIVA
@@ -736,3 +739,126 @@ function renderTransfersTab() {
         </div>`;
 }
 
+function renderHistoricoTab() {
+    const container = document.getElementById('historicoContent');
+    if (!container) return;
+
+    createCategorySelectors('catTabsHistorico');
+
+    const arc = (typeof seasonArchive !== 'undefined') ? seasonArchive : [];
+    const catArchive = arc.filter(s => s.standings && s.standings[activeCategory]);
+
+    if (selectedHistoryYear === null && catArchive.length > 0) {
+        selectedHistoryYear = catArchive[catArchive.length - 1].year;
+    }
+
+    // Palmarès
+    const palmares = catArchive.length === 0
+        ? `<p style="color:var(--text-secondary);text-align:center;padding:2rem">Nenhuma temporada encerrada ainda.</p>`
+        : `<div class="table-res"><table>
+               <thead><tr>
+                   <th class="text-center" style="width:15%">Ano</th>
+                   <th style="width:50%">Campeão</th>
+                   <th style="width:20%">Equipe</th>
+                   <th class="text-center" style="width:15%">Pts</th>
+               </tr></thead>
+               <tbody>
+               ${catArchive.slice().reverse().map(s => {
+                   const champ = s.standings[activeCategory][0];
+                   const active = s.year === selectedHistoryYear;
+                   return `<tr style="cursor:pointer;${active ? 'background:rgba(229,0,20,0.08)' : ''}"
+                               onclick="selectedHistoryYear=${s.year};renderHistoricoTab()">
+                       <td class="text-center" style="color:var(--text-secondary)">${s.year}</td>
+                       <td>${champ.flag} <strong>${champ.name}</strong></td>
+                       <td style="color:var(--text-secondary);font-size:0.8em">${champ.team}</td>
+                       <td class="text-center" style="color:var(--accent);font-weight:700">${champ.points}</td>
+                   </tr>`;
+               }).join('')}
+               </tbody>
+           </table></div>`;
+
+    // Classificação final do ano selecionado
+    const yearData = catArchive.find(s => s.year === selectedHistoryYear);
+    const detail = !yearData
+        ? `<p style="color:var(--text-secondary);text-align:center;padding:2rem">Selecione um ano.</p>`
+        : `<div class="table-res"><table>
+               <thead><tr>
+                   <th class="text-center" style="width:8%">Pos</th>
+                   <th style="width:42%">Piloto</th>
+                   <th style="width:22%">Equipe</th>
+                   <th class="text-center" style="width:10%">Pts</th>
+                   <th class="text-center" style="width:9%">V</th>
+                   <th class="text-center" style="width:9%">P</th>
+               </tr></thead>
+               <tbody>
+               ${yearData.standings[activeCategory].map(r => `
+                   <tr>
+                       <td class="text-center" style="color:var(--text-secondary)">${r.pos}º</td>
+                       <td>${r.flag} <strong>${r.name}</strong></td>
+                       <td style="color:var(--text-secondary);font-size:0.8em">${r.team}</td>
+                       <td class="text-center" style="color:var(--accent);font-weight:700">${r.points}</td>
+                       <td class="text-center">${r.wins}</td>
+                       <td class="text-center">${r.podiums}</td>
+                   </tr>`).join('')}
+               </tbody>
+           </table></div>`;
+
+    // Estatísticas de carreira
+    const allRiders = [
+        ...(ecosystem[activeCategory] || []),
+        ...(typeof freeAgents !== 'undefined' ? freeAgents.filter(r => r.stats && r.stats.races > 0) : [])
+    ];
+    const seen = new Set();
+    const uniqueRiders = allRiders.filter(r => {
+        if (seen.has(r.riderId)) return false;
+        seen.add(r.riderId);
+        return r.stats && r.stats.races > 0;
+    });
+    uniqueRiders.sort((a, b) => {
+        const ta = a.stats.titles || 0, tb = b.stats.titles || 0;
+        if (tb !== ta) return tb - ta;
+        if (b.stats.wins !== a.stats.wins) return b.stats.wins - a.stats.wins;
+        return b.stats.podiums - a.stats.podiums;
+    });
+
+    const careerRows = uniqueRiders.map(r => `
+        <tr>
+            <td>${r.flag} <strong>${r.name}</strong>${!r.isReal ? ' <span style="font-size:0.65rem;background:#1a3a1a;color:#4caf50;border-radius:3px;padding:1px 4px;">Regen</span>' : ''}</td>
+            <td class="text-center" style="color:var(--accent);font-weight:700">${r.stats.titles || 0}</td>
+            <td class="text-center">${r.stats.wins}</td>
+            <td class="text-center">${r.stats.podiums}</td>
+            <td class="text-center" style="color:var(--text-secondary)">${r.stats.races}</td>
+            <td class="text-center" style="color:var(--text-secondary)">${r.stats.dnfs}</td>
+        </tr>`).join('');
+
+    const career = uniqueRiders.length === 0
+        ? `<p style="color:var(--text-secondary);text-align:center;padding:2rem">Sem dados de carreira ainda.</p>`
+        : `<div class="table-res"><table>
+               <thead><tr>
+                   <th style="width:35%">Piloto</th>
+                   <th class="text-center" style="width:13%">🏆 Títulos</th>
+                   <th class="text-center" style="width:13%">Vitórias</th>
+                   <th class="text-center" style="width:13%">Pódios</th>
+                   <th class="text-center" style="width:13%">Corridas</th>
+                   <th class="text-center" style="width:13%">DNFs</th>
+               </tr></thead>
+               <tbody>${careerRows}</tbody>
+           </table></div>`;
+
+    container.innerHTML = `
+        <div class="grid-layout" style="margin-bottom:1.5rem">
+            <div class="panel-box">
+                <div class="panel-header">🏆 Palmarès — ${categoriesConfig[activeCategory].name}</div>
+                ${palmares}
+            </div>
+            <div class="panel-box">
+                <div class="panel-header">📊 Classificação Final ${selectedHistoryYear || ''}</div>
+                ${detail}
+            </div>
+        </div>
+        <div class="panel-box">
+            <div class="panel-header">👤 Estatísticas de Carreira — ${categoriesConfig[activeCategory].name}</div>
+            ${career}
+        </div>
+    `;
+}
