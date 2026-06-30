@@ -925,18 +925,23 @@ function _triggerSimulationCore() {
             if (sorted.length && sorted[0].stats) {
                 if (!sorted[0].stats.titles) sorted[0].stats.titles = 0;
                 sorted[0].stats.titles++;
+                if (!sorted[0].stats.titlesByCategory) sorted[0].stats.titlesByCategory = {};
+                sorted[0].stats.titlesByCategory[cat] = (sorted[0].stats.titlesByCategory[cat] || 0) + 1;
             }
-            yearSnapshot.standings[cat] = sorted.map((r, idx) => ({
-                pos: idx + 1,
-                riderId: r.riderId,
-                name: r.name,
-                flag: r.flag,
-                team: r.team || '',
-                points: r.points,
-                wins: r.stats ? r.stats.wins : 0,
-                podiums: r.stats ? r.stats.podiums : 0,
-                dnfs: r.stats ? r.stats.dnfs : 0
-            }));
+            yearSnapshot.standings[cat] = sorted.map((r, idx) => {
+                const bc = r.stats && r.stats.byCat && r.stats.byCat[cat] ? r.stats.byCat[cat] : {};
+                return {
+                    pos: idx + 1,
+                    riderId: r.riderId,
+                    name: r.name,
+                    flag: r.flag,
+                    team: r.team || '',
+                    points: r.points,
+                    wins: bc.wins || 0,
+                    podiums: bc.podiums || 0,
+                    dnfs: bc.dnfs || 0
+                };
+            });
         }
         seasonArchive.push(yearSnapshot);
 
@@ -978,6 +983,11 @@ function _triggerSimulationCore() {
         grid.forEach(rider => {
             if (!rider.stats) rider.stats = { wins: 0, podiums: 0, poles: 0, races: 0, dnfs: 0 };
             rider.stats.races++;
+            if (!rider.stats.categories) rider.stats.categories = [];
+            if (!rider.stats.categories.includes(catKey)) rider.stats.categories.push(catKey);
+            if (!rider.stats.byCat) rider.stats.byCat = {};
+            if (!rider.stats.byCat[catKey]) rider.stats.byCat[catKey] = { wins: 0, podiums: 0, races: 0, dnfs: 0 };
+            rider.stats.byCat[catKey].races++;
 
             const teamData = findTeamById(rider.teamId, catKey);
             const bikePerf = teamData ? teamData.bikePerformance : 60;
@@ -996,12 +1006,14 @@ function _triggerSimulationCore() {
 
             if (rngCrash <= crashThreshold) {
                 rider.stats.dnfs++;
+                rider.stats.byCat[catKey].dnfs++;
                 rider.currentRaceScore = 0;
                 dnfRiders.push({ rider });
                 return;
             }
             if (rngMechanical <= 3) {
                 rider.stats.dnfs++;
+                rider.stats.byCat[catKey].dnfs++;
                 rider.currentRaceScore = 0;
                 dnfRiders.push({ rider });
                 return;
@@ -1022,8 +1034,19 @@ function _triggerSimulationCore() {
             entry.rider.points = (entry.rider.points || 0) + pts;
             entry.rider.currentRaceScore = pts;
             if (entry.rider.stats) {
-                if (idx === 0) { entry.rider.stats.wins++; entry.rider.stats.podiums++; }
-                else if (idx === 1 || idx === 2) entry.rider.stats.podiums++;
+                if (idx === 0) {
+                    entry.rider.stats.wins++;
+                    entry.rider.stats.podiums++;
+                    if (entry.rider.stats.byCat && entry.rider.stats.byCat[catKey]) {
+                        entry.rider.stats.byCat[catKey].wins++;
+                        entry.rider.stats.byCat[catKey].podiums++;
+                    }
+                } else if (idx === 1 || idx === 2) {
+                    entry.rider.stats.podiums++;
+                    if (entry.rider.stats.byCat && entry.rider.stats.byCat[catKey]) {
+                        entry.rider.stats.byCat[catKey].podiums++;
+                    }
+                }
             }
         });
 

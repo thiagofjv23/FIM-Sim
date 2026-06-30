@@ -803,10 +803,11 @@ function renderHistoricoTab() {
                </tbody>
            </table></div>`;
 
-    // Estatísticas de carreira
+    // Estatísticas de carreira — apenas pilotos que competiram na categoria ativa
+    const fa = (typeof freeAgents !== 'undefined') ? freeAgents : [];
     const allRiders = [
         ...(ecosystem[activeCategory] || []),
-        ...(typeof freeAgents !== 'undefined' ? freeAgents.filter(r => r.stats && r.stats.races > 0) : [])
+        ...fa.filter(r => r.stats && r.stats.categories && r.stats.categories.includes(activeCategory))
     ];
     const seen = new Set();
     const uniqueRiders = allRiders.filter(r => {
@@ -815,21 +816,26 @@ function renderHistoricoTab() {
         return r.stats && r.stats.races > 0;
     });
     uniqueRiders.sort((a, b) => {
-        const ta = a.stats.titles || 0, tb = b.stats.titles || 0;
+        const ta = (a.stats.titlesByCategory && a.stats.titlesByCategory[activeCategory]) || 0;
+        const tb = (b.stats.titlesByCategory && b.stats.titlesByCategory[activeCategory]) || 0;
         if (tb !== ta) return tb - ta;
         if (b.stats.wins !== a.stats.wins) return b.stats.wins - a.stats.wins;
         return b.stats.podiums - a.stats.podiums;
     });
 
-    const careerRows = uniqueRiders.map(r => `
+    const careerRows = uniqueRiders.map(r => {
+        const catTitles = (r.stats.titlesByCategory && r.stats.titlesByCategory[activeCategory]) || 0;
+        const bc = (r.stats.byCat && r.stats.byCat[activeCategory]) || { wins: 0, podiums: 0, races: 0, dnfs: 0 };
+        return `
         <tr>
             <td>${r.flag} <strong>${r.name}</strong>${!r.isReal ? ' <span style="font-size:0.65rem;background:#1a3a1a;color:#4caf50;border-radius:3px;padding:1px 4px;">Regen</span>' : ''}</td>
-            <td class="text-center" style="color:var(--accent);font-weight:700">${r.stats.titles || 0}</td>
-            <td class="text-center">${r.stats.wins}</td>
-            <td class="text-center">${r.stats.podiums}</td>
-            <td class="text-center" style="color:var(--text-secondary)">${r.stats.races}</td>
-            <td class="text-center" style="color:var(--text-secondary)">${r.stats.dnfs}</td>
-        </tr>`).join('');
+            <td class="text-center" style="color:var(--accent);font-weight:700">${catTitles}</td>
+            <td class="text-center">${bc.wins}</td>
+            <td class="text-center">${bc.podiums}</td>
+            <td class="text-center" style="color:var(--text-secondary)">${bc.races}</td>
+            <td class="text-center" style="color:var(--text-secondary)">${bc.dnfs}</td>
+        </tr>`;
+    }).join('');
 
     const career = uniqueRiders.length === 0
         ? `<p style="color:var(--text-secondary);text-align:center;padding:2rem">Sem dados de carreira ainda.</p>`
