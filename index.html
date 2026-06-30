@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Road to MotoGP™ - Simulador Profissional</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- BARRA DE NAVEGAÇÃO FIXA -->
+    <nav class="navbar">
+        <div class="nav-brand">Road to MotoGP™</div>
+        <div class="nav-links">
+            <button class="nav-btn active" onclick="switchTab('inicio')">🏠 Início</button>
+            <button class="nav-btn" onclick="switchTab('campeonatos')">🏁 Campeonatos</button>
+            <button class="nav-btn" onclick="switchTab('pilotos-equipes')">👤 Pilotos e Equipes</button>
+            <button class="nav-btn" onclick="switchTab('financas')">💰 Finanças</button>
+            <button class="nav-btn" onclick="switchTab('transferencias')">🔄 Transferências</button>
+            <button class="nav-btn" onclick="switchTab('historico')">📋 Histórico</button>
+        </div>
+        <div class="timeline-badge" id="yearIndicator">Temporada 2026</div>
+    </nav>
+
+    <div class="container">
+        <!-- BOTÕES DE CONTROLE GERAL -->
+        <div class="control-panel">
+            <button class="btn btn-init" id="btnInit" onclick="initializeRealEcosystem()">Resetar Banco de Dados Real</button>
+            <button class="btn btn-sim" id="btnSim" onclick="triggerSimulation()">Simular Etapa</button>
+            <button class="btn btn-season" id="btnSeason" onclick="triggerFullSeason()">Simular Temporada</button>
+        </div>
+
+        <!-- SEÇÃO 1: INÍCIO (CONSOLE E ÚLTIMOS RESULTADOS) -->
+        <section id="tab-inicio" class="tab-content active">
+            <!-- PAINEL DE RESULTADOS DETALHADOS DA CORRIDA -->
+            <div class="panel-box result-panel" id="raceResultPanel" style="display: none;">
+                <div class="panel-header text-accent">🏁 Resultado Oficial da Última Corrida (<span id="txtRaceRound"></span>)</div>
+                <div class="podium-container">
+                    <div class="podium-step step-2">
+                        <div class="podium-pos">2º</div>
+                        <div class="podium-name" id="podium-p2">-</div>
+                    </div>
+                    <div class="podium-step step-1">
+                        <div class="podium-pos">1º</div>
+                        <div class="podium-name" id="podium-p1">-</div>
+                    </div>
+                    <div class="podium-step step-3">
+                        <div class="podium-pos">3º</div>
+                        <div class="podium-name" id="podium-p3">-</div>
+                    </div>
+                </div>
+                <div class="dnf-box">
+                    <h4>⚠️ Abandonos da Etapa (DNF):</h4>
+                    <ul id="dnfList"></ul>
+                </div>
+            </div>
+
+            <!-- MURAL DO PADDOCK / MERCADO -->
+            <div class="panel-box">
+                <div class="panel-header">Mural do Paddock & Notícias de Mercado</div>
+                <div class="log-console" id="logConsole"></div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 2: CAMPEONATOS (TABELAS DE CLASSIFICAÇÃO) -->
+        <section id="tab-campeonatos" class="tab-content">
+            <div class="category-tabs" id="catTabsCamp"></div>
+            
+            <div class="grid-layout">
+                <!-- CLASSIFICAÇÃO DE PILOTOS -->
+                <div class="panel-box">
+                    <div class="panel-header">Mundial de Pilotos</div>
+                    <div class="table-res">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 15%" class="text-center">Pos</th>
+                                    <th style="width: 65%">Piloto</th>
+                                    <th style="width: 20%" class="text-center">Pontos</th>
+                                </tr>
+                            </thead>
+                            <tbody id="standingsRidersBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- CLASSIFICAÇÃO DE EQUIPES -->
+                <div class="panel-box">
+                    <div class="panel-header">Mundial de Construtores / Equipes</div>
+                    <div class="table-res">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 15%" class="text-center">Pos</th>
+                                    <th style="width: 65%">Equipe</th>
+                                    <th style="width: 20%" class="text-center">Pontos</th>
+                                </tr>
+                            </thead>
+                            <tbody id="standingsTeamsBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="raceHistorySection"></div>
+        </section>
+
+        <!-- SEÇÃO 4: FINANÇAS -->
+        <section id="tab-financas" class="tab-content">
+            <div class="category-tabs" id="catTabsFinancas"></div>
+            <div class="panel-box">
+                <div class="panel-header">Finanças das Equipes</div>
+                <div id="financasContent"></div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 3: PILOTOS E EQUIPES (GARAGENS E CONTRATOS) -->
+        <section id="tab-pilotos-equipes" class="tab-content">
+            <div class="category-tabs" id="catTabsGarages"></div>
+            <div class="panel-box">
+                <div class="panel-header" id="garageTitle">Alocação das Garagens Oficiais</div>
+                <div class="table-res">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 15%" class="text-center">Status</th>
+                                <th style="width: 50%">Piloto / Linhagem</th>
+                                <th style="width: 15%" class="text-center">Idade</th>
+                                <th style="width: 20%" class="text-center">Vel / Pot</th>
+                            </tr>
+                        </thead>
+                        <tbody id="garageTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <!-- SEÇÃO 5: TRANSFERÊNCIAS -->
+        <section id="tab-transferencias" class="tab-content">
+            <div class="category-tabs" id="catTabsTransfers"></div>
+            <div class="panel-box">
+                <div class="panel-header" id="transfersHeader">Mercado de Transferências</div>
+                <div id="transfersContent"></div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 6: HISTÓRICO -->
+        <section id="tab-historico" class="tab-content">
+            <div class="category-tabs" id="catTabsHistorico"></div>
+            <div id="historicoContent"></div>
+        </section>
+    </div>
+
+    <!-- CARREGAMENTO ORDENADO DOS SCRIPTS COMPARTILHADOS -->
+    <script src="engine.js"></script>
+    <script src="finances.js"></script>
+    <script src="ui.js"></script>
+</body>
+</html>

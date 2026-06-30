@@ -1,0 +1,1 @@
+Este é um projeto de fã, sem fins lucrativos, desenvolvido puramente para fins de estudo e entretenimento pessoal. Todos os nomes de equipes, pilotos, marcas e chassis são de propriedade de seus respectivos detentores de direitos autorais (Dorna Sports, FIM, Yamaha, etc.). Este projeto não possui qualquer vínculo oficial com as entidades mencionadas
